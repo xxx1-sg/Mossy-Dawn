@@ -1,4 +1,4 @@
-// 晓山青 Service Worker - 高级 PWA 离线支持
+// 晓山青 Viridiore Service Worker - 高级 PWA 离线支持
 const CACHE_VERSION = 'v2';
 const CACHE_NAME = `xiaoshanqing-${CACHE_VERSION}`;
 const OFFLINE_CACHE = 'offline-v1';
@@ -296,7 +296,7 @@ async function clearPendingData(type) {
 self.addEventListener('push', (event) => {
     console.log('[SW] 收到推送消息');
     
-    let data = { title: '晓山青', body: '有新的消息' };
+    let data = { title: '晓山青 Viridiore', body: '有新的消息' };
     
     if (event.data) {
         try {

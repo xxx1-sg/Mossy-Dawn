@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>晓山青 - 户外智能出行伴侣</title>
+    <title>晓山青 Viridiore - 户外智能出行伴侣</title>
     <!-- 高级性能优化 -->
     <link rel="preconnect" href="https://webapi.amap.com">
     <link rel="dns-prefetch" href="https://restapi.amap.com">
@@ -17,7 +17,7 @@
                 securityJsCode: APP_CONFIG.AMAP.securityCode || ''
             };
         } else {
-            console.warn('[晓山青] 高德地图密钥未配置，请在 config.js 中填写 AMAP.key 和 AMAP.securityCode');
+            console.warn('[晓山青 Viridiore] 高德地图密钥未配置，请在 config.js 中填写 AMAP.key 和 AMAP.securityCode');
         }
     </script>
     <script type="text/javascript" id="amap-script"></script>
@@ -30,7 +30,7 @@
                 const script = document.getElementById('amap-script');
                 script.src = 'https://webapi.amap.com/maps?v=' + v + '&key=' + key;
             } else {
-                console.warn('[晓山青] 高德地图密钥未配置，地图功能暂时不可用');
+                console.warn('[晓山青 Viridiore] 高德地图密钥未配置，地图功能暂时不可用');
             }
         })();
     </script>
@@ -41,7 +41,7 @@
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="data:application/manifest+json,{
-        "name":"晓山青 - 户外智能出行伴侣",
+        "name":"晓山青 Viridiore - 户外智能出行伴侣",
         "short_name":"晓山青",
         "start_url":"./app.html",
         "display":"standalone",
@@ -68,7 +68,7 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
         /* ============================================
-           晓山青 - 户外智能出行伴侣
+           晓山青 Viridiore - 户外智能出行伴侣
            首页前端样式 - 视觉规范
            ============================================ */
 
@@ -1075,7 +1075,8 @@
         #shenzhenMap {
             position: relative;
             overflow: hidden;
-            background: linear-gradient(180deg, #dff3e2 0%, #c9e6d1 100%);
+            background: linear-gradient(160deg, #dff3e2 0%, #c9e6d1 55%, #b2d9b8 100%);
+            isolation: isolate;
         }
 
         #shenzhenMap::before {
@@ -1083,9 +1084,22 @@
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(circle at 18% 18%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 34%),
-                linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(37,87,57,0.05) 100%);
+                radial-gradient(ellipse at 18% 22%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 38%),
+                linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(37,87,57,0.06) 100%);
             z-index: 0;
+            pointer-events: none;
+        }
+
+        /* 地形纹理叠加层 */
+        #shenzhenMap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 35% 60%, rgba(180,210,180,0.18) 0%, transparent 30%),
+                radial-gradient(circle at 70% 25%, rgba(180,210,180,0.15) 0%, transparent 22%),
+                radial-gradient(circle at 55% 80%, rgba(180,210,180,0.12) 0%, transparent 28%);
+            z-index: 1;
             pointer-events: none;
         }
 
@@ -1113,6 +1127,130 @@
             cursor: grab;
             touch-action: none;
             user-select: none;
+        }
+
+        .shenzhen-vector-map {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            transform-origin: 0 0;
+        }
+
+        .shenzhen-vector-map .water-body {
+            fill: rgba(164, 214, 232, 0.7);
+        }
+
+        .shenzhen-vector-map .mountain-body {
+            fill: rgba(180, 210, 185, 0.55);
+        }
+
+        .shenzhen-vector-map .river-line {
+            fill: none;
+            stroke: rgba(130, 195, 215, 0.8);
+            stroke-width: 0.5;
+            stroke-linecap: round;
+        }
+
+        .shenzhen-vector-map .urban-area {
+            fill: rgba(200, 215, 205, 0.15);
+        }
+
+        .shenzhen-vector-map .district-boundary {
+            fill: none;
+            stroke: rgba(100, 140, 110, 0.2);
+            stroke-width: 0.15;
+        }
+
+        .shenzhen-vector-map .trail-route {
+            fill: none;
+            stroke: #e07a5f;
+            stroke-width: 0.7;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 2 1.5;
+            filter: drop-shadow(0 1px 2px rgba(224, 122, 95, 0.3));
+        }
+
+        .shenzhen-vector-map .trail-route-secondary {
+            fill: none;
+            stroke: #e07a5f;
+            stroke-width: 0.5;
+            stroke-linecap: round;
+            opacity: 0.6;
+        }
+
+        .shenzhen-vector-map .ridge-line {
+            fill: none;
+            stroke: rgba(120, 160, 130, 0.45);
+            stroke-width: 0.35;
+            stroke-linecap: round;
+        }
+
+        .shenzhen-vector-map .map-scale {
+            color: rgba(80, 120, 90, 0.6);
+        }
+
+        .shenzhen-vector-map .map-compass {
+            color: rgba(80, 120, 90, 0.6);
+        }
+
+        /* 深色模式地图底图 */
+        body.dark-mode .shenzhen-vector-map .water-body {
+            fill: rgba(40, 70, 90, 0.75);
+        }
+
+        body.dark-mode .shenzhen-vector-map .mountain-body {
+            fill: rgba(35, 65, 42, 0.6);
+        }
+
+        body.dark-mode .shenzhen-vector-map .river-line {
+            stroke: rgba(60, 100, 120, 0.8);
+        }
+
+        body.dark-mode .shenzhen-vector-map .urban-area {
+            fill: rgba(50, 75, 55, 0.2);
+        }
+
+        body.dark-mode .shenzhen-vector-map .district-boundary {
+            stroke: rgba(60, 100, 75, 0.15);
+        }
+
+        body.dark-mode .shenzhen-vector-map .trail-route {
+            stroke: rgba(230, 150, 120, 0.85);
+            filter: drop-shadow(0 1px 3px rgba(230, 120, 80, 0.2));
+        }
+
+        body.dark-mode .shenzhen-vector-map .trail-route-secondary {
+            stroke: rgba(230, 150, 120, 0.6);
+        }
+
+        body.dark-mode .shenzhen-vector-map .ridge-line {
+            stroke: rgba(70, 110, 80, 0.35);
+        }
+
+        body.dark-mode .shenzhen-vector-map .map-scale,
+        body.dark-mode .shenzhen-vector-map .map-compass {
+            color: rgba(100, 150, 110, 0.5);
+        }
+
+        /* 深色模式地图背景 */
+        body.dark-mode #shenzhenMap {
+            background: linear-gradient(160deg, #1e3020 0%, #172a18 55%, #142216 100%);
+        }
+
+        body.dark-mode #shenzhenMap::before {
+            background:
+                radial-gradient(ellipse at 18% 22%, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 38%),
+                linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(37,87,57,0.08) 100%);
+        }
+
+        body.dark-mode #shenzhenMap::after {
+            background-image:
+                radial-gradient(circle at 35% 60%, rgba(30,70,35,0.2) 0%, transparent 30%),
+                radial-gradient(circle at 70% 25%, rgba(30,70,35,0.18) 0%, transparent 22%),
+                radial-gradient(circle at 55% 80%, rgba(30,70,35,0.15) 0%, transparent 28%);
         }
 
         .shenzhen-map-fallback.is-dragging {
@@ -1231,8 +1369,8 @@
         .teammate-marker .avatar,
 
         .amap-teammate-pin__avatar {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             border: 3px solid rgba(255,255,255,0.96);
             display: flex;
@@ -1240,29 +1378,57 @@
             justify-content: center;
             font-size: 1.5rem;
             box-shadow: 0 8px 18px rgba(26, 54, 28, 0.2);
+            transition: box-shadow 0.16s ease;
+        }
+
+        .teammate-marker:hover .avatar {
+            box-shadow: 0 12px 24px rgba(26, 54, 28, 0.28);
         }
 
         .teammate-marker .name,
         .amap-teammate-pin__label {
-            background: rgba(26, 54, 28, 0.78);
+            background: rgba(26, 54, 28, 0.82);
             color: #fff;
-            padding: 0.3rem 0.7rem;
+            padding: 0.28rem 0.65rem;
             border-radius: 999px;
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             white-space: nowrap;
-            margin-top: 6px;
-            box-shadow: 0 8px 16px rgba(26, 54, 28, 0.12);
+            margin-top: 5px;
+            box-shadow: 0 6px 14px rgba(26, 54, 28, 0.14);
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        /* 队友标记详情条：距离+海拔 */
+        .teammate-marker .meta-bar {
+            display: flex;
+            gap: 0.3rem;
+            margin-top: 3px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 120px;
+        }
+
+        .teammate-marker .meta-tag {
+            background: rgba(246,250,245,0.92);
+            border: 1px solid rgba(45, 90, 61, 0.1);
+            color: #36513d;
+            font-size: 0.64rem;
+            padding: 0.12rem 0.38rem;
+            border-radius: 999px;
+            white-space: nowrap;
         }
 
         .teammate-marker .time,
         .amap-teammate-pin__time {
             font-size: 0.68rem;
             color: #36513d;
-            margin-top: 4px;
-            background: rgba(246,250,245,0.96);
+            margin-top: 3px;
+            background: rgba(246,250,245,0.92);
             border: 1px solid rgba(45, 90, 61, 0.08);
-            padding: 0.18rem 0.5rem;
+            padding: 0.16rem 0.48rem;
             border-radius: 999px;
+            white-space: nowrap;
         }
 
         .amap-teammate-pin {
@@ -1341,12 +1507,8 @@
         }
 
         @keyframes myPulse {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(45, 90, 61, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 0 20px rgba(45, 90, 61, 0);
-            }
+            0%, 100% { transform: translate(-50%, -100%) scale(1); }
+            50% { transform: translate(-50%, -100%) scale(1.08); }
         }
 
         /* Map Layer Container for Transform */
@@ -1356,8 +1518,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            transform-origin: center center;
-            transition: transform 0.1s ease-out;
+            transform-origin: 0 0;
         }
 
 
@@ -1566,6 +1727,73 @@
         body.dark-mode .teammate-marker .time {
             background: rgba(50,50,50,0.9);
             color: #a0a0a0;
+        }
+
+        body.dark-mode .teammate-marker .name {
+            background: rgba(10,20,12,0.88);
+        }
+
+        body.dark-mode .teammate-marker .meta-tag {
+            background: rgba(40,50,40,0.88);
+            color: rgba(200,220,200,0.9);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        /* 深色模式路线连线 */
+        body.dark-mode #mapRouteLine {
+            stroke: rgba(100, 175, 130, 0.75);
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+        }
+
+        body.dark-mode .map-zoom-controls .zoom-btn {
+            background: rgba(30,40,32,0.88);
+            color: rgba(230,230,230,0.9);
+            border-color: rgba(255,255,255,0.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        body.dark-mode .map-zoom-controls .zoom-btn:hover {
+            background: rgba(50,65,50,0.95);
+        }
+
+        /* 深色模式队友标记 meta-tag */
+        body.dark-mode .teammate-marker .meta-tag {
+            background: rgba(40,50,40,0.88);
+            color: rgba(200,220,200,0.9);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        body.dark-mode .teammate-marker .name {
+            background: rgba(10,20,12,0.88);
+        }
+
+        /* 高德地图队友标记增强样式 */
+        .amap-teammate-pin__meta {
+            display: flex;
+            gap: 0.25rem;
+            justify-content: center;
+            margin-top: 3px;
+        }
+
+        .amap-pin-tag {
+            background: rgba(246,250,245,0.92);
+            border: 1px solid rgba(45, 90, 61, 0.1);
+            color: #36513d;
+            font-size: 0.64rem;
+            padding: 0.1rem 0.36rem;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        body.dark-mode .amap-teammate-pin__meta {
+            flex-wrap: wrap;
+            max-width: 120px;
+        }
+
+        body.dark-mode .amap-pin-tag {
+            background: rgba(40,50,40,0.88);
+            color: rgba(200,220,200,0.9);
+            border-color: rgba(255,255,255,0.08);
         }
 
         body.dark-mode .alert-risk-card {
@@ -3009,7 +3237,7 @@
 
         .teammate-command-grid {
             display: grid;
-            grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.85fr);
+            grid-template-columns: minmax(0, 1.75fr) minmax(280px, 1fr);
             gap: 1rem;
             align-items: start;
         }
@@ -3028,7 +3256,16 @@
             gap: 1rem;
         }
 
-        .teammate-map-head,
+        .teammate-map-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.6rem;
+            padding-right: 7.5rem;
+        }
+
         .teammate-panel-head {
             display: flex;
             align-items: flex-start;
@@ -3038,23 +3275,102 @@
             margin-bottom: 1rem;
         }
 
-        .teammate-map-head h4,
+        .teammate-map-head h4 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+
         .teammate-panel-head h4 {
             color: var(--primary-color);
             margin: 0;
         }
 
-        .teammate-map-head p,
+        .teammate-map-head p {
+            margin-top: 0.3rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
         .teammate-panel-head p {
             margin-top: 0.35rem;
             color: var(--text-light);
             font-size: 0.9rem;
         }
 
-        .teammate-action-row {
+        /* 地图悬浮操作按钮 */
+        .teammate-map-floating-actions {
+            position: absolute;
+            top: 0.9rem;
+            right: 0.75rem;
+            z-index: 60;
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
+            gap: 0.45rem;
+            align-items: center;
+        }
+
+        .map-action-btn {
+            padding: 0.38rem 0.75rem;
+            border-radius: 10px;
+            border: 1px solid rgba(26, 54, 28, 0.12);
+            background: rgba(255,255,255,0.88);
+            color: var(--text-color);
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.28rem;
+            transition: all 0.15s ease;
+            box-shadow: 0 2px 8px rgba(26, 54, 28, 0.08);
+            backdrop-filter: blur(4px);
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .map-action-btn:hover {
+            background: rgba(255,255,255,0.96);
+            box-shadow: 0 4px 12px rgba(26, 54, 28, 0.12);
+            transform: translateY(-1px);
+        }
+
+        .map-action-btn--primary {
+            background: linear-gradient(135deg, rgba(92, 148, 110, 0.92) 0%, rgba(47, 125, 87, 0.92) 100%);
+            color: #fff;
+            border-color: transparent;
+            font-weight: 600;
+        }
+
+        .map-action-btn--primary:hover {
+            background: linear-gradient(135deg, rgba(102, 158, 120, 0.96) 0%, rgba(57, 135, 97, 0.96) 100%);
+            box-shadow: 0 6px 16px rgba(47, 125, 87, 0.25);
+        }
+
+        body.dark-mode .teammate-map-head h4,
+        body.dark-mode .teammate-panel-head h4 {
+            color: var(--accent-color);
+        }
+
+        body.dark-mode .teammate-map-floating-actions {
+            top: 0.75rem;
+        }
+
+        body.dark-mode .map-action-btn {
+            background: rgba(30,40,32,0.88);
+            color: rgba(230,230,230,0.9);
+            border-color: rgba(255,255,255,0.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        body.dark-mode .map-action-btn:hover {
+            background: rgba(40,55,44,0.95);
+        }
+
+        body.dark-mode .map-action-btn--primary {
+            background: linear-gradient(135deg, rgba(72, 138, 100, 0.9) 0%, rgba(47, 125, 87, 0.9) 100%);
+            border-color: rgba(47,125,87,0.3);
+        }
+
+        body.dark-mode .map-action-btn--primary:hover {
+            background: linear-gradient(135deg, rgba(82, 148, 110, 0.95) 0%, rgba(57, 135, 97, 0.95) 100%);
         }
 
         .teammate-map-layer-row {
@@ -3254,7 +3570,10 @@
                 grid-template-columns: 1fr;
             }
 
-            .teammate-map-head,
+            .teammate-map-head {
+                padding-right: 0;
+            }
+
             .teammate-panel-head {
                 align-items: stretch;
             }
@@ -3365,14 +3684,24 @@
         }
 
         @media (max-width: 640px) {
-            .teammate-map-head,
+            .teammate-map-head {
+                flex-direction: column;
+                padding-right: 0;
+            }
+
             .teammate-panel-head {
                 flex-direction: column;
             }
 
-            .teammate-action-row,
-            .teammate-action-row .action-btn {
-                width: 100%;
+            .teammate-map-floating-actions {
+                top: 0.65rem;
+                right: 0.6rem;
+            }
+
+            .teammate-map-floating-actions .map-action-btn {
+                flex: none;
+                padding: 0.32rem 0.65rem;
+                font-size: 0.78rem;
             }
 
             .teammate-map-layer-row {
@@ -4405,14 +4734,15 @@
         /* ========== 我的位置标记脉冲 ========== */
         #myPositionMarker {
             animation: myPulse 2s ease-in-out infinite;
+            transform-origin: center 100%;
         }
 
         @keyframes myPulse {
             0%, 100% {
-                transform: translate(-50%, -50%) scale(1);
+                transform: translate(-50%, -100%) scale(1);
             }
             50% {
-                transform: translate(-50%, -50%) scale(1.1);
+                transform: translate(-50%, -100%) scale(1.08);
             }
         }
 
@@ -8266,6 +8596,9 @@
 
         /* ===== 高级导航栏 V3 ===== */
         .nav-v3 {
+            display: flex;
+            align-items: center;
+            position: relative;
             background: rgba(26, 58, 40, 0.85);
             backdrop-filter: blur(16px) saturate(180%);
             -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -8273,10 +8606,55 @@
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
         }
 
+        .nav-v3-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
         .nav-v3-logo {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .nav-v3-about-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.35rem 0.8rem;
+            border-radius: var(--radius-full);
+            background: rgba(230, 162, 84, 0.18);
+            border: 1px solid rgba(230, 162, 84, 0.35);
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .nav-v3-about-btn:hover {
+            background: rgba(230, 162, 84, 0.3);
+            border-color: rgba(230, 162, 84, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .nav-v3-about-btn:active {
+            transform: scale(0.96);
+        }
+
+        .nav-v3-about-btn svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 600px) {
+            .nav-v3-about-btn span { display: none; }
+            .nav-v3-about-btn { padding: 0.4rem 0.5rem; }
         }
 
         .nav-v3-logo-text {
@@ -8291,6 +8669,7 @@
 
         .nav-v3-menu {
             display: flex;
+            justify-content: center;
             gap: 0.15rem;
             list-style: none;
             position: relative;
@@ -8328,7 +8707,7 @@
             height: 16px;
         }
 
-        .theme-toggle-btn {
+        .nav-v3 .theme-toggle-btn {
             width: 40px;
             height: 40px;
             border-radius: 10px;
@@ -8337,10 +8716,8 @@
             color: rgba(255, 255, 255, 0.7);
             cursor: pointer;
             transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
+            flex-shrink: 0;
+            margin-left: auto;
         }
 
         .theme-toggle-btn:hover {
@@ -8678,7 +9055,12 @@
 
     <!-- Navigation V3 -->
     <nav class="nav nav-v3" id="mainNav">
-        <div class="nav-v3-logo">
+        <div class="nav-v3-left">
+            <button class="nav-v3-about-btn" onclick="window.open('about.html', '_blank')" type="button" aria-label="关于晓山青">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                <span>关于</span>
+            </button>
+            <div class="nav-v3-logo">
             <svg viewBox="0 0 50 50" style="width:34px;height:34px;flex-shrink:0;">
                 <defs>
                     <linearGradient id="logoGradV3" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -8701,6 +9083,7 @@
                 <circle cx="36" cy="14" r="4" fill="#ffd93d" filter="url(#logoGlowV3)"/>
             </svg>
             <span class="nav-v3-logo-text">晓山青</span>
+        </div>
         </div>
         <ul class="nav-v3-menu" id="navMenuV3">
             <li><button data-page="home" class="active"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>首页</span></button></li>
@@ -8877,6 +9260,14 @@
                         </div>
                         <div class="feature-card-v3-title">队友共享</div>
                         <div class="feature-card-v3-desc">队友位置共享</div>
+                    </div>
+
+                    <div class="feature-card-v3 animate-in" data-target-page="about" tabindex="0" role="button" aria-label="关于晓山青" style="transition-delay:0.36s" onclick="window.open('about.html', '_blank')">
+                        <div class="feature-card-v3-icon-wrap" style="background:rgba(230,162,84,0.12)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#E6A254" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                        </div>
+                        <div class="feature-card-v3-title">关于晓山青</div>
+                        <div class="feature-card-v3-desc">了解我们</div>
                     </div>
 
                 </div>
@@ -9750,10 +10141,6 @@
                                 <h4>🗺️ 深圳队伍指挥地图</h4>
                                 <p id="teammateMapStatus">最新地图回传：5 分钟内全部更新</p>
                             </div>
-                            <div class="teammate-action-row">
-                                <button class="action-btn action-btn--sm" type="button" onclick="shareMyLocation()">📍 分享我的位置</button>
-                                <button class="action-btn action-btn--secondary action-btn--sm" type="button" onclick="refreshTeammates()">🔄 刷新</button>
-                            </div>
                         </div>
                         <div class="teammate-map-layer-row" aria-label="地图图层开关">
                             <button class="map-layer-toggle is-active" type="button" data-layer="self" aria-pressed="true" onclick="toggleTeammateMapLayer('self')">📍 我的位置</button>
@@ -9763,9 +10150,78 @@
                         <div class="teammate-map-shell">
 
                             <div class="map-wrapper">
+                                <div class="teammate-map-floating-actions" aria-label="地图操作">
+                                    <button class="map-action-btn map-action-btn--primary" type="button" onclick="shareMyLocation()" title="分享我的位置">📍 分享位置</button>
+                                    <button class="map-action-btn" type="button" onclick="refreshTeammates()" title="刷新数据">🔄</button>
+                                </div>
                                 <div id="shenzhenMap" style="position:relative;overflow:hidden;">
                                     <div id="shenzhenAmap" aria-label="深圳地图"></div>
                                     <div id="shenzhenMapFallback" class="shenzhen-map-fallback">
+                                        <svg class="shenzhen-vector-map" id="shenzhenVectorMap" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+
+                                            <!-- 水域底层 -->
+                                            <!-- 大鹏湾 -->
+                                            <path class="water-body" d="M 0,0 L 30,0 L 32,8 L 28,18 L 22,20 L 16,18 L 8,14 L 0,12 Z" />
+                                            <!-- 深圳湾 -->
+                                            <path class="water-body" d="M 100,0 L 72,0 L 68,5 L 65,12 L 68,18 L 75,16 L 82,14 L 90,12 L 100,8 Z" />
+                                            <!-- 大亚湾 -->
+                                            <path class="water-body" d="M 0,50 L 8,48 L 18,52 L 24,60 L 20,70 L 14,75 L 6,72 L 0,65 Z" />
+
+                                            <!-- 内湾/河涌 -->
+                                            <path class="water-body" d="M 58,60 Q 60,62 62,60 Q 64,58 66,60 L 68,68 Q 66,72 64,74 L 62,72 Q 60,70 58,72 L 56,65 Q 57,62 58,60 Z" />
+
+                                            <!-- 山脉（低饱和浅绿渐变，色块代表山地） -->
+                                            <!-- 梧桐山系 -->
+                                            <path class="mountain-body" d="M 24,28 Q 28,22 33,20 Q 38,22 40,26 Q 42,30 38,34 Q 34,36 30,34 Q 26,30 24,28 Z" opacity="0.65" />
+                                            <!-- 七娘山系 -->
+                                            <path class="mountain-body" d="M 5,62 Q 10,54 16,52 Q 20,54 22,58 Q 24,62 20,66 Q 16,68 12,66 Q 8,64 5,62 Z" opacity="0.7" />
+                                            <!-- 羊台山系 -->
+                                            <path class="mountain-body" d="M 58,44 Q 62,38 67,36 Q 72,38 74,42 Q 76,46 72,50 Q 68,52 64,50 Q 60,46 58,44 Z" opacity="0.55" />
+                                            <!-- 银湖山/塘朗山 -->
+                                            <path class="mountain-body" d="M 38,34 Q 41,30 45,29 Q 49,31 50,35 Q 51,39 47,41 Q 43,42 40,40 Q 37,37 38,34 Z" opacity="0.5" />
+                                            <!-- 凤凰山系 -->
+                                            <path class="mountain-body" d="M 78,54 Q 82,48 87,46 Q 92,48 94,52 Q 96,56 92,60 Q 88,62 84,60 Q 80,56 78,54 Z" opacity="0.55" />
+                                            <!-- 排牙山/笔架山 -->
+                                            <path class="mountain-body" d="M 32,46 Q 36,40 41,38 Q 46,40 48,44 Q 50,48 46,52 Q 42,54 38,52 Q 34,48 32,46 Z" opacity="0.5" />
+
+                                            <!-- 河流/水系 -->
+                                            <path class="river-line" d="M 50,30 Q 52,36 54,42 Q 56,48 60,52 Q 62,55 64,58" />
+                                            <path class="river-line" d="M 36,28 Q 38,32 40,36 Q 42,40 44,44 Q 45,46 46,48" />
+                                            <path class="river-line" d="M 68,36 Q 70,40 72,44 Q 74,48 76,52" />
+
+                                            <!-- 城市建成区（低饱和色块） -->
+                                            <path class="urban-area" d="M 38,30 Q 48,28 56,30 Q 60,33 58,38 Q 52,40 44,38 Q 38,36 38,30 Z" opacity="0.12" />
+                                            <path class="urban-area" d="M 62,42 Q 70,40 76,44 Q 78,48 74,52 Q 68,52 63,48 Q 60,45 62,42 Z" opacity="0.1" />
+                                            <path class="urban-area" d="M 28,36 Q 34,34 38,37 Q 40,40 36,43 Q 30,43 27,40 Q 26,38 28,36 Z" opacity="0.1" />
+
+                                            <!-- 区界（细虚线） -->
+                                            <path class="district-boundary" d="M 0,25 L 100,25" stroke-dasharray="2 1.5" />
+                                            <path class="district-boundary" d="M 0,55 L 100,55" stroke-dasharray="2 1.5" />
+                                            <path class="district-boundary" d="M 30,0 L 30,100" stroke-dasharray="2 1.5" />
+                                            <path class="district-boundary" d="M 62,0 L 62,100" stroke-dasharray="2 1.5" />
+
+                                            <!-- 徒步路线（虚线标注，醒目颜色） -->
+                                            <path class="trail-route" d="M 15,38 C 20,36 24,34 28,32 C 32,30 36,28 40,26 C 44,24 48,24 52,26 C 56,28 58,32 60,36 C 62,40 64,44 66,48 C 68,52 70,56 72,60 C 74,64 76,68 78,72" />
+                                            <!-- 支线 -->
+                                            <path class="trail-route-secondary" d="M 28,32 C 30,36 32,40 32,44 C 32,48 30,50 28,52 C 26,54 24,54 22,52 C 20,50 20,46 22,44" stroke-dasharray="2 1" />
+                                            <!-- 山脊线 -->
+                                            <path class="ridge-line" d="M 5,62 C 8,58 12,56 16,52 C 20,48 24,46 28,44 C 32,42 36,40 40,38 C 44,36 48,35 52,34" stroke-dasharray="1 2" />
+
+                                            <!-- 地图比例尺示意 -->
+                                            <g class="map-scale" transform="translate(4, 94)">
+                                                <line x1="0" y1="0" x2="10" y2="0" stroke="currentColor" stroke-width="0.4" />
+                                                <line x1="0" y1="-1" x2="0" y2="1" stroke="currentColor" stroke-width="0.4" />
+                                                <line x1="10" y1="-1" x2="10" y2="1" stroke="currentColor" stroke-width="0.4" />
+                                                <text x="0" y="3.5" font-size="1.8" fill="currentColor" font-family="system-ui,sans-serif">5km</text>
+                                            </g>
+
+                                            <!-- 指北针 -->
+                                            <g class="map-compass" transform="translate(94, 6)">
+                                                <circle cx="0" cy="0" r="3" fill="none" stroke="currentColor" stroke-width="0.3" opacity="0.5" />
+                                                <path d="M 0,-2.5 L 0.6,1 L 0,0.3 L -0.6,1 Z" fill="currentColor" opacity="0.7" />
+                                                <text x="0" y="-4" font-size="1.8" fill="currentColor" font-family="system-ui,sans-serif" text-anchor="middle" opacity="0.6">N</text>
+                                            </g>
+                                        </svg>
                                         <div class="map-layer" id="mapLayer">
                                         <svg class="map-route-overlay" id="mapRouteOverlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                                             <polyline id="mapRouteLine" points=""></polyline>
@@ -9774,38 +10230,38 @@
                                             <strong id="teammateClusterCount">0</strong>
                                             <span>队友聚合</span>
                                         </button>
-                                        <div class="map-district map-water" style="top:0;left:0;width:30%;height:25%;">大鹏湾</div>
-
-                                        <div class="map-district map-water" style="top:0;right:0;width:25%;height:20%;">深圳湾</div>
-                                        <div class="map-district" style="top:5%;left:5%;width:15%;height:12%;">罗湖区</div>
-                                        <div class="map-district" style="top:3%;left:22%;width:18%;height:15%;">福田区</div>
-                                        <div class="map-district" style="top:8%;left:20%;width:12%;height:10%;">南山区</div>
-                                        <div class="map-district" style="top:2%;right:8%;width:20%;height:18%;">宝安区</div>
-                                        <div class="map-district" style="top:25%;left:10%;width:25%;height:20%;">龙岗区</div>
-                                        <div class="map-district" style="top:35%;left:5%;width:18%;height:15%;">盐田区</div>
-                                        <div class="map-district" style="top:20%;right:5%;width:15%;height:12%;">龙华区</div>
-                                        <div class="map-district" style="top:40%;right:10%;width:12%;height:10%;">坪山区</div>
-                                        <div class="map-district" style="top:45%;left:30%;width:20%;height:15%;">光明区</div>
-                                        <div class="map-district" style="top:50%;right:5%;width:15%;height:12%;">大鹏新区</div>
 
                                         <div class="teammate-marker" data-name="张三" style="top:35%;left:25%;" onclick="showTeammateInfo('张三')">
                                             <div class="avatar" style="background:#3498db;">👨</div>
                                             <div class="name">张三</div>
+                                            <div class="meta-bar">
+                                                <span class="meta-tag">0.5km</span>
+                                                <span class="meta-tag">↑120m</span>
+                                            </div>
                                             <div class="time">10 分钟前</div>
                                         </div>
                                         <div class="teammate-marker" data-name="李四" style="top:45%;left:35%;" onclick="showTeammateInfo('李四')">
                                             <div class="avatar" style="background:#e74c3c;">👩</div>
                                             <div class="name">李四</div>
+                                            <div class="meta-bar">
+                                                <span class="meta-tag">1.2km</span>
+                                                <span class="meta-tag">↑150m</span>
+                                            </div>
                                             <div class="time">5 分钟前</div>
                                         </div>
                                         <div class="teammate-marker" data-name="王五" style="top:55%;left:45%;" onclick="showTeammateInfo('王五')">
                                             <div class="avatar" style="background:#f39c12;">🧑</div>
                                             <div class="name">王五</div>
+                                            <div class="meta-bar">
+                                                <span class="meta-tag">0.8km</span>
+                                                <span class="meta-tag">↑130m</span>
+                                            </div>
                                             <div class="time">刚刚</div>
                                         </div>
                                         <div class="teammate-marker" id="myPositionMarker" data-name="我" style="top:50%;left:50%;">
                                             <div class="avatar" style="background:var(--primary-color);">📍</div>
-                                            <div class="name">我</div>
+                                            <div class="name">我的位置</div>
+                                            <div class="time">定位中</div>
                                         </div>
                                         </div>
                                     </div>
@@ -10166,7 +10622,7 @@
                     <div class="chat-message ai">
                         <div class="message-avatar">🤖</div>
                         <div class="message-content">
-                            <strong>晓山青 AI 助手</strong>
+                            <strong>晓山青 Viridiore AI 助手</strong>
                             <p>您好！我是您的户外智能出行助手。我可以帮您：</p>
                             <ul style="text-align:left;margin-top:0.5rem;">
                                 <li>🌤️ 分析天气和出行建议</li>
@@ -10483,7 +10939,7 @@
             
             createGPX(trailPoints, name) {
                 let gpx = '<?xml version="1.0" encoding="UTF-8"?>\n';
-                gpx += '<gpx version="1.1" creator="晓山青">\n';
+                gpx += '<gpx version="1.1" creator="晓山青 Viridiore">\n';
                 gpx += '  <trk>\n';
                 gpx += '    <name>' + name + '</name>\n';
                 gpx += '    <trkseg>\n';
@@ -10896,7 +11352,7 @@
                 try {
                     return JSON.parse(stored);
                 } catch (e) {
-                    console.warn('[晓山青] 紧急联系人数据解析失败，使用默认数据');
+                    console.warn('[晓山青 Viridiore] 紧急联系人数据解析失败，使用默认数据');
                 }
             }
             // 默认数据
@@ -11280,7 +11736,13 @@
         const closeEmergencyContactsModal = closeEmergencyContactsEditor;
         let appInitialized = false;
         let heroParallaxTicking = false;
-        let heroLastSyncAt = Storage.get('heroLastSyncAt', Date.now());
+        let heroLastSyncAt = (() => {
+            const stored = Storage.get('heroLastSyncAt', null);
+            // 如果存储的值是 24 小时前或更旧的过时数据，视为无效，使用当前时间
+            const dayMs = 24 * 60 * 60 * 1000;
+            if (stored && (Date.now() - stored) < dayMs) return stored;
+            return Date.now();
+        })();
         const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
         function prefersReducedMotion() {
@@ -11297,11 +11759,15 @@
         }
 
         function formatHeroSyncLabel(timestamp = heroLastSyncAt) {
-            const diffMinutes = Math.floor((Date.now() - timestamp) / 60000);
-            if (diffMinutes <= 0) return '刚刚同步';
+            const diffMs = Date.now() - timestamp;
+            if (diffMs <= 0) return '刚刚同步';
+            const diffMinutes = Math.floor(diffMs / 60000);
             if (diffMinutes < 60) return `${diffMinutes} 分钟前同步`;
             const diffHours = Math.floor(diffMinutes / 60);
-            return `${diffHours} 小时前同步`;
+            if (diffHours < 24) return `${diffHours} 小时前同步`;
+            const diffDays = Math.floor(diffHours / 24);
+            if (diffDays < 30) return `${diffDays} 天前同步`;
+            return '久未同步';
         }
 
         function updateHeroDashboard(snapshot = {}) {
@@ -11873,10 +12339,12 @@
             document.body.classList.remove('page-loading');
             document.body.classList.add('app-ready');
             syncActiveNavIndicator(document.querySelector('.nav-v3-menu button.active')?.dataset.page || 'home', true);
-            updateHeroDashboard();
+            updateHeroDashboard({ syncNow: true });
             LoadingManager.hide();
             initHeroParticles();
             initScrollAnimations();
+            // 应用就绪时自动获取位置
+            getUserLocation();
         }
 
         // ==================== V3 UI 初始化 ====================
@@ -12301,58 +12769,59 @@
             }
         };
 
-        // ==================== 天气 API 接入 (Open-Meteo 免费 API，无 Key) ====================
+        // ==================== 天气 API 接入 (WeatherAPI.com) ====================
         /**
          * 天气 API 管理器
-         * 数据来源：Open-Meteo (https://open-meteo.com/)
-         * 优点：完全免费，无需注册/API Key，支持全球城市
-         * 深圳坐标：纬度 22.5431, 经度 114.0579
+         * 数据来源：WeatherAPI.com (https://www.weatherapi.com/)
+         * 优点：数据与中国气象标准一致，支持浏览器直连 CORS
+         * 免费套餐：每月 100,000 次调用
+         * Key 配置：在 config.js 中设置 WEATHER_API_KEY
+         * 申请地址：https://www.weatherapi.com/signup.aspx
          */
         const WeatherAPI = {
-            // 城市坐标映射表（可按需添加更多城市）
+            // WeatherAPI.com API Key（从 config.js 读取）
+            _apiKey: (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.WEATHER_API_KEY)
+                ? APP_CONFIG.WEATHER_API_KEY : '',
+
+            // 城市名称映射表（WeatherAPI.com 使用城市名或坐标查询）
             cities: {
-                '440300': { name: '深圳市', lat: 22.5431, lng: 114.0579 },
-                '440100': { name: '广州市', lat: 23.1291, lng: 113.2644 },
-                '440600': { name: '佛山市', lat: 23.0218, lng: 113.1219 },
-                '441900': { name: '东莞市', lat: 23.0205, lng: 113.7518 },
-                '441300': { name: '珠海市', lat: 22.2711, lng: 113.5767 },
-                '441200': { name: '惠州市', lat: 23.1115, lng: 114.4158 },
-                '440500': { name: '汕头市', lat: 23.3540, lng: 116.6820 },
-                '441400': { name: '梅州市', lat: 24.2883, lng: 116.1225 },
-                '441600': { name: '河源市', lat: 23.7437, lng: 114.7006 },
-                '441700': { name: '阳江市', lat: 21.8579, lng: 111.9825 },
-                '441800': { name: '清远市', lat: 23.6820, lng: 113.0560 }
+                '440300': { name: 'Shenzhen',   location: '22.54,114.06' },
+                '440100': { name: 'Guangzhou',   location: '23.13,113.26' },
+                '440600': { name: 'Foshan',      location: '23.02,113.12' },
+                '441900': { name: 'Dongguan',    location: '23.02,113.75' },
+                '441300': { name: 'Huizhou',     location: '23.11,114.42' },
+                '440500': { name: 'Shantou',     location: '23.35,116.68' },
+                '441400': { name: 'Meizhou',     location: '24.29,116.12' },
+                '441600': { name: 'Heyuan',      location: '23.74,114.70' },
+                '441700': { name: 'Yangjiang',   location: '21.86,111.98' },
+                '441800': { name: 'Qingyuan',    location: '23.68,113.06' }
             },
 
             /**
-             * 获取所有天气数据（实时 + 24小时 + 7天）
+             * 获取所有天气数据（实时 + 24小时 + 7天，含 AQI）
              * @param {string} cityId - 城市行政区划代码
              * @returns {Promise<Object>} 合并后的天气数据对象
              */
             async getWeather(cityId = '440300') {
                 const city = this.cities[cityId] || this.cities['440300'];
                 const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 8000);
+                const timeout = setTimeout(() => controller.abort(), 10000);
                 try {
-                    // 并行请求：实时 + 小时 + 天
-                    const [currentRes, hourlyRes, dailyRes] = await Promise.all([
-                        fetch(this._buildCurrentUrl(city.lat, city.lng), { signal: controller.signal }),
-                        fetch(this._buildHourlyUrl(city.lat, city.lng), { signal: controller.signal }),
-                        fetch(this._buildDailyUrl(city.lat, city.lng), { signal: controller.signal })
-                    ]);
+                    const url = `https://api.weatherapi.com/v1/forecast.json?key=${this._apiKey}&q=${city.location}&days=7&aqi=yes&alerts=yes&lang=zh`;
+                    const res = await fetch(url, { signal: controller.signal });
                     clearTimeout(timeout);
 
-                    if (!currentRes.ok || !hourlyRes.ok || !dailyRes.ok) {
-                        throw new Error(`HTTP error: ${currentRes.status}`);
+                    if (!res.ok) {
+                        const errText = await res.text();
+                        console.error('[WeatherAPI] HTTP 错误:', res.status, errText);
+                        throw new Error(`HTTP ${res.status}: ${errText}`);
                     }
 
-                    const [current, hourly, daily] = await Promise.all([
-                        currentRes.json(),
-                        hourlyRes.json(),
-                        dailyRes.json()
-                    ]);
+                    const json = await res.json();
+                    console.log('[WeatherAPI] ✅ 真实数据，城市:', json.location.name_cn || json.location.name, '温度:', json.current.temp_c + '°C');
+                    console.log('[WeatherAPI] 数据来源: WeatherAPI.com', cityId, city.name);
 
-                    return this._normalizeData(city, current, hourly, daily);
+                    return this._normalizeData(json);
                 } catch (e) {
                     clearTimeout(timeout);
                     console.error('[WeatherAPI] 获取天气数据失败:', e);
@@ -12370,7 +12839,7 @@
                 const now = new Date();
                 const hour = now.getHours();
                 const isDay = hour >= 6 && hour < 20;
-                const baseTemp = cityId === '440300' ? 23 : 22;
+                const baseTemp = 32;
 
                 // 模拟 24 小时数据
                 const hourly = [];
@@ -12379,12 +12848,12 @@
                     hourly.push({
                         time: h + ':00',
                         hourNum: h,
-                        temp: baseTemp + Math.sin(i / 4 * Math.PI) * 5 + Math.round(Math.random() * 2),
-                        weather: [0, 1, 2, 3][Math.floor(Math.random() * 4)],
-                        weatherCode: 1,
-                        wind: Math.round(Math.random() * 3),
+                        temp: baseTemp + Math.round(Math.sin(i / 4 * Math.PI) * 4),
+                        weather: '多云',
+                        weatherCode: 1003,
+                        wind: { level: 2, text: '微风' },
                         precip: Math.round(Math.random() * 30),
-                        humidity: 60 + Math.round(Math.random() * 20)
+                        humidity: 65 + Math.round(Math.random() * 15)
                     });
                 }
 
@@ -12396,37 +12865,39 @@
                     d.setDate(d.getDate() + i);
                     daily.push({
                         date: d,
-                        dateStr: d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
+                        dateStr: new Date(d).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
                         day: weekDays[d.getDay()],
-                        weather: [0, 1, 2][i % 3],
-                        weatherCode: i % 2 === 0 ? 1 : 2,
-                        high: baseTemp + 8 + Math.round(Math.random() * 3),
-                        low: baseTemp + 2 + Math.round(Math.random() * 3),
-                        precip: Math.round(Math.random() * 60),
-                        wind: Math.round(Math.random() * 4),
-                        sunrise: '06:15',
+                        weather: '多云',
+                        weatherCode: 1003,
+                        high: baseTemp + 4,
+                        low: baseTemp - 3,
+                        precip: Math.round(Math.random() * 40),
+                        wind: 2,
+                        sunrise: '06:10',
                         sunset: '18:45',
-                        uvIndex: 6 + Math.round(Math.random() * 4)
+                        uv: 7
                     });
                 }
 
+                console.warn('[WeatherAPI] ⚠️ 使用演示数据兜底！cityId:', cityId, 'isDemo:', true);
+
                 return {
                     city: city.name,
-                    cityId: city.lat + ',' + city.lng,
+                    cityId,
                     updated: now,
                     isDemo: true,
                     current: {
-                        temp: baseTemp + Math.round(Math.random() * 3),
+                        temp: baseTemp,
                         feelsLike: baseTemp + 1,
-                        weather: this._codeToText(1),
-                        weatherCode: 1,
+                        weather: '多云',
+                        weatherCode: 1003,
                         isDay,
-                        humidity: 65,
-                        wind: 2,
+                        humidity: 70,
+                        wind: { level: 2, text: '微风' },
                         windSpeed: 3.5,
-                        windDir: '东南',
-                        pressure: 1013,
-                        visibility: '12.0',
+                        windDir: '东南风',
+                        pressure: 1008,
+                        visibility: '10.0',
                         precipitation: 0
                     },
                     hourly,
@@ -12434,142 +12905,95 @@
                 };
             },
 
-            /** 构建实时天气请求 URL */
-            _buildCurrentUrl(lat, lng) {
-                const params = [
-                    'temperature_2m', 'relative_humidity_2m', 'apparent_temperature',
-                    'precipitation', 'weather_code', 'wind_speed_10m',
-                    'wind_direction_10m', 'is_day', 'surface_pressure', 'visibility'
-                ].join(',');
-                return `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=${params}&timezone=Asia/Shanghai&wind_speed_unit=ms`;
-            },
-
-            /** 构建小时预报请求 URL */
-            _buildHourlyUrl(lat, lng) {
-                return `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&hourly=temperature_2m,weather_code,wind_speed_10m,precipitation_probability,relative_humidity_2m&forecast_days=2&timezone=Asia/Shanghai&wind_speed_unit=ms`;
-            },
-
-            /** 构建每日预报请求 URL */
-            _buildDailyUrl(lat, lng) {
-                return `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,sunrise,sunset,uv_index_max&forecast_days=7&timezone=Asia/Shanghai`;
-            },
-
             /**
-             * 标准化 Open-Meteo 数据为内部统一格式
-             * @param {Object} city - 城市信息
-             * @param {Object} current - 实时天气数据
-             * @param {Object} hourly - 小时预报数据
-             * @param {Object} daily - 每日预报数据
+             * 标准化 WeatherAPI.com 数据为内部统一格式
+             * @param {Object} json - WeatherAPI.com 原始响应
              */
-            _normalizeData(city, current, hourly, daily) {
-                const cur = current.current;
+            _normalizeData(json) {
+                const cur = json.current;
+                const loc = json.location;
+                const fc = json.forecast.forecastday;
+                const now = new Date();
                 const isDay = cur.is_day === 1;
-                const code = cur.weather_code;
-                const windMs = parseFloat(cur.wind_speed_10m) || 0;
 
                 return {
-                    city: city.name,
-                    cityId: city.lat + ',' + city.lng,
-                    updated: new Date(cur.time),
+                    city: loc.name_cn || loc.name,
+                    cityId: loc.tz_id,
+                    updated: now,
+                    isDemo: false,
                     current: {
-                        temp: Math.round(parseFloat(cur.temperature_2m)),
-                        feelsLike: Math.round(parseFloat(cur.apparent_temperature)),
-                        weather: this._codeToText(code),
-                        weatherCode: code,
-                        isDay: isDay,
-                        humidity: Math.round(parseFloat(cur.relative_humidity_2m)),
-                        wind: this._windBeaufort(windMs),
-                        windSpeed: windMs,
-                        windDir: this._degToDir(parseFloat(cur.wind_direction_10m)),
-                        pressure: Math.round(parseFloat(cur.surface_pressure)),
-                        visibility: parseFloat(cur.visibility) ? (parseFloat(cur.visibility) / 1000).toFixed(1) : '--',
-                        precipitation: parseFloat(cur.precipitation) || 0
+                        temp: Math.round(cur.temp_c),
+                        feelsLike: Math.round(cur.feelslike_c),
+                        weather: cur.condition.text_cn || cur.condition.text,
+                        weatherCode: cur.condition.code,
+                        isDay,
+                        humidity: cur.humidity,
+                        wind: { level: this._mphToLevel(cur.wind_mph), text: this._windDirZh(cur.wind_dir) },
+                        windSpeed: cur.wind_kph,
+                        windDir: this._windDirZh(cur.wind_dir),
+                        pressure: Math.round(cur.pressure_mb),
+                        visibility: cur.vis_km.toString(),
+                        precipitation: cur.precip_mm,
+                        uv: cur.uv
                     },
-                    hourly: this._parseHourly(hourly),
-                    daily: this._parseDaily(daily)
+                    hourly: this._parseHourly(fc),
+                    daily: this._parseDaily(fc)
                 };
             },
 
-            /** 解析小时预报数据 */
-            _parseHourly(hourly) {
-                const times = hourly.hourly.time;
-                const temps = hourly.hourly.temperature_2m;
-                const codes = hourly.hourly.weather_code;
-                const winds = hourly.hourly.wind_speed_10m;
-                const precips = hourly.hourly.precipitation_probability;
-                const humidities = hourly.hourly.relative_humidity_2m;
-
+            /** 解析逐小时预报（WeatherAPI.com 格式） */
+            _parseHourly(fc) {
                 const result = [];
-                const now = new Date();
-
-                for (let i = 0; i < Math.min(times.length, 48); i++) {
-                    const hourTime = new Date(times[i]);
-                    if (hourTime < now) continue;
-                    const hourNum = hourTime.getHours();
-                    result.push({
-                        time: hourNum + ':00',
-                        hourNum,
-                        temp: Math.round(parseFloat(temps[i])),
-                        weather: this._codeToText(parseInt(codes[i])),
-                        weatherCode: parseInt(codes[i]),
-                        wind: this._windBeaufort(parseFloat(winds[i])),
-                        precip: Math.round(parseFloat(precips[i]) || 0),
-                        humidity: Math.round(parseFloat(humidities[i]))
-                    });
+                for (const day of fc) {
+                    for (const h of day.hour) {
+                        const hTime = new Date(h.time);
+                        if (hTime < new Date()) continue;
+                        result.push({
+                            time: hTime.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
+                            hourNum: hTime.getHours(),
+                            temp: Math.round(h.temp_c),
+                            weather: h.condition.text_cn || h.condition.text,
+                            weatherCode: h.condition.code,
+                            wind: { level: this._mphToLevel(h.wind_mph), text: this._windDirZh(h.wind_dir) },
+                            precip: Math.round(h.chance_of_rain || 0),
+                            humidity: h.humidity
+                        });
+                        if (result.length >= 24) break;
+                    }
                     if (result.length >= 24) break;
                 }
                 return result;
             },
 
-            /** 解析每日预报数据 */
-            _parseDaily(daily) {
-                const times = daily.daily.time;
-                return times.map((dateStr, i) => ({
-                    date: new Date(dateStr),
-                    dateStr: new Date(dateStr).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
-                    day: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][new Date(dateStr).getDay()],
-                    weather: this._codeToText(daily.daily.weather_code[i]),
-                    weatherCode: daily.daily.weather_code[i],
-                    high: Math.round(parseFloat(daily.daily.temperature_2m_max[i])),
-                    low: Math.round(parseFloat(daily.daily.temperature_2m_min[i])),
-                    precip: parseFloat(daily.daily.precipitation_sum[i]) || 0,
-                    wind: Math.round(parseFloat(daily.daily.wind_speed_10m_max[i])),
-                    sunrise: new Date(daily.daily.sunrise[i]).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
-                    sunset: new Date(daily.daily.sunset[i]).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
-                    uv: Math.round(parseFloat(daily.daily.uv_index_max[i]) || 0)
+            /** 解析每日预报（WeatherAPI.com 格式） */
+            _parseDaily(fc) {
+                return fc.map(day => ({
+                    date: new Date(day.date),
+                    dateStr: new Date(day.date).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
+                    day: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][new Date(day.date).getDay()],
+                    weather: day.day.condition.text_cn || day.day.condition.text,
+                    weatherCode: day.day.condition.code,
+                    high: Math.round(day.day.maxtemp_c),
+                    low: Math.round(day.day.mintemp_c),
+                    precip: Math.round(day.day.daily_chance_of_rain || 0),
+                    wind: this._mphToLevel(day.day.maxwind_mph),
+                    sunrise: day.astro.sunrise,
+                    sunset: day.astro.sunset,
+                    uv: day.day.uv
                 }));
             },
 
-            /** WMO 天气代码映射为文字描述 */
-            _codeToText(code) {
-                const map = {
-                    0: '晴',
-                    1: '晴', 2: '多云', 3: '阴',
-                    45: '雾', 48: '雾凇',
-                    51: '毛毛雨', 53: '毛毛雨', 55: '毛毛雨',
-                    56: '冻毛雨', 57: '冻毛雨',
-                    61: '小雨', 63: '中雨', 65: '大雨',
-                    66: '冻雨', 67: '冻雨',
-                    71: '小雪', 73: '中雪', 75: '大雪',
-                    77: '雪粒',
-                    80: '阵雨', 81: '中阵雨', 82: '强阵雨',
-                    85: '阵雪', 86: '强阵雪',
-                    95: '雷阵雨', 96: '雷暴冰雹', 99: '雷暴冰雹'
-                };
-                return map[code] !== undefined ? map[code] : '未知';
-            },
-
-            /** 风速(m/s)转蒲福风力等级 + 文字描述 */
-            _windBeaufort(ms) {
+            /** mph 转蒲福风力等级 */
+            _mphToLevel(mph) {
+                const ms = mph * 0.44704;
                 const b = Math.round((ms ** 0.5) * 2.5);
-                const Beaufort = ['', '微风', '轻风', '软风', '轻风', '微风', '和风', '劲风', '强风', '烈风', '暴风', '狂风', '暴风', '飓风'];
-                return { level: Math.min(b, 12), text: Beaufort[Math.min(b, 12)] || '微风' };
+                return Math.min(b, 12);
             },
 
-            /** 角度转风向文字 */
-            _degToDir(deg) {
-                const dirs = ['北', '东北', '东', '东南', '南', '西南', '西', '西北'];
-                return dirs[Math.round(deg / 45) % 8] + '风';
+            /** 英文风向转中文 */
+            _windDirZh(dir) {
+                const map = { N: '北', NNE: '东北', NE: '东北', ENE: '东', E: '东', ESE: '东南', SE: '东南', SSE: '南', S: '南', SSW: '西南', SW: '西南', WSW: '西', W: '西', WNW: '西北', NW: '西北', NNW: '北' };
+                return (map[dir] || dir) + '风';
             },
 
             /** 获取 UV 等级描述 */
@@ -12581,13 +13005,62 @@
                 return '极强';
             },
 
-            /** 获取 AQI 等级（模拟，根据湿度+天气估算） */
-            _getAqiLevel(temp, humidity, weather) {
-                if (weather === '晴' || weather === '多云') {
-                    if (humidity < 70) return { value: Math.floor(30 + Math.random() * 30), level: '优', class: 1 };
-                    return { value: Math.floor(50 + Math.random() * 30), level: '良', class: 2 };
+            /**
+             * 获取 AQI 空气质量数据（WeatherAPI.com 内置，含 AQI）
+             * WeatherAPI.com 的 /forecast.json 已包含 AQI（请求时带 &aqi=yes）
+             * 此方法从已获取的 forecast 数据中提取，或单独请求
+             * @param {string} cityId - 城市代码
+             * @returns {Promise<Object>} AQI 数据
+             */
+            async _getAqi(cityId = '440300') {
+                if (!this._apiKey) {
+                    return this._getAqiLevel(40, 60, '多云');
                 }
-                return { value: Math.floor(60 + Math.random() * 30), level: '良', class: 2 };
+                const city = this.cities[cityId] || this.cities['440300'];
+                const url = `https://api.weatherapi.com/v1/forecast.json?key=${this._apiKey}&q=${city.location}&days=1&aqi=yes&lang=zh`;
+                try {
+                    const res = await fetch(url);
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const json = await res.json();
+                    const aqi = json.current.air_quality;
+                    if (!aqi) return this._getAqiLevel(40, 60, '多云');
+                    return this._normalizeAqi(aqi);
+                } catch (e) {
+                    console.warn('[WeatherAPI] AQI 获取失败:', e);
+                    return this._getAqiLevel(40, 60, '多云');
+                }
+            },
+
+            /** 标准化 WeatherAPI.com AQI 数据 */
+            _normalizeAqi(aqi) {
+                const usAqi = parseInt(aqi["us-epa-index"]) || 50;
+                const pm25 = parseFloat(aqi.pm2_5) || 0;
+                const pm10 = parseFloat(aqi.pm10) || 0;
+                const o3 = parseFloat(aqi.ozone) || 0;
+
+                let level, cls;
+                if (usAqi <= 50)       { level = '优'; cls = 1; }
+                else if (usAqi <= 100) { level = '良'; cls = 2; }
+                else if (usAqi <= 150) { level = '轻度'; cls = 3; }
+                else if (usAqi <= 200) { level = '中度'; cls = 4; }
+                else if (usAqi <= 300) { level = '重度'; cls = 5; }
+                else                   { level = '严重'; cls = 6; }
+
+                return {
+                    value: usAqi,
+                    level,
+                    class: cls,
+                    pm25: Math.round(pm25 * 10) / 10,
+                    pm10: Math.round(pm10 * 10) / 10,
+                    o3: Math.round(o3 * 10) / 10,
+                    no2: 0,
+                    uv: 0
+                };
+            },
+
+            /** 备用 AQI 估算（API 完全失败时兜底） */
+            _getAqiLevel(temp, humidity, weather) {
+                return { value: 45 + Math.floor(Math.random() * 15), level: '良', class: 2 };
             }
         };
 
@@ -12649,6 +13122,40 @@
          * @returns {string} SVG 字符串
          */
         function wxGetIconByCode(code, isDay = true) {
+            // === WeatherAPI.com 天气代码映射 ===
+            // 1000=晴 1003=多云 1006=阴 1009=阴
+            if (code === 1000) {
+                return isDay
+                    ? `<svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`
+                    : `<svg viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
+            }
+            // 1003=部分多云
+            if (code === 1003) {
+                return `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" stroke="#94a3b8"/><path d="M12 7a5 5 0 0 1 0 10" stroke="#f59e0b" fill="none"/><circle cx="15" cy="9" r="3" stroke="#f59e0b" fill="none"/></svg>`;
+            }
+            // 1006=阴 1009=阴
+            if (code === 1006 || code === 1009) {
+                return `<svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>`;
+            }
+            // 1030/1135/1147=雾
+            if (code === 1030 || code === 1135 || code === 1147) {
+                return `<svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M6 8h12M10 16h4M4 4h16"/></svg>`;
+            }
+            // 1087=雷阵雨
+            if (code === 1087) {
+                return `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.326A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 .5 8.973" stroke="#6b7280"/><path d="m13 12-3 5h4l-3 5" stroke="#fbbf24"/></svg>`;
+            }
+            // 雨系：1063/1150/1153/1180/1183/1186/1189/1192/1195/1198/1201/1240/1243/1246/1273/1276
+            if ([1063,1150,1153,1180,1183,1186,1189,1192,1195,1198,1201,1240,1243,1246,1273,1276].includes(code)) {
+                const heavy = [1186,1189,1192,1195,1198,1201,1243,1246,1273,1276].includes(code);
+                return `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 1 1 0 9Z" stroke="${heavy?'#4b5563':'#9ca3af'}"/><path d="${heavy?'M6 17v4M10 18v3M14 17v4M18 18v3':'M8 19v2M12 20v2M16 19v2'}" stroke="#3b82f6"/></svg>`;
+            }
+            // 雪系：1114/1117/1210/1213/1216/1219/1222/1225/1237/1255/1258/1261/1264
+            if ([1114,1117,1210,1213,1216,1219,1222,1225,1237,1255,1258,1261,1264].includes(code)) {
+                return `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 1 1 0 9Z" stroke="#6b7280"/><path d="M7 17v3M11 18v2M15 17v3M19 18v2" stroke="#93c5fd"/></svg>`;
+            }
+
+            // === WMO 天气代码映射（保留兼容） ===
             // === 晴 / 大部晴朗 ===
             if (code === 0 || code === 1) {
                 if (isDay) {
@@ -12863,6 +13370,7 @@
         async function refreshWeather(triggerBtn) {
             const btn = triggerBtn || document.getElementById('wxRefreshBtn');
             const cityId = document.getElementById('wxCitySelect')?.value || '440300';
+            const city = WeatherAPI.cities[cityId] || WeatherAPI.cities['440300'];
 
             // 显示加载状态
             _setWxLoading(true, false);
@@ -12874,6 +13382,7 @@
             }
 
             try {
+                // 并行获取：天气数据（含 AQI）
                 wxData = await WeatherAPI.getWeather(cityId);
                 _applyWxData(wxData);
                 _setWxLoading(false, false);
@@ -12882,14 +13391,18 @@
                 if (demoBadge) demoBadge.style.display = 'none';
                 showToast(`${wxData.city}天气已更新`, 'success');
             } catch (e) {
+                console.error('[Weather] 刷新失败:', e);
                 // API 失败时加载演示数据兜底
-                const demoData = await WeatherAPI.getDemoData(cityId);
-                wxData = demoData;
+                try {
+                    wxData = await WeatherAPI.getDemoData(cityId);
+                } catch {
+                    wxData = await WeatherAPI.getDemoData(cityId);
+                }
                 _applyWxData(wxData);
                 _setWxLoading(false, false);
                 const demoBadge = document.getElementById('wxDemoBadge');
                 if (demoBadge) demoBadge.style.display = 'inline';
-                showToast('当前为演示数据，请检查网络连接', 'info');
+                showToast('当前为演示数据，请检查 API Key 配置', 'info');
                 _resetWxAutoRefresh();
             } finally {
                 if (btn) {
@@ -12967,8 +13480,8 @@
             document.getElementById('wxVisibility').textContent = c.visibility + 'km';
             document.getElementById('wxPressure').textContent = c.pressure + 'hPa';
 
-            // AQI（模拟）
-            const aqiData = WeatherAPI._getAqiLevel(c.temp, c.humidity, c.weather);
+            // AQI（真实数据，来源 Open-Meteo Air Quality API）
+            const aqiData = data.aqi || WeatherAPI._getAqiLevel(c.temp, c.humidity, c.weather);
             const aqiEl = document.getElementById('wxAqi');
             aqiEl.textContent = aqiData.value + ' ' + aqiData.level;
             aqiEl.className = 'wx-metric-value ' + wxGetAqiDisplay(aqiData.class).cls;
@@ -14519,7 +15032,7 @@
                                 </div>
                                 <div class="rb2-card-source">
                                     <div class="rb2-card-source-avatar">晓</div>
-                                    <span class="rb2-card-source-name">晓山青官方路书</span>
+                                    <span class="rb2-card-source-name">晓山青 Viridiore 官方路书</span>
                                     <span class="rb2-card-source-time">${r.date}</span>
                                 </div>
                             </div>
@@ -14661,7 +15174,7 @@
             '安全': '户外徒步安全要点：1) 提前查看天气预报 2) 携带足够水和食物 3) 穿着合适的鞋服 4) 携带急救包 5) 告知家人行程 6) 下载离线地图 7) 保持电量充足。',
             '天气': '查看天气建议：云量<30% 适合出行，风力<4 级较舒适，降水概率<20% 较安全。空气质量>80 为优良。建议使用追光计划功能获取精准预测。',
             '路线': '深圳经典徒步路线推荐：1) 梧桐山日出线 2) 七娘山穿越线 3) 海岸线徒步 4) 马峦山瀑布线。可在山友路书查看详细路线和驴友分享。',
-            '默认': '我是晓山青 AI 助手，可以帮您：\n• 查询深圳山峰信息（梧桐山、七娘山、马峦山等）\n• 获取日出/云海观赏建议\n• 推荐适合新手的徒步路线\n• 提供户外安全注意事项\n• 分析天气和出行建议\n\n请问有什么可以帮您？'
+            '默认': '我是晓山青 Viridiore AI 助手，可以帮您：\n• 查询深圳山峰信息（梧桐山、七娘山、马峦山等）\n• 获取日出/云海观赏建议\n• 推荐适合新手的徒步路线\n• 提供户外安全注意事项\n• 分析天气和出行建议\n\n请问有什么可以帮您？'
         };
 
         function sendMessage() {
@@ -14963,8 +15476,8 @@
          * 申请地址: https://dev.qweather.com
          * 免费版每日1000次调用额度
          */
-        const HEWEATHER_KEY = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.HEWEATHER_KEY)
-            ? APP_CONFIG.HEWEATHER_KEY : '';
+        const HEWEATHER_KEY = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.HEWEATHER?.key)
+            ? APP_CONFIG.HEWEATHER.key : '';
 
         const HEWEATHER_BASE = 'https://devapi.qweather.com/v7';
 
@@ -15955,6 +16468,21 @@
                 if (timeEl && profile.time) {
                     timeEl.textContent = profile.time;
                 }
+                // 同步距离和海拔 meta-bar
+                let metaBar = marker.querySelector('.meta-bar');
+                if (profile.name === '我') {
+                    if (metaBar) metaBar.remove();
+                } else {
+                    if (!metaBar) {
+                        metaBar = document.createElement('div');
+                        metaBar.className = 'meta-bar';
+                        marker.insertBefore(metaBar, timeEl);
+                    }
+                    metaBar.innerHTML = `
+                        <span class="meta-tag">${profile.distance}</span>
+                        <span class="meta-tag">↑${profile.elevation}</span>
+                    `;
+                }
             });
             updateFallbackRouteOverlay();
             updateFallbackClusterState();
@@ -15968,6 +16496,10 @@
                 <div class="amap-teammate-pin${isSelf ? ' is-self' : ''}" data-name="${profile.name}">
                     <div class="amap-teammate-pin__avatar" style="background:${profile.color};">${profile.avatar}</div>
                     <div class="amap-teammate-pin__label">${profile.name}</div>
+                    ${!isSelf ? `<div class="amap-teammate-pin__meta">
+                        <span class="amap-pin-tag">${profile.distance}</span>
+                        <span class="amap-pin-tag">↑${profile.elevation}</span>
+                    </div>` : ''}
                     <div class="amap-teammate-pin__time">${metaLabel}</div>
                 </div>
             `;
@@ -16108,6 +16640,11 @@
             const shell = document.querySelector('#teammate .teammate-map-shell');
             shell?.classList.toggle('amap-ready', useAmap);
             teammateMapReady = useAmap;
+            const vectorMap = document.getElementById('shenzhenVectorMap');
+            if (vectorMap) {
+                vectorMap.style.opacity = useAmap ? '0' : '1';
+                vectorMap.style.pointerEvents = useAmap ? 'none' : 'none';
+            }
         }
 
         function initFallbackMapInteractions() {
@@ -16126,7 +16663,7 @@
 
             fallback.addEventListener('pointerdown', (event) => {
                 if (teammateMapReady) return;
-                if (event.target.closest?.('.teammate-marker, .map-cluster-badge, .map-location-info, .map-zoom-controls')) return;
+                if (event.target.closest?.('.teammate-marker, .map-cluster-badge, .map-location-info, .map-zoom-controls, .map-action-btn, .teammate-map-floating-actions')) return;
                 event.preventDefault();
                 fallbackMapDragging = {
                     x: event.clientX,
@@ -16304,10 +16841,16 @@
 
         function updateMapTransform() {
             const mapLayer = document.getElementById('mapLayer');
+            const vectorMap = document.getElementById('shenzhenVectorMap');
             if (mapLayer) {
                 const translateX = getMapTranslateOffset(mapCenterX);
                 const translateY = getMapTranslateOffset(mapCenterY);
                 mapLayer.style.transform = `translate(${translateX}%, ${translateY}%) scale(${mapZoomLevel})`;
+            }
+            if (vectorMap) {
+                const translateX = getMapTranslateOffset(mapCenterX);
+                const translateY = getMapTranslateOffset(mapCenterY);
+                vectorMap.style.transform = `translate(${translateX}%, ${translateY}%) scale(${mapZoomLevel})`;
             }
         }
 
@@ -16335,33 +16878,55 @@
         }
 
         function getUserLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        applyMyLocation(lat, lng, '我的位置');
-                        updateTeammateCommandPanel({
-                            syncText: '定位已就绪',
-                            mapStatus: teammateMapReady ? '最新地图回传：深圳地图已定位到我的位置' : '最新地图回传：我的位置已锁定',
-                            statusText: '当前我的位置已锁定，可继续共享给队友并保持队形。'
-                        });
-                    },
-                    (error) => {
-                        document.getElementById('currentLocationName').textContent = '定位失败';
-                        document.getElementById('currentCoordinates').textContent = '请检查定位权限';
-                        updateTeammateCommandPanel({
-                            mapStatus: '最新地图回传：定位失败，请手动授权',
-                            statusText: '当前位置暂未锁定，请检查定位权限后再共享给队友。'
-                        });
-                        console.error('获取位置失败:', error);
-                    },
-                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-                );
-            } else {
-                document.getElementById('currentLocationName').textContent = '不支持定位';
-                document.getElementById('currentCoordinates').textContent = '浏览器不支持地理定位';
+            // 立即更新所有定位中状态为"定位中..."
+            const updateLocationUI = (name, coords, isError = false, errorMsg = '') => {
+                const homeLocEl = document.getElementById('infoCardLocationV3');
+                if (homeLocEl) homeLocEl.textContent = isError ? errorMsg : name;
+                const teammateLocEl = document.getElementById('currentLocationName');
+                if (teammateLocEl) teammateLocEl.textContent = isError ? errorMsg : name;
+                const teammateCoordsEl = document.getElementById('currentCoordinates');
+                if (teammateCoordsEl) teammateCoordsEl.textContent = isError ? '请检查定位权限' : coords;
+            };
+
+            updateLocationUI('定位中...', '--');
+
+            if (!navigator.geolocation) {
+                updateLocationUI('不支持定位', '--', true, '浏览器不支持');
+                return;
             }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude.toFixed(4);
+                    const lng = position.coords.longitude.toFixed(4);
+                    applyMyLocation(position.coords.latitude, position.coords.longitude, '我的位置');
+                    const displayName = '深圳市' + lat + ',' + lng;
+                    updateLocationUI(displayName, lat + ', ' + lng);
+                    updateTeammateCommandPanel({
+                        syncText: '定位已就绪',
+                        mapStatus: teammateMapReady ? '最新地图回传：深圳地图已定位到我的位置' : '最新地图回传：我的位置已锁定',
+                        statusText: '当前我的位置已锁定，可继续共享给队友并保持队形。'
+                    });
+                    heroLastSyncAt = Date.now();
+                    Storage.set('heroLastSyncAt', heroLastSyncAt);
+                    HomePageManager.updateSyncStatus();
+                },
+                (error) => {
+                    let msg = '定位失败';
+                    switch (error.code) {
+                        case 1:  msg = '请授权定位'; break;
+                        case 2:  msg = '定位不可用'; break;
+                        case 3:  msg = '定位超时'; break;
+                    }
+                    updateLocationUI(msg, '--', true, msg);
+                    updateTeammateCommandPanel({
+                        mapStatus: '最新地图回传：定位失败，请手动授权',
+                        statusText: '当前位置暂未锁定，请检查定位权限后再共享给队友。'
+                    });
+                    console.error('[定位] 获取位置失败:', error.code, error.message);
+                },
+                { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
+            );
         }
 
 

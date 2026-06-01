@@ -1,5 +1,5 @@
 /**
- * 晓山青 Web Worker
+ * 晓山青 Viridiore Web Worker
  * 处理耗时计算任务，避免阻塞主线程
  */
 
