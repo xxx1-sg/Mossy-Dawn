@@ -1,0 +1,178 @@
+﻿        const DBManager = {
+            dbName: 'XiaoShanQingDB',
+            version: 1,
+            db: null,
+            
+            async init() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(this.dbName, this.version);
+                    
+                    request.onerror = () => {
+                        console.error('IndexedDB 打开失败:', request.error);
+                        reject(request.error);
+                    };
+                    
+                    request.onsuccess = () => {
+                        this.db = request.result;
+                        if (window.DEBUG_MODE) console.log('IndexedDB 打开成功');
+                        resolve(this.db);
+                    };
+                    
+                    request.onupgradeneeded = (event) => {
+                        const db = event.target.result;
+                        
+                        // 创建轨迹存储
+                        if (!db.objectStoreNames.contains('trails')) {
+                            const trailStore = db.createObjectStore('trails', { keyPath: 'id' });
+                            trailStore.createIndex('name', 'name', { unique: false });
+                            trailStore.createIndex('date', 'date', { unique: false });
+                        }
+                        
+                        // 创建路书存储
+                        if (!db.objectStoreNames.contains('roadbooks')) {
+                            const roadbookStore = db.createObjectStore('roadbooks', { keyPath: 'id' });
+                            roadbookStore.createIndex('author', 'author', { unique: false });
+                            roadbookStore.createIndex('date', 'date', { unique: false });
+                        }
+                        
+                        // 创建天气缓存存储
+                        if (!db.objectStoreNames.contains('weatherCache')) {
+                            const cacheStore = db.createObjectStore('weatherCache', { keyPath: 'location' });
+                            cacheStore.createIndex('timestamp', 'timestamp', { unique: false });
+                        }
+                        
+                        // 创建装备清单存储
+                        if (!db.objectStoreNames.contains('gearLists')) {
+                            db.createObjectStore('gearLists', { keyPath: 'id' });
+                        }
+                        
+                        // 创建用户设置存储
+                        if (!db.objectStoreNames.contains('settings')) {
+                            db.createObjectStore('settings', { keyPath: 'key' });
+                        }
+                        
+                        if (window.DEBUG_MODE) console.log('IndexedDB 表结构创建完成');
+                    };
+                });
+            },
+            
+            // 通用 CRUD 操作
+            async add(storeName, data) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(storeName, 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.add(data);
+                    
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            },
+            
+            async get(storeName, key) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(storeName, 'readonly');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.get(key);
+                    
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            },
+            
+            async getAll(storeName) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(storeName, 'readonly');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.getAll();
+                    
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            },
+            
+            async update(storeName, data) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(storeName, 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.put(data);
+                    
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            },
+            
+            async delete(storeName, key) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(storeName, 'readwrite');
+                    const store = transaction.objectStore(storeName);
+                    const request = store.delete(key);
+                    
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            },
+            
+            async query(storeName, indexName, value) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(storeName, 'readonly');
+                    const store = transaction.objectStore(storeName);
+                    const index = store.index(indexName);
+                    const request = index.getAll(value);
+                    
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            },
+            
+            // 轨迹相关操作
+            async saveTrail(trail) {
+                trail.id = trail.id || 'trail_' + Date.now();
+                trail.date = trail.date || new Date().toISOString();
+                return this.add('trails', trail);
+            },
+            
+            async getTrail(id) {
+                return this.get('trails', id);
+            },
+            
+            async getAllTrails() {
+                return this.getAll('trails');
+            },
+            
+            async deleteTrail(id) {
+                return this.delete('trails', id);
+            },
+            
+            // 路书相关操作
+            async saveRoadbook(roadbook) {
+                roadbook.id = roadbook.id || 'roadbook_' + Date.now();
+                roadbook.date = roadbook.date || new Date().toISOString();
+                return this.add('roadbooks', roadbook);
+            },
+            
+            async getRoadbook(id) {
+                return this.get('roadbooks', id);
+            },
+            
+            async getAllRoadbooks() {
+                return this.getAll('roadbooks');
+            },
+            
+            async deleteRoadbook(id) {
+                return this.delete('roadbooks', id);
+            },
+            
+            // Weather cache operations
+            async saveWeatherCache(location, data) {
+                const cache = {
+                    location: location,
+                    timestamp: Date.now(),
+                    data: data
+                };
+                return this.add('weatherCache', cache);
+            },
+            
+            async getWeatherCache(location) {
+                return this.query('weatherCache', 'location', location);
+            }
+        };
