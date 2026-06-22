@@ -1,28 +1,16 @@
-// 晓山青 Service Worker - 高级 PWA 离线支持
-const CACHE_VERSION = 'v2';
+// 晓山青 Viridiore Service Worker - 高级 PWA 离线支持
+const CACHE_VERSION = 'v3';
 const CACHE_NAME = `xiaoshanqing-${CACHE_VERSION}`;
 const OFFLINE_CACHE = 'offline-v1';
 
-// 资源分类缓存策略
-const STATIC_ASSETS = [
-    './',
-    './app.html',
-    './manifest.json'
-];
-
-// 外部 API 缓存配置
-const API_CACHE_CONFIG = {
-    timeout: 5000,
-    maxAge: 3600000 // 1 小时
-};
-
-// 预缓存资源
+// 预缓存资源（应用核心文件）
 const PRECACHE_RESOURCES = [
     './',
     './app.html',
-    './manifest.json',
-    './icons/icon-192.png',
-    './icons/icon-512.png'
+    './about.html',
+    './css/shared.css',
+    './css/app.css',
+    './config.js'
 ];
 
 // ==================== 安装阶段 ====================
@@ -89,8 +77,8 @@ self.addEventListener('fetch', (event) => {
     const { request } = event;
     const url = new URL(request.url);
 
-    // 跳过跨域请求（除非是 API）
-    if (url.origin !== location.origin && !isAPIRequest(url)) {
+    // 跳过非同源请求（除非是已知第三方 API）
+    if (url.origin !== self.location.origin && !isAPIRequest(url)) {
         return;
     }
 
@@ -108,13 +96,19 @@ self.addEventListener('fetch', (event) => {
 
 // ==================== 缓存策略实现 ====================
 
+// 外部 API 缓存配置
+const API_CACHE_CONFIG = {
+    timeout: 5000,
+    maxAge: 3600000 // 1 小时
+};
+
 // 1. Cache First - 静态资源
 async function cacheFirst(request) {
     const cachedResponse = await caches.match(request);
     if (cachedResponse) {
         return cachedResponse;
     }
-    
+
     try {
         const networkResponse = await fetch(request);
         if (networkResponse.ok) {
@@ -194,7 +188,7 @@ async function staleWhileRevalidate(request) {
         })
         .catch(() => {
             // 网络失败返回缓存
-            return cachedResponse || caches.match('./app.html');
+            return cachedResponse || caches.match('./index.html');
         });
     
     return cachedResponse || fetchPromise;
@@ -209,9 +203,12 @@ function isStaticAsset(request) {
 }
 
 function isAPIRequest(url) {
-    return url.pathname.startsWith('/api/') || 
+    return url.pathname.startsWith('/api/') ||
            url.hostname === 'restapi.amap.com' ||
-           url.hostname === 'api.openweathermap.org';
+           url.hostname === 'api.qweather.com' ||
+           url.hostname === 'devapi.qweather.com' ||
+           url.hostname === 'api.weatherapi.com' ||
+           url.hostname === 'www.weatherapi.com';
 }
 
 function isNavigationRequest(request) {
@@ -222,7 +219,7 @@ function createFallbackResponse(request) {
     const url = new URL(request.url);
     
     if (request.headers.get('accept').includes('text/html')) {
-        return caches.match('./app.html');
+        return caches.match('./index.html');
     }
     
     if (request.headers.get('accept').includes('text/css')) {
@@ -296,7 +293,7 @@ async function clearPendingData(type) {
 self.addEventListener('push', (event) => {
     console.log('[SW] 收到推送消息');
     
-    let data = { title: '晓山青', body: '有新的消息' };
+    let data = { title: '晓山青 Viridiore', body: '有新的消息' };
     
     if (event.data) {
         try {
@@ -332,7 +329,7 @@ self.addEventListener('notificationclick', (event) => {
     
     if (event.action === 'view') {
         event.waitUntil(
-            clients.openWindow('./app.html')
+            clients.openWindow('./index.html')
         );
     }
 });

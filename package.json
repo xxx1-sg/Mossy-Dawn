@@ -1,0 +1,13 @@
+{
+  "name": "xiaoshanqing",
+  "version": "1.0.0",
+  "description": "晓山青 Viridiore - 户外智能出行伴侣",
+  "main": "dev-server.js",
+  "scripts": {
+    "dev": "node dev-server.js",
+    "teammate": "node server-teammate.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

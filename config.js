@@ -1,17 +1,25 @@
 /**
- * 晓山青 - 配置文件
+ * 晓山青 Viridiore - 配置文件
  *
- * 使用说明：
- * 1. 将下方 YOUR_AMAP_KEY 和 YOUR_SECURITY_CODE 替换为你申请的高德地图密钥
- * 2. 推荐通过环境变量注入，例如：const AMAP_KEY = process.env.AMAP_KEY || 'YOUR_AMAP_KEY';
- * 3. config.js 不应提交到公开的代码仓库中
+ * 安全说明：
+ * 真实 API 密钥不应提交到代码仓库。
+ * 推荐通过 .env 文件注入（.env 已在 .gitignore 中排除）。
+ *
+ * 配置优先级：window.__ENV__ > 环境变量 > 默认占位符
+ *
+ * .env 文件格式示例：
+ *   VITE_AMAP_KEY=你的高德地图密钥
+ *   VITE_AMAP_SECURITY_CODE=你的高德安全码
+ *   VITE_HEWEATHER_KEY=你的和风天气密钥
+ *   VITE_WEATHER_API_KEY=你的WeatherAPI密钥
  */
+
 const APP_CONFIG = {
     // 高德地图配置
     // 请前往 https://console.amap.com/dev/key/app 申请 Web 端密钥
     AMAP: {
-        key: 'YOUR_AMAP_KEY',
-        securityCode: 'YOUR_SECURITY_CODE',
+        key: (window.__ENV__ && window.__ENV__.VITE_AMAP_KEY) || 'YOUR_AMAP_KEY',
+        securityCode: (window.__ENV__ && window.__ENV__.VITE_AMAP_SECURITY_CODE) || 'YOUR_SECURITY_CODE',
         version: '2.0'
     },
 
@@ -20,8 +28,13 @@ const APP_CONFIG = {
     // 免费版每日 1000 次调用额度，支持：实时天气、逐小时预报、气象预警等
     // 预警数据接口: /v7/warning/now
     HEWEATHER: {
-        key: 'YOUR_HEWEATHER_KEY'  // 替换为你的和风天气 Key
+        key: (window.__ENV__ && window.__ENV__.VITE_HEWEATHER_KEY) || '39b559550a484ebc976360cf9277646b'
     },
+
+    // 天气 API 配置（推荐，WeatherAPI.com，数据与中国气象标准一致）
+    // 请前往 https://www.weatherapi.com/signup.aspx 申请免费 API Key
+    // 免费套餐：每月 100,000 次调用，支持浏览器直连 CORS，无需后端代理
+    WEATHER_API_KEY: (window.__ENV__ && window.__ENV__.VITE_WEATHER_API_KEY) || '4d70b96758e04f6b8ec63347260106',
 
     // SOS 紧急求救配置
     // TODO: 接入真实的紧急求救后端服务
@@ -33,7 +46,7 @@ const APP_CONFIG = {
 
     // 应用元数据
     APP: {
-        name: '晓山青',
+        name: '晓山青 Viridiore',
         version: '1.0.0',
         description: '户外智能出行伴侣'
     },
@@ -56,7 +69,8 @@ const APP_CONFIG = {
             'pressure':  'pages/pressure.html',
             'alert':     'pages/weather-alert.html',
             'gear':      'pages/gear-list.html',
-            'teammate':  'pages/team-share.html'
+            'teammate':  'pages/team-share.html',
+            'about':     'about.html'
         },
         // 页面不存在时的提示文本
         PAGE_NOT_FOUND_MSG: '页面开发中，敬请期待',

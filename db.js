@@ -1,5 +1,5 @@
 /**
- * 晓山青 IndexedDB 数据管理库
+ * 晓山青 Viridiore IndexedDB 数据管理库
  * 提供离线数据持久化存储功能
  */
 

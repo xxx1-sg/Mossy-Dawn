@@ -1,6 +1,12 @@
 # Cursor
 .cursor/
 
+# 临时文件
+.tmp-syntax.mjs
+.tmp-*
+*.tmp
+0
+
 # OS
 .DS_Store
 Thumbs.db
@@ -18,13 +24,17 @@ node_modules/
 dist/
 build/
 
-# Environment
+# Environment - 敏感配置
 .env
 .env.local
 .env.*.local
+config.local.js
 
 # Editor
 .vscode/
 .idea/
 *.swp
 *.swo
+
+# 生成的图标（由构建脚本产出）
+icons/
