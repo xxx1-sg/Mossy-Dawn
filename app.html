@@ -2379,6 +2379,1507 @@
             color: var(--text-light);
         }
 
+        /* ============================================
+           青山不迷 · 户外徒步登山轨迹记录
+           自然深绿极简工装风 · 低饱和柔和配色
+           ============================================ */
+
+        /* 页面容器：让画布尽可能占据视觉中心 */
+        .page--trail {
+            padding-top: 1.4rem;
+            padding-bottom: 2rem;
+        }
+
+        /* ① 顶部标题：弱化高度，副标题悬浮提示 */
+        .trail-hero {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.85rem;
+            padding: 0.25rem 0.25rem 0.55rem;
+            border-bottom: 1px solid rgba(26, 58, 40, 0.08);
+        }
+
+        .trail-hero-main {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            min-width: 0;
+        }
+
+        .trail-hero-eyebrow {
+            font-size: 0.72rem;
+            letter-spacing: 0.32em;
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .trail-hero-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+            line-height: 1.2;
+            letter-spacing: 0.04em;
+            cursor: help;
+        }
+
+        .trail-hero-tip {
+            font-size: 0.74rem;
+            color: var(--text-light);
+            cursor: help;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+
+        .trail-hero-tip::after {
+            content: attr(title);
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            background: rgba(26, 58, 40, 0.92);
+            color: #f5f3ee;
+            padding: 0.4rem 0.7rem;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 5;
+        }
+
+        .trail-hero-tip:hover,
+        .trail-hero-tip:focus-visible {
+            color: var(--primary-color);
+            outline: none;
+        }
+
+        .trail-hero-tip:hover::after,
+        .trail-hero-tip:focus-visible::after {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .trail-hero-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .trail-hero-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-light);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .trail-hero-meta[data-state="live"] .trail-hero-dot {
+            background: var(--success-color);
+            box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.18);
+            animation: gpsPulse 1.6s ease-in-out infinite;
+        }
+
+        /* ② 图层 Tab 栏 */
+        .layer-tabs {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 0.85rem;
+            padding: 0.3rem;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(26, 58, 40, 0.08);
+            border-radius: 14px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            flex-wrap: wrap;
+        }
+
+        .layer-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.55rem 0.95rem;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.86rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+            letter-spacing: 0.02em;
+        }
+
+        .layer-tab .lucide {
+            width: 16px;
+            height: 16px;
+        }
+
+        .layer-tab:hover {
+            color: var(--primary-color);
+            background: rgba(26, 58, 40, 0.05);
+        }
+
+        .layer-tab.is-active {
+            background: linear-gradient(135deg, #1a3a28 0%, #2d5a42 100%);
+            color: #f5f3ee;
+            box-shadow: 0 6px 16px rgba(26, 58, 40, 0.22);
+        }
+
+        .layer-tabs-tools {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-left: auto;
+        }
+
+        .layer-tool {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 0.85rem;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(26, 58, 40, 0.1);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease;
+        }
+
+        .layer-tool:hover {
+            background: rgba(26, 58, 40, 0.06);
+            color: var(--primary-color);
+            border-color: rgba(26, 58, 40, 0.18);
+        }
+
+        .layer-tool .lucide {
+            width: 14px;
+            height: 14px;
+        }
+
+        .layer-tool--icon {
+            padding: 0.5rem;
+            width: 36px;
+            height: 36px;
+            justify-content: center;
+        }
+
+        /* ③ 主地图画布 */
+        .map-stage {
+            margin-bottom: 0.95rem;
+        }
+
+        .page--trail .map-canvas {
+            width: 100%;
+            height: clamp(380px, 56vh, 620px);
+            background:
+                radial-gradient(ellipse at 22% 12%, rgba(196, 168, 122, 0.18), transparent 55%),
+                radial-gradient(ellipse at 78% 86%, rgba(122, 156, 134, 0.18), transparent 55%),
+                linear-gradient(180deg, #efe7d6 0%, #e7dcc4 100%);
+            border: 1px solid rgba(26, 58, 40, 0.1);
+            border-radius: 18px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(26, 58, 40, 0.1);
+            isolation: isolate;
+            transition: background 0.5s ease;
+        }
+
+        .page--trail .map-canvas::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                repeating-linear-gradient(0deg, rgba(26, 58, 40, 0.025) 0 1px, transparent 1px 18px),
+                repeating-linear-gradient(90deg, rgba(26, 58, 40, 0.025) 0 1px, transparent 1px 18px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .page--trail .map-canvas canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 2;
+        }
+
+        /* 悬浮操作控件 */
+        .map-fab-stack {
+            position: absolute;
+            right: 14px;
+            bottom: 14px;
+            z-index: 6;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: flex-end;
+        }
+
+        .map-fab {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(26, 58, 40, 0.12);
+            border-radius: 12px;
+            color: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 6px 14px rgba(26, 58, 40, 0.14);
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        .map-fab:hover {
+            background: var(--primary-color);
+            color: #f5f3ee;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(26, 58, 40, 0.2);
+        }
+
+        .map-fab--sm {
+            width: 36px;
+            height: 36px;
+        }
+
+        .map-fab-zoom {
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(26, 58, 40, 0.12);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 14px rgba(26, 58, 40, 0.14);
+        }
+
+        .map-fab-zoom .map-fab {
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .map-fab-zoom .map-fab + .map-fab {
+            border-top: 1px solid rgba(26, 58, 40, 0.08);
+        }
+
+        /* 坐标 / 海拔实时显示 */
+        .map-coord {
+            position: absolute;
+            left: 14px;
+            bottom: 14px;
+            z-index: 6;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.45rem 0.8rem;
+            background: rgba(255, 255, 255, 0.86);
+            border: 1px solid rgba(26, 58, 40, 0.1);
+            border-radius: 12px;
+            font-size: 0.74rem;
+            color: var(--text-secondary);
+            font-variant-numeric: tabular-nums;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        .map-coord-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .map-coord-row + .map-coord-row {
+            padding-left: 0.7rem;
+            border-left: 1px solid rgba(26, 58, 40, 0.08);
+        }
+
+        .map-coord-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* 侧边悬浮迷你天气卡 */
+        .mini-weather {
+            position: absolute;
+            left: 14px;
+            top: 14px;
+            z-index: 6;
+            display: inline-flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            padding: 0.7rem 0.85rem;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(26, 58, 40, 0.1);
+            border-radius: 14px;
+            box-shadow: 0 6px 14px rgba(26, 58, 40, 0.12);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            min-width: 168px;
+        }
+
+        .mini-weather-head {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.72rem;
+            color: var(--text-light);
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .mini-weather-head .lucide {
+            width: 14px;
+            height: 14px;
+            color: var(--secondary-color);
+        }
+
+        .mini-weather-body {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.6rem;
+        }
+
+        .mini-weather-temp {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .mini-weather-meta {
+            display: inline-flex;
+            flex-direction: column;
+            font-size: 0.74rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .mini-weather-warn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.25rem 0.5rem;
+            background: rgba(243, 156, 18, 0.14);
+            color: #b06f0b;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .mini-weather-warn[data-level="critical"] {
+            background: rgba(231, 76, 60, 0.14);
+            color: #b03a2e;
+        }
+
+        /* 追光参考路线叠加 */
+        .route-overlay {
+            position: absolute;
+            right: 14px;
+            top: 14px;
+            z-index: 6;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.7rem;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(230, 162, 84, 0.4);
+            border-radius: 999px;
+            box-shadow: 0 6px 14px rgba(230, 162, 84, 0.2);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        .route-overlay-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #b06f0b;
+            background: rgba(230, 162, 84, 0.18);
+            padding: 0.15rem 0.5rem;
+            border-radius: 999px;
+        }
+
+        .route-overlay-name {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .route-overlay-close {
+            width: 22px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .route-overlay-close:hover {
+            background: rgba(26, 58, 40, 0.08);
+            color: var(--primary-color);
+        }
+
+        /* 空白初始状态新手引导 */
+        .map-empty-guide {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            pointer-events: auto;
+            background: radial-gradient(ellipse at center, rgba(239, 231, 214, 0.45) 0%, rgba(239, 231, 214, 0.0) 70%);
+        }
+
+        .map-empty-card {
+            width: min(420px, 92%);
+            padding: 1.4rem 1.5rem;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(26, 58, 40, 0.1);
+            border-radius: 18px;
+            box-shadow: 0 12px 28px rgba(26, 58, 40, 0.14);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-align: left;
+            animation: trailEmptyIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        @keyframes trailEmptyIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .map-empty-eyebrow {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+
+        .map-empty-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.85rem;
+        }
+
+        .map-empty-steps {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin: 0 0 1.1rem;
+            padding: 0;
+            counter-reset: emptyStep;
+        }
+
+        .map-empty-steps li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+        }
+
+        .map-empty-num {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(26, 58, 40, 0.08);
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .map-empty-steps strong {
+            display: block;
+            color: var(--primary-color);
+            font-size: 0.92rem;
+            font-weight: 700;
+            margin-bottom: 0.1rem;
+        }
+
+        .map-empty-steps span {
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+        }
+
+        .map-empty-cta {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            background: linear-gradient(135deg, #1a3a28 0%, #2d5a42 100%);
+            color: #f5f3ee;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(26, 58, 40, 0.18);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .map-empty-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(26, 58, 40, 0.22);
+        }
+
+        .map-empty-guide.is-hidden {
+            display: none;
+        }
+
+        /* ④ 实时徒步数据面板 */
+        .live-panel {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(220px, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 0.95rem;
+        }
+
+        .live-cards {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.6rem;
+        }
+
+        .live-card {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.85rem 0.95rem;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(26, 58, 40, 0.08);
+            border-radius: 14px;
+            transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+        }
+
+        .live-card:hover {
+            border-color: rgba(26, 58, 40, 0.18);
+            box-shadow: 0 8px 18px rgba(26, 58, 40, 0.08);
+        }
+
+        .live-card-icon {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(26, 58, 40, 0.08);
+            border-radius: 10px;
+            color: var(--primary-color);
+        }
+
+        .live-card-icon .lucide {
+            width: 18px;
+            height: 18px;
+        }
+
+        .live-card-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            min-width: 0;
+        }
+
+        .live-card-value {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.01em;
+        }
+
+        .live-card-label {
+            font-size: 0.74rem;
+            color: var(--text-light);
+            margin-top: 0.15rem;
+        }
+
+        .live-card--offset.is-warn .live-card-value,
+        .live-card--offset.is-warn .live-card-icon {
+            color: #c0392b;
+        }
+
+        .live-card--offset.is-warn {
+            border-color: rgba(192, 57, 43, 0.3);
+            box-shadow: 0 6px 14px rgba(192, 57, 43, 0.12);
+        }
+
+        .live-card--offset.is-warn .live-card-icon {
+            background: rgba(192, 57, 43, 0.1);
+        }
+
+        /* 迷你海拔曲线 */
+        .live-elevation {
+            padding: 0.75rem 0.95rem;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(26, 58, 40, 0.08);
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 0.35rem;
+        }
+
+        .live-elevation-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.4rem;
+        }
+
+        .live-elevation-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 0.04em;
+        }
+
+        .live-elevation-meta {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .live-elevation-divider {
+            color: var(--text-light);
+            margin: 0 0.15rem;
+        }
+
+        .live-elevation-chart {
+            width: 100%;
+            height: 56px;
+            display: block;
+        }
+
+        .live-elevation-chart .elev-area {
+            fill: rgba(45, 90, 61, 0.18);
+        }
+
+        .live-elevation-chart .elev-line {
+            fill: none;
+            stroke: #2d5a3d;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .live-elevation-chart .elev-axis {
+            stroke: rgba(26, 58, 40, 0.12);
+            stroke-width: 1;
+            stroke-dasharray: 2 3;
+        }
+
+        /* ⑤ 底部操作按钮 */
+        .trail-footer {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.85rem 1rem;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(26, 58, 40, 0.08);
+            border-radius: 18px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        .trail-footer-left,
+        .trail-footer-right {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .trail-footer-right {
+            margin-left: auto;
+        }
+
+        .gps-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.8rem;
+            background: rgba(26, 58, 40, 0.06);
+            border: 1px solid transparent;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .gps-indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-light);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gps-indicator[data-state="live"] {
+            background: rgba(39, 174, 96, 0.1);
+            color: #1c7a45;
+        }
+
+        .gps-indicator[data-state="live"] .gps-indicator-dot {
+            background: #27ae60;
+            box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.2);
+            animation: gpsPulse 1.4s ease-in-out infinite;
+        }
+
+        .gps-indicator[data-state="lost"] {
+            background: rgba(138, 155, 140, 0.18);
+            color: var(--text-light);
+        }
+
+        @keyframes gpsPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(39, 174, 96, 0); }
+        }
+
+        .trail-cta {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            padding: 0.95rem 1.4rem;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #1a3a28 0%, #2d5a42 100%);
+            color: #f5f3ee;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            box-shadow: 0 12px 26px rgba(26, 58, 40, 0.22);
+            transition: background 0.25s ease, transform 0.22s ease, box-shadow 0.25s ease;
+            position: relative;
+            user-select: none;
+        }
+
+        .trail-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 32px rgba(26, 58, 40, 0.28);
+        }
+
+        .trail-cta[data-state="recording"] {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            box-shadow: 0 12px 26px rgba(192, 57, 43, 0.28);
+        }
+
+        .trail-cta-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.85);
+            transition: background 0.2s ease;
+        }
+
+        .trail-cta[data-state="recording"] .trail-cta-dot {
+            background: #fff;
+            animation: recDot 1.2s ease-in-out infinite;
+        }
+
+        @keyframes recDot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.65; }
+        }
+
+        .trail-icon-btn {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(26, 58, 40, 0.06);
+            border: 1px solid rgba(26, 58, 40, 0.08);
+            border-radius: 12px;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+
+        .trail-icon-btn:hover {
+            background: var(--primary-color);
+            color: #f5f3ee;
+            transform: translateY(-1px);
+        }
+
+        .trail-icon-btn .lucide {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* 长按拓展菜单 */
+        .trail-more-menu {
+            position: fixed;
+            left: 50%;
+            bottom: 110px;
+            transform: translateX(-50%);
+            z-index: 80;
+            width: min(280px, calc(100% - 32px));
+            padding: 0.45rem;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(26, 58, 40, 0.12);
+            border-radius: 16px;
+            box-shadow: 0 18px 40px rgba(26, 58, 40, 0.22);
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            animation: trailMoreIn 0.18s ease-out;
+        }
+
+        @keyframes trailMoreIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        .trail-more-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 0.8rem;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            color: var(--text-primary);
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+
+        .trail-more-item:hover {
+            background: rgba(26, 58, 40, 0.06);
+        }
+
+        .trail-more-item .lucide {
+            width: 16px;
+            height: 16px;
+            color: var(--secondary-color);
+            flex-shrink: 0;
+        }
+
+        .trail-more-item > span:nth-child(2) {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .trail-more-switch {
+            width: 28px;
+            height: 16px;
+            background: rgba(26, 58, 40, 0.18);
+            border-radius: 999px;
+            position: relative;
+            transition: background 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .trail-more-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .trail-more-item[aria-checked="true"] .trail-more-switch {
+            background: var(--secondary-color);
+        }
+
+        .trail-more-item[aria-checked="true"] .trail-more-switch::after {
+            transform: translateX(12px);
+        }
+
+        /* 图层 / 轨迹库 弹窗（共用） */
+        .layer-modal,
+        .library-modal,
+        .rename-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 90;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .layer-modal-mask {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 36, 24, 0.42);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            animation: maskIn 0.18s ease-out;
+        }
+
+        @keyframes maskIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .layer-modal-panel {
+            position: relative;
+            z-index: 1;
+            width: min(440px, calc(100% - 32px));
+            max-height: 80vh;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 18px;
+            border: 1px solid rgba(26, 58, 40, 0.1);
+            box-shadow: 0 24px 50px rgba(15, 36, 24, 0.3);
+            display: flex;
+            flex-direction: column;
+            animation: panelIn 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        @keyframes panelIn {
+            from { opacity: 0; transform: translateY(8px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .layer-modal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(26, 58, 40, 0.08);
+        }
+
+        .layer-modal-head h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .layer-modal-close {
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            border-radius: 50%;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: background 0.18s ease, color 0.18s ease;
+        }
+
+        .layer-modal-close:hover {
+            background: rgba(26, 58, 40, 0.08);
+            color: var(--primary-color);
+        }
+
+        .layer-modal-close .lucide {
+            width: 16px;
+            height: 16px;
+        }
+
+        .layer-modal-body {
+            padding: 1rem 1.2rem 1.2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .layer-modal-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .layer-modal-section-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 0.04em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .layer-modal-value {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .layer-chip-group {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .layer-chip {
+            padding: 0.45rem 0.85rem;
+            background: rgba(26, 58, 40, 0.05);
+            border: 1px solid transparent;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+        }
+
+        .layer-chip:hover {
+            background: rgba(26, 58, 40, 0.1);
+            color: var(--primary-color);
+        }
+
+        .layer-chip.is-active {
+            background: var(--primary-color);
+            color: #f5f3ee;
+            border-color: var(--primary-color);
+        }
+
+        .layer-modal-slider {
+            width: 100%;
+            accent-color: var(--primary-color);
+        }
+
+        .layer-modal-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.86rem;
+            color: var(--text-primary);
+            padding: 0.35rem 0;
+        }
+
+        .layer-modal-row input[type="checkbox"] {
+            accent-color: var(--primary-color);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* 历史轨迹库 */
+        .library-modal-toolbar {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.75rem 1.2rem;
+            border-bottom: 1px solid rgba(26, 58, 40, 0.06);
+        }
+
+        .library-search {
+            flex: 1;
+            padding: 0.55rem 0.85rem;
+            background: rgba(26, 58, 40, 0.04);
+            border: 1px solid rgba(26, 58, 40, 0.1);
+            border-radius: 10px;
+            font-size: 0.86rem;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.18s ease, background 0.18s ease;
+        }
+
+        .library-search:focus {
+            border-color: var(--primary-color);
+            background: #fff;
+        }
+
+        .library-import-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 0.85rem;
+            background: var(--primary-color);
+            color: #f5f3ee;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+
+        .library-import-btn:hover { background: var(--primary-dark); }
+
+        .library-import-btn .lucide {
+            width: 14px;
+            height: 14px;
+        }
+
+        .library-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem 0.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .library-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 0.7rem;
+            align-items: center;
+            padding: 0.7rem 0.85rem;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(26, 58, 40, 0.08);
+            border-radius: 12px;
+            transition: background 0.18s ease, border-color 0.18s ease;
+            cursor: pointer;
+        }
+
+        .library-item:hover {
+            background: rgba(26, 58, 40, 0.04);
+            border-color: rgba(26, 58, 40, 0.18);
+        }
+
+        .library-item.is-active {
+            border-color: var(--primary-color);
+            background: rgba(26, 58, 40, 0.06);
+        }
+
+        .library-item-color {
+            width: 10px;
+            height: 36px;
+            border-radius: 4px;
+            background: var(--secondary-color);
+        }
+
+        .library-item-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .library-item-name {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .library-item-meta {
+            font-size: 0.74rem;
+            color: var(--text-light);
+            margin-top: 0.15rem;
+            display: inline-flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .library-item-actions {
+            display: inline-flex;
+            gap: 0.2rem;
+        }
+
+        .library-item-action {
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: background 0.18s ease, color 0.18s ease;
+        }
+
+        .library-item-action:hover {
+            background: rgba(26, 58, 40, 0.08);
+            color: var(--primary-color);
+        }
+
+        .library-item-action .lucide { width: 14px; height: 14px; }
+
+        .library-empty {
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.86rem;
+        }
+
+        .library-modal-foot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.7rem 1.2rem;
+            border-top: 1px solid rgba(26, 58, 40, 0.06);
+        }
+
+        .library-stat {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .library-export {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.8rem;
+            background: rgba(26, 58, 40, 0.06);
+            border: none;
+            border-radius: 10px;
+            color: var(--primary-color);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+
+        .library-export:hover { background: rgba(26, 58, 40, 0.12); }
+
+        .library-export .lucide { width: 14px; height: 14px; }
+
+        /* 重命名弹窗 */
+        .rename-panel {
+            position: relative;
+            z-index: 1;
+            width: min(360px, calc(100% - 32px));
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 16px;
+            border: 1px solid rgba(26, 58, 40, 0.1);
+            box-shadow: 0 18px 40px rgba(15, 36, 24, 0.3);
+            padding: 1.1rem 1.2rem;
+            animation: panelIn 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .rename-panel h3 {
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0 0 0.7rem;
+        }
+
+        .rename-panel input {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid rgba(26, 58, 40, 0.12);
+            border-radius: 10px;
+            font-size: 0.92rem;
+            outline: none;
+            margin-bottom: 0.85rem;
+        }
+
+        .rename-panel input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .rename-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+
+        .rename-btn {
+            padding: 0.55rem 1.05rem;
+            background: var(--primary-color);
+            color: #f5f3ee;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+
+        .rename-btn:hover { background: var(--primary-dark); }
+
+        .rename-btn--ghost {
+            background: rgba(26, 58, 40, 0.06);
+            color: var(--text-secondary);
+        }
+
+        .rename-btn--ghost:hover {
+            background: rgba(26, 58, 40, 0.12);
+            color: var(--primary-color);
+        }
+
+        /* SOS 唤起提示 */
+        .sos-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 90px;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.7rem 1rem;
+            background: rgba(192, 57, 43, 0.96);
+            color: #fff;
+            border-radius: 14px;
+            box-shadow: 0 16px 36px rgba(192, 57, 43, 0.4);
+            font-size: 0.84rem;
+            max-width: calc(100% - 32px);
+            animation: sosToastIn 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .sos-toast .lucide {
+            width: 20px;
+            height: 20px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .sos-toast strong {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.15rem;
+        }
+
+        .sos-toast span {
+            display: block;
+            font-size: 0.74rem;
+            opacity: 0.9;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .sos-toast-close {
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.18);
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        @keyframes sosToastIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* 自适应 */
+        @media (max-width: 960px) {
+            .live-panel {
+                grid-template-columns: 1fr;
+            }
+            .live-cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .mini-weather { min-width: 150px; }
+        }
+
+        @media (max-width: 640px) {
+            .trail-hero { flex-wrap: wrap; }
+            .trail-hero-meta { width: 100%; justify-content: flex-end; }
+            .layer-tabs { padding: 0.25rem; }
+            .layer-tab span { display: none; }
+            .layer-tab .lucide { width: 18px; height: 18px; }
+            .layer-tabs-tools { margin-left: 0; }
+            .live-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .live-card { padding: 0.65rem 0.75rem; }
+            .live-card-value { font-size: 1.15rem; }
+            .trail-footer { flex-wrap: wrap; padding: 0.7rem 0.8rem; }
+            .trail-cta { order: 1; flex-basis: 100%; }
+            .mini-weather { display: none; }
+            .map-coord { font-size: 0.68rem; padding: 0.35rem 0.6rem; gap: 0.5rem; }
+            .map-coord-row + .map-coord-row { padding-left: 0.5rem; }
+            .map-fab { width: 36px; height: 36px; }
+        }
+
+        /* 深色模式适配 */
+        body.dark-mode .trail-hero-title,
+        body.dark-mode .trail-hero-tip,
+        body.dark-mode .live-card-value,
+        body.dark-mode .live-elevation-title,
+        body.dark-mode .layer-modal-head h3,
+        body.dark-mode .layer-chip.is-active,
+        body.dark-mode .library-item-name,
+        body.dark-mode .rename-panel h3 {
+            color: #d8e6dd;
+        }
+
+        body.dark-mode .page--trail .map-canvas {
+            background:
+                radial-gradient(ellipse at 22% 12%, rgba(196, 168, 122, 0.08), transparent 55%),
+                radial-gradient(ellipse at 78% 86%, rgba(122, 156, 134, 0.12), transparent 55%),
+                linear-gradient(180deg, #1d2620 0%, #161d18 100%);
+            border-color: rgba(232, 245, 233, 0.08);
+        }
+
+        body.dark-mode .page--trail .map-canvas::before {
+            background-image:
+                repeating-linear-gradient(0deg, rgba(232, 245, 233, 0.04) 0 1px, transparent 1px 18px),
+                repeating-linear-gradient(90deg, rgba(232, 245, 233, 0.04) 0 1px, transparent 1px 18px);
+        }
+
+        body.dark-mode .live-card,
+        body.dark-mode .live-elevation,
+        body.dark-mode .trail-footer,
+        body.dark-mode .layer-tabs,
+        body.dark-mode .map-empty-card,
+        body.dark-mode .layer-modal-panel,
+        body.dark-mode .rename-panel,
+        body.dark-mode .library-item,
+        body.dark-mode .mini-weather,
+        body.dark-mode .map-coord,
+        body.dark-mode .map-fab,
+        body.dark-mode .map-fab-zoom,
+        body.dark-mode .route-overlay,
+        body.dark-mode .trail-more-menu {
+            background: rgba(34, 48, 38, 0.9);
+            border-color: rgba(232, 245, 233, 0.08);
+            color: #d8e6dd;
+        }
+
+        body.dark-mode .live-card-icon,
+        body.dark-mode .map-empty-num,
+        body.dark-mode .library-export,
+        body.dark-mode .gps-indicator,
+        body.dark-mode .trail-icon-btn {
+            background: rgba(232, 245, 233, 0.06);
+            color: #d8e6dd;
+        }
+
+        body.dark-mode .library-search {
+            background: rgba(232, 245, 233, 0.04);
+            border-color: rgba(232, 245, 233, 0.08);
+            color: #d8e6dd;
+        }
+
+        body.dark-mode .layer-chip {
+            background: rgba(232, 245, 233, 0.04);
+            color: #b8c9be;
+        }
+
+
         /* SOS Feature - 全面优化版 */
         .sos-command-banner {
             display: flex;
@@ -7369,6 +8870,23 @@
             border: 1px solid rgba(243, 156, 18, 0.2);
         }
 
+        /* 数据源徽标（标识当前用的是和风主数据 / WeatherAPI 兜底 / 演示数据） */
+        .wx-source-badge--primary {
+            background: rgba(74, 124, 89, 0.12);
+            color: #4a7c59;
+            border: 1px solid rgba(74, 124, 89, 0.25);
+        }
+        .wx-source-badge--fallback {
+            background: rgba(52, 152, 219, 0.12);
+            color: #2980b9;
+            border: 1px solid rgba(52, 152, 219, 0.25);
+        }
+        .wx-source-badge--demo {
+            background: rgba(230, 162, 84, 0.15);
+            color: #9A621E;
+            border: 1px solid rgba(230, 162, 84, 0.3);
+        }
+
         /* --- 各区天气网格 --- */
         .wx-district-grid {
             display: grid;
@@ -9104,7 +10622,7 @@
     <!-- Navigation V3 -->
     <nav class="nav nav-v3" id="mainNav">
         <div class="nav-v3-left">
-            <button class="nav-v3-about-btn" onclick="location.href = 'index.html'" type="button" aria-label="关于晓山青">
+            <button class="nav-v3-about-btn" onclick="location.href = 'about.html'" type="button" aria-label="关于晓山青">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
                 <span>关于</span>
             </button>
@@ -9313,7 +10831,7 @@
                         <div class="feature-card-v3-desc">队友位置共享</div>
                     </div>
 
-                    <div class="feature-card-v3 animate-in" data-target-page="about" tabindex="0" role="button" aria-label="关于晓山青" style="transition-delay:0.36s" onclick="location.href = 'index.html'">
+                    <div class="feature-card-v3 animate-in" data-target-page="about" tabindex="0" role="button" aria-label="关于晓山青" style="transition-delay:0.36s" onclick="location.href = 'about.html'">
                         <div class="feature-card-v3-icon-wrap" style="background:rgba(230,162,84,0.12)">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#E6A254" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
                         </div>
@@ -9486,40 +11004,350 @@
             </div>
         </div>
 
-        <!-- Trail Page -->
-        <div id="trail" class="page">
-            <div class="feature-header">
-                <h2>🗺️ 青山不迷</h2>
-                <p>离线轨迹守护，让您不再迷路</p>
-            </div>
-            <div class="map-container">
-                <div class="map-controls">
-                    <button class="active" onclick="setMapMode('offline')">📴 离线地图</button>
-                    <button onclick="setMapMode('heatmap')">🔥 热力轨迹</button>
-                    <button onclick="setMapMode('contour')">📊 等高线</button>
+        <!-- Trail Page · 青山不迷 · 户外徒步登山轨迹记录 -->
+        <div id="trail" class="page page--trail">
+            <!-- ① 顶部标题：弱化高度，副标题改为悬浮提示 -->
+            <header class="trail-hero" aria-label="青山不迷">
+                <div class="trail-hero-main">
+                    <span class="trail-hero-eyebrow" title="晓山青 · Viridiore" aria-label="晓山青 · Viridiore">晓山青</span>
+                    <h2 class="trail-hero-title" title="青山不迷 — 深圳徒步轨迹记录" aria-label="青山不迷 — 深圳徒步轨迹记录">青山不迷</h2>
+                    <span class="trail-hero-tip" tabindex="0" role="tooltip" aria-label="副标题悬浮提示：离线守护，轨迹不迷">离线守护 · 轨迹不迷</span>
                 </div>
+                <div class="trail-hero-meta" id="trailHeroMeta" aria-live="polite">
+                    <span class="trail-hero-dot" aria-hidden="true"></span>
+                    <span class="trail-hero-meta-text">GPS 待定位</span>
+                </div>
+            </header>
+
+            <!-- ② 图层 Tab 栏 -->
+            <nav class="layer-tabs" role="tablist" aria-label="图层切换">
+                <button class="layer-tab is-active" role="tab" data-mode="offline" aria-selected="true" title="离线山林地形图">
+                    <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3Z"/><path d="M9 3v15"/><path d="M15 6v15"/></svg>
+                    <span>离线地形</span>
+                </button>
+                <button class="layer-tab" role="tab" data-mode="heatmap" aria-selected="false" title="历史热力轨迹">
+                    <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v8"/><path d="m4.93 10.93 5.66 5.66"/><path d="M2 18h6"/><path d="M22 18h-6"/><path d="m13.41 16.59 5.66-5.66"/></svg>
+                    <span>历史热力</span>
+                </button>
+                <button class="layer-tab" role="tab" data-mode="contour" aria-selected="false" title="等高线地形图">
+                    <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18c4 0 4-6 8-6s4 6 8 6"/><path d="M3 12c4 0 4-6 8-6s4 6 8 6"/><path d="M3 6c4 0 4-6 8-6s4 6 8 6"/></svg>
+                    <span>等高线</span>
+                </button>
+
+                <div class="layer-tabs-tools">
+                    <button class="layer-tool" id="trailLibraryBtn" type="button" title="历史轨迹库" aria-label="历史轨迹库">
+                        <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                        <span>轨迹库</span>
+                    </button>
+                    <button class="layer-tool layer-tool--icon" id="layerSettingsBtn" type="button" title="图层管理" aria-label="图层管理">
+                        <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+                    </button>
+                </div>
+            </nav>
+
+            <!-- ③ 主地图画布 -->
+            <section class="map-stage" aria-label="主地图画布">
                 <div class="map-canvas" id="mapCanvas">
-                    <canvas id="trailCanvas" width="800" height="400"></canvas>
+                    <canvas id="trailCanvas" width="1280" height="640" aria-label="轨迹画布"></canvas>
+
+                    <!-- 悬浮操作控件 -->
+                    <div class="map-fab-stack" role="toolbar" aria-label="地图工具">
+                        <button class="map-fab" id="fabGps" type="button" title="回到当前 GPS 定位" aria-label="回到当前 GPS 定位">
+                            <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M2 12h3"/><path d="M19 12h3"/></svg>
+                        </button>
+                        <div class="map-fab-zoom">
+                            <button class="map-fab map-fab--sm" id="fabZoomIn" type="button" title="放大" aria-label="放大">
+                                <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                            </button>
+                            <button class="map-fab map-fab--sm" id="fabZoomOut" type="button" title="缩小" aria-label="缩小">
+                                <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>
+                            </button>
+                        </div>
+                        <button class="map-fab" id="fabFullscreen" type="button" title="全屏视图" aria-label="全屏视图">
+                            <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- 坐标 / 海拔实时显示 -->
+                    <div class="map-coord" id="mapCoord" aria-live="polite">
+                        <span class="map-coord-row"><span class="map-coord-label">经度</span><span id="coordLng">113.9456°E</span></span>
+                        <span class="map-coord-row"><span class="map-coord-label">纬度</span><span id="coordLat">22.5430°N</span></span>
+                        <span class="map-coord-row"><span class="map-coord-label">海拔</span><span id="coordAlt">312 m</span></span>
+                    </div>
+
+                    <!-- 侧边悬浮迷你天气卡 -->
+                    <aside class="mini-weather" id="miniWeather" aria-label="实时天气">
+                        <div class="mini-weather-head">
+                            <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 19a4.5 4.5 0 1 0-1.4-8.78 6 6 0 0 0-11.6 2.28A4 4 0 0 0 6 19Z"/></svg>
+                            <span>深圳·梧桐山</span>
+                        </div>
+                        <div class="mini-weather-body">
+                            <span class="mini-weather-temp" id="miniWeatherTemp">22°</span>
+                            <span class="mini-weather-meta">
+                                <span id="miniWeatherDesc">多云</span>
+                                <span id="miniWeatherHumi">湿度 68%</span>
+                            </span>
+                        </div>
+                        <div class="mini-weather-warn" id="miniWeatherWarn" hidden></div>
+                    </aside>
+
+                    <!-- 追光页山峰观景参考路线叠加 -->
+                    <div class="route-overlay" id="routeOverlay" hidden>
+                        <span class="route-overlay-tag">追光参考</span>
+                        <span class="route-overlay-name" id="routeOverlayName">梧桐山日出线</span>
+                        <button class="route-overlay-close" id="routeOverlayClose" type="button" aria-label="关闭叠加">×</button>
+                    </div>
+
+                    <!-- 空白初始状态新手引导 -->
+                    <div class="map-empty-guide" id="mapEmptyGuide">
+                        <div class="map-empty-card">
+                            <div class="map-empty-eyebrow">快速上手 · 3 步</div>
+                            <h3>开始你的第一次徒步记录</h3>
+                            <ol class="map-empty-steps">
+                                <li>
+                                    <span class="map-empty-num">1</span>
+                                    <div>
+                                        <strong>切换图层</strong>
+                                        <span>上方 Tab 切换离线 / 热力 / 等高线</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="map-empty-num">2</span>
+                                    <div>
+                                        <strong>轨迹录制</strong>
+                                        <span>底部按钮一键启动，实时记录行程</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="map-empty-num">3</span>
+                                    <div>
+                                        <strong>导入 GPX</strong>
+                                        <span>点击「轨迹库」导入已有路线</span>
+                                    </div>
+                                </li>
+                            </ol>
+                            <button class="map-empty-cta" type="button" id="mapEmptyStart">立即开始</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="trail-info">
-                    <div class="trail-stat">
-                        <div class="value" id="trailDistance">0</div>
-                        <div class="label">已行进 (km)</div>
+            </section>
+
+            <!-- ④ 实时徒步数据面板 -->
+            <section class="live-panel" aria-label="实时数据">
+                <div class="live-cards">
+                    <div class="live-card">
+                        <span class="live-card-icon" aria-hidden="true">
+                            <svg class="lucide" viewBox="0 0 24 24"><path d="M13 4 3 14"/><path d="m17 8-4 4"/><path d="m21 12-4 4"/><path d="m13 20 8-8"/></svg>
+                        </span>
+                        <div class="live-card-text">
+                            <span class="live-card-value" id="trailDistance">0.00</span>
+                            <span class="live-card-label">已行进 km</span>
+                        </div>
                     </div>
-                    <div class="trail-stat">
-                        <div class="value" id="trailElevation">0</div>
-                        <div class="label">海拔 (m)</div>
+                    <div class="live-card">
+                        <span class="live-card-icon" aria-hidden="true">
+                            <svg class="lucide" viewBox="0 0 24 24"><path d="m3 20 5-9 4 6 3-4 6 7Z"/><path d="M3 20h18"/></svg>
+                        </span>
+                        <div class="live-card-text">
+                            <span class="live-card-value" id="trailElevation">0</span>
+                            <span class="live-card-label">当前海拔 m</span>
+                        </div>
                     </div>
-                    <div class="trail-stat">
-                        <div class="value" id="trailTime">00:00</div>
-                        <div class="label">用时</div>
+                    <div class="live-card">
+                        <span class="live-card-icon" aria-hidden="true">
+                            <svg class="lucide" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </span>
+                        <div class="live-card-text">
+                            <span class="live-card-value" id="trailTime">00:00</span>
+                            <span class="live-card-label">徒步用时</span>
+                        </div>
                     </div>
-                    <div class="trail-stat">
-                        <div class="value" id="trailOffset">0°</div>
-                        <div class="label">偏离角度</div>
+                    <div class="live-card live-card--offset" id="trailOffsetCard">
+                        <span class="live-card-icon" aria-hidden="true">
+                            <svg class="lucide" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="m3 12 9 9 9-9"/></svg>
+                        </span>
+                        <div class="live-card-text">
+                            <span class="live-card-value" id="trailOffset">0°</span>
+                            <span class="live-card-label">偏离角度</span>
+                        </div>
                     </div>
                 </div>
-                <button class="action-btn action-btn--block action-btn--lg" type="button" onclick="startTracking()">🎯 开始轨迹记录</button>
+
+                <!-- 迷你海拔变化曲线 -->
+                <div class="live-elevation" aria-label="海拔变化曲线">
+                    <div class="live-elevation-head">
+                        <span class="live-elevation-title">海拔变化</span>
+                        <span class="live-elevation-meta">
+                            <span id="elevMin">— m</span>
+                            <span class="live-elevation-divider">/</span>
+                            <span id="elevMax">— m</span>
+                            <span class="live-elevation-divider">/</span>
+                            <span id="elevGain">+0 m</span>
+                        </span>
+                    </div>
+                    <svg class="live-elevation-chart" id="elevChart" viewBox="0 0 320 80" preserveAspectRatio="none" aria-hidden="true"></svg>
+                </div>
+            </section>
+
+            <!-- ⑤ 底部操作按钮 -->
+            <footer class="trail-footer" aria-label="操作栏">
+                <div class="trail-footer-left">
+                    <span class="gps-indicator" id="gpsIndicator" data-state="idle" title="GPS 状态" aria-label="GPS 状态">
+                        <span class="gps-indicator-dot" aria-hidden="true"></span>
+                        <span class="gps-indicator-text" id="gpsIndicatorText">GPS 待定位</span>
+                    </span>
+                </div>
+                <button class="trail-cta" id="trailCtaBtn" type="button" data-state="idle" aria-label="开始轨迹记录">
+                    <span class="trail-cta-dot" aria-hidden="true"></span>
+                    <span class="trail-cta-text" id="trailCtaText">开始轨迹记录</span>
+                </button>
+                <div class="trail-footer-right">
+                    <button class="trail-icon-btn" id="trailSosBtn" type="button" title="SOS 紧急求助" aria-label="SOS 紧急求助">
+                        <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v6"/><path d="M5.6 5.6l4.2 4.2"/><path d="M2 12h6"/><path d="m5.6 18.4 4.2-4.2"/><path d="M12 22v-6"/><path d="m18.4 18.4-4.2-4.2"/><path d="M22 12h-6"/><path d="m18.4 5.6-4.2 4.2"/></svg>
+                    </button>
+                    <button class="trail-icon-btn" id="trailMoreBtn" type="button" title="更多操作" aria-label="更多操作">
+                        <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                    </button>
+                </div>
+            </footer>
+
+            <!-- 长按按钮拓展菜单 -->
+            <div class="trail-more-menu" id="trailMoreMenu" hidden role="menu" aria-label="拓展功能">
+                <button class="trail-more-item" id="trailBgRec" type="button" role="menuitemcheckbox" aria-checked="false">
+                    <svg class="lucide" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                    <span>后台持续记录</span>
+                    <span class="trail-more-switch" aria-hidden="true"></span>
+                </button>
+                <button class="trail-more-item" id="trailPowerSave" type="button" role="menuitemcheckbox" aria-checked="false">
+                    <svg class="lucide" viewBox="0 0 24 24"><path d="M12 2 4 14h7l-1 8 9-12h-7Z"/></svg>
+                    <span>低电量省电模式</span>
+                    <span class="trail-more-switch" aria-hidden="true"></span>
+                </button>
+                <button class="trail-more-item" id="trailImportGpx" type="button" role="menuitem">
+                    <svg class="lucide" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+                    <span>导入 GPX 路线</span>
+                </button>
+                <button class="trail-more-item" id="trailExportGpx" type="button" role="menuitem">
+                    <svg class="lucide" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 9l5-5 5 5"/><path d="M12 4v12"/></svg>
+                    <span>导出 GPX</span>
+                </button>
+                <button class="trail-more-item" id="trailBindTeam" type="button" role="menuitem">
+                    <svg class="lucide" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>绑定同行队友</span>
+                </button>
+                <button class="trail-more-item" id="trailBindGear" type="button" role="menuitem">
+                    <svg class="lucide" viewBox="0 0 24 24"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23Z"/></svg>
+                    <span>绑定登山装备</span>
+                </button>
+                <button class="trail-more-item" id="trailGenerateLog" type="button" role="menuitem">
+                    <svg class="lucide" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+                    <span>生成徒步日志</span>
+                </button>
+            </div>
+
+            <!-- 图层管理齿轮弹窗 -->
+            <div class="layer-modal" id="layerModal" hidden role="dialog" aria-modal="true" aria-label="图层管理">
+                <div class="layer-modal-mask" data-close="modal"></div>
+                <div class="layer-modal-panel" role="document">
+                    <header class="layer-modal-head">
+                        <h3>图层管理</h3>
+                        <button class="layer-modal-close" data-close="modal" type="button" aria-label="关闭">
+                            <svg class="lucide" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                        </button>
+                    </header>
+                    <div class="layer-modal-body">
+                        <section class="layer-modal-section">
+                            <div class="layer-modal-section-title">等高距</div>
+                            <div class="layer-chip-group" role="radiogroup" aria-label="等高距">
+                                <button class="layer-chip" data-contour="20" role="radio" aria-checked="false">20 m</button>
+                                <button class="layer-chip is-active" data-contour="50" role="radio" aria-checked="true">50 m</button>
+                                <button class="layer-chip" data-contour="100" role="radio" aria-checked="false">100 m</button>
+                                <button class="layer-chip" data-contour="200" role="radio" aria-checked="false">200 m</button>
+                            </div>
+                        </section>
+                        <section class="layer-modal-section">
+                            <div class="layer-modal-section-title">
+                                <span>线条透明度</span>
+                                <span class="layer-modal-value" id="contourOpacityValue">70%</span>
+                            </div>
+                            <input type="range" min="20" max="100" value="70" class="layer-modal-slider" id="contourOpacity">
+                        </section>
+                        <section class="layer-modal-section">
+                            <div class="layer-modal-section-title">热力染色维度</div>
+                            <div class="layer-chip-group" role="radiogroup" aria-label="热力染色维度">
+                                <button class="layer-chip is-active" data-heat="time" role="radio" aria-checked="true">时间</button>
+                                <button class="layer-chip" data-heat="speed" role="radio" aria-checked="false">速度</button>
+                                <button class="layer-chip" data-heat="altitude" role="radio" aria-checked="false">海拔</button>
+                            </div>
+                        </section>
+                        <section class="layer-modal-section">
+                            <label class="layer-modal-row">
+                                <span>显示危险陡坡警示（≥30°）</span>
+                                <input type="checkbox" id="dangerSlope" checked>
+                            </label>
+                            <label class="layer-modal-row">
+                                <span>标注山脊 / 山谷</span>
+                                <input type="checkbox" id="ridgeValley" checked>
+                            </label>
+                            <label class="layer-modal-row">
+                                <span>标注山道 / 水源 / 营地</span>
+                                <input type="checkbox" id="poiLabels" checked>
+                            </label>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 历史轨迹库弹窗 -->
+            <div class="library-modal" id="libraryModal" hidden role="dialog" aria-modal="true" aria-label="历史轨迹库">
+                <div class="layer-modal-mask" data-close="library"></div>
+                <div class="layer-modal-panel" role="document">
+                    <header class="layer-modal-head">
+                        <h3>历史轨迹库</h3>
+                        <button class="layer-modal-close" data-close="library" type="button" aria-label="关闭">
+                            <svg class="lucide" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                        </button>
+                    </header>
+                    <div class="library-modal-toolbar">
+                        <input type="text" class="library-search" id="librarySearch" placeholder="搜索轨迹名称 / 山峰 / 同行人..." aria-label="搜索轨迹">
+                        <label class="library-import-btn" title="导入 GPX">
+                            <svg class="lucide" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+                            <span>导入 GPX</span>
+                            <input type="file" id="libraryGpxInput" accept=".gpx" hidden>
+                        </label>
+                    </div>
+                    <div class="library-list" id="libraryList" role="list"></div>
+                    <div class="library-modal-foot">
+                        <span class="library-stat" id="libraryStat">共 0 条轨迹</span>
+                        <button class="library-export" id="libraryExportAll" type="button">
+                            <svg class="lucide" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 9l5-5 5 5"/><path d="M12 4v12"/></svg>
+                            <span>导出全部</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 路线重命名弹窗 -->
+            <div class="rename-modal" id="renameModal" hidden role="dialog" aria-modal="true" aria-label="重命名">
+                <div class="layer-modal-mask" data-close="rename"></div>
+                <div class="rename-panel" role="document">
+                    <h3>重命名轨迹</h3>
+                    <input type="text" id="renameInput" maxlength="32" placeholder="为这条轨迹起个名字">
+                    <div class="rename-actions">
+                        <button class="rename-btn rename-btn--ghost" data-close="rename" type="button">取消</button>
+                        <button class="rename-btn" id="renameConfirm" type="button">确定</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOS 唤起提示 -->
+            <div class="sos-toast" id="trailSosToast" hidden role="alert">
+                <svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+                <div>
+                    <strong>已发起 SOS 求救</strong>
+                    <span id="trailSosCoord">坐标：—  ·  海拔：—</span>
+                </div>
+                <button class="sos-toast-close" id="trailSosClose" type="button" aria-label="关闭">×</button>
             </div>
         </div>
 
@@ -10519,6 +12347,7 @@
                 </div>
                 <div class="wx-city-name" id="wxCityName">深圳市</div>
                 <span id="wxDemoBadge" style="display:none;margin-left:0.4rem;font-size:0.65rem;padding:0.15rem 0.5rem;background:rgba(230,162,84,0.15);color:#9A621E;border-radius:999px;font-weight:600;">演示数据</span>
+                <span id="wxSourceBadge" class="wx-source-badge wx-source-badge--primary" style="display:none;margin-left:0.4rem;font-size:0.65rem;padding:0.15rem 0.5rem;border-radius:999px;font-weight:600;">数据：和风天气</span>
             </div>
 
             <!-- 实时天气主卡片 -->
@@ -10801,6 +12630,8 @@
                     el._navBound = true;
                     el.addEventListener('click', function(e) {
                         const page = el.dataset.page || el.dataset.targetPage;
+                        // 关于页是外链，交给元素自身的 onclick 处理
+                        if (page === 'about') return;
                         if (page) window.navigateTo(page, e);
                     });
                 });
@@ -12003,12 +13834,19 @@
                     card.dataset.bound = 'true';
                     card.addEventListener('click', () => {
                         const page = card.dataset.targetPage;
+                        // 关于页是外链，交给元素自身的 onclick 处理
+                        if (page === 'about') return;
                         if (page) showPage(page);
                     });
                     card.addEventListener('keydown', e => {
                         if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
                             const page = card.dataset.targetPage;
+                            // 关于页是外链，Enter/Space 触发 onclick 跳转
+                            if (page === 'about') {
+                                card.click();
+                                return;
+                            }
                             if (page) showPage(page);
                         }
                     });
@@ -12490,6 +14328,8 @@
             document.querySelectorAll('.feature-card-v3, .info-card-v3').forEach(card => {
                 card.addEventListener('click', () => {
                     const target = card.dataset.targetPage;
+                    // 关于页是外链，交给元素自身的 onclick 处理
+                    if (target === 'about') return;
                     if (target) navigateTo(target);
                 });
             });
@@ -12999,6 +14839,249 @@
             }
         };
 
+        // ==================== 和风天气 QWeather 客户端（天气页主数据源） ====================
+        /**
+         * 数据来源：和风天气 QWeather (https://dev.qweather.com/)
+         * 优点：
+         *   - 国内权威气象数据（NMC 中央气象台 + ECMWF），对深圳本地温湿度、AQI、能见度更准
+         *   - 实时数据更新频率 20 分钟，原生中文天气描述
+         *   - 空气质量数据独立接口，含 PM2.5/PM10/O3/NO2/SO2/CO 完整指标
+         * 免费套餐：每日 1000 次调用
+         * Key 配置：在 .env 中设置 VITE_HEWEATHER_KEY（个人 API Host 通过 VITE_QWEATHER_HOST 配置）
+         *
+         * 端点列表：
+         *   /v7/weather/now          实时天气
+         *   /v7/weather/24h          24h 逐小时预报
+         *   /v7/weather/7d           7 天每日预报
+         *   /v1/air-quality/current/{lat},{lon}  实时空气质量
+         *
+         * 降级策略：
+         *   1. 优先走本地代理 /api/qweather（避免 Key 泄露、CORS 一致）
+         *   2. 代理不可用 / 超时（>3s）→ 抛错由 WeatherAPI 兜底
+         *   3. 标准化后的 schema 与 WeatherAPI 完全一致，UI 无需感知来源切换
+         */
+        const QWeatherClient = {
+            // API Key 与 Base 来自 APP_CONFIG
+            _apiKey: (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.HEWEATHER?.key)
+                ? APP_CONFIG.HEWEATHER.key : '',
+            _personalHost: (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.HEWEATHER?.host)
+                ? APP_CONFIG.HEWEATHER.host : '',
+
+            // 城市 → 经纬度映射（和风使用 lat,lon 查询）
+            cities: {
+                '440300': { name: '深圳市',  location: '22.54,114.06' },
+                '440100': { name: '广州市',  location: '23.13,113.26' },
+                '440600': { name: '佛山市',  location: '23.02,113.12' },
+                '441900': { name: '东莞市',  location: '23.02,113.75' },
+                '441300': { name: '惠州市',  location: '23.11,114.42' },
+                '440500': { name: '汕头市',  location: '23.35,116.68' },
+                '441400': { name: '梅州市',  location: '24.29,116.12' },
+                '441600': { name: '河源市',  location: '23.74,114.70' },
+                '441700': { name: '阳江市',  location: '21.86,111.98' },
+                '441800': { name: '清远市',  location: '23.68,113.06' }
+            },
+
+            // 严格超时（按用户在方案评审中确定的"3 秒严格"）
+            _timeoutMs: 3000,
+
+            /**
+             * 综合拉取：实时 + 24h + 7d + AQI
+             * 任一端点超时即整体抛错，由 WeatherAPI 接管
+             * @param {string} cityId
+             * @returns {Promise<Object>} 标准化数据（schema 与 WeatherAPI 一致）
+             */
+            async getWeather(cityId = '440300') {
+                const city = this.cities[cityId] || this.cities['440300'];
+                const base = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.QWEATHER_API_BASE)
+                    ? APP_CONFIG.QWEATHER_API_BASE : '/api/qweather';
+
+                // 4 个端点并行拉取，单点超时不影响其他端点
+                const [nowRes, h24Res, d7Res, airRes] = await Promise.allSettled([
+                    this._fetch(`${base}/v7/weather/now?location=${encodeURIComponent(city.location)}&lang=zh&unit=m`, { tag: 'now' }),
+                    this._fetch(`${base}/v7/weather/24h?location=${encodeURIComponent(city.location)}&lang=zh&unit=m`, { tag: '24h' }),
+                    this._fetch(`${base}/v7/weather/7d?location=${encodeURIComponent(city.location)}&lang=zh&unit=m`, { tag: '7d' }),
+                    this._fetch(`${base}/v1/air-quality/current/${encodeURIComponent(city.location)}`, { tag: 'air' })
+                ]);
+
+                // 任一核心端点（now / 24h / 7d）失败就整体抛错让 WeatherAPI 接管
+                if (nowRes.status !== 'fulfilled' || h24Res.status !== 'fulfilled' || d7Res.status !== 'fulfilled') {
+                    const failed = [nowRes, h24Res, d7Res].find(r => r.status === 'rejected');
+                    throw new Error(`[QWeather] 核心端点失败: ${failed?.reason?.message || '未知'}`);
+                }
+
+                const now = nowRes.value;
+                const h24 = h24Res.value;
+                const d7 = d7Res.value;
+                const air = airRes.status === 'fulfilled' ? airRes.value : null;
+
+                if (now.code !== '200' || h24.code !== '200' || d7.code !== '200') {
+                    throw new Error(`[QWeather] 业务错误: now=${now.code} 24h=${h24.code} 7d=${d7.code}`);
+                }
+
+                const normalized = this._normalizeData(now, h24, d7, air, cityId);
+                console.log(`[QWeather] ✅ 真实数据，城市: ${city.name} 温度: ${normalized.current.temp}°C 来源: qweather`);
+                return normalized;
+            },
+
+            /**
+             * 单次 fetch（带严格超时 + 错误归一化）
+             */
+            async _fetch(url, meta = {}) {
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), this._timeoutMs);
+                try {
+                    const res = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timer);
+                    if (!res.ok) {
+                        const body = await res.text().catch(() => '');
+                        throw new Error(`${meta.tag || 'qweather'} HTTP ${res.status}: ${body.slice(0, 120)}`);
+                    }
+                    return await res.json();
+                } catch (e) {
+                    clearTimeout(timer);
+                    if (e.name === 'AbortError') {
+                        throw new Error(`${meta.tag || 'qweather'} 超时（>${this._timeoutMs}ms）`);
+                    }
+                    throw e;
+                }
+            },
+
+            /**
+             * 标准化和风 4 端点响应 → 与 WeatherAPI 完全一致的 schema
+             * 让 _applyWxData 无需感知数据源切换
+             */
+            _normalizeData(now, h24, d7, air, cityId) {
+                const cur = now.now;
+                const isDay = this._isDaytime(cur.obsTime);
+
+                // 风向角度 → 中文（和风 windDir 已是中文，如"东南风"）
+                const windDirZh = (cur.windDir || '').includes('风') ? cur.windDir : (cur.windDir || '') + '风';
+
+                // 和风风速等级 "1-2" / "3" → 取上限整数
+                const wsMatch = String(cur.windScale || '').match(/(\d+)\s*-\s*(\d+)/);
+                const windLevel = wsMatch
+                    ? parseInt(wsMatch[2], 10)
+                    : (parseInt(cur.windScale, 10) || 0);
+
+                return {
+                    source: 'qweather',
+                    city: this.cities[cityId]?.name || '深圳市',
+                    cityId,
+                    updated: new Date(cur.obsTime || Date.now()),
+                    isDemo: false,
+                    current: {
+                        temp: Math.round(parseFloat(cur.temp) || 0),
+                        feelsLike: Math.round(parseFloat(cur.feelsLike) || parseFloat(cur.temp) || 0),
+                        weather: cur.text || '未知',
+                        weatherCode: parseInt(cur.icon, 10) || 999,
+                        isDay,
+                        humidity: parseInt(cur.humidity, 10) || 0,
+                        wind: { level: windLevel, text: windDirZh },
+                        windSpeed: parseFloat(cur.windSpeed) || 0,
+                        windDir: windDirZh,
+                        pressure: parseFloat(cur.pressure) || 0,
+                        visibility: parseFloat(cur.vis) || 0,
+                        precipitation: parseFloat(cur.precip) || 0,
+                        uv: parseInt(h24.hourly?.[0]?.uvIndex ?? 0, 10) || 0,
+                        obsTime: cur.obsTime
+                    },
+                    hourly: this._parseHourly(h24),
+                    daily: this._parseDaily(d7),
+                    aqi: this._parseAqi(air)
+                };
+            },
+
+            /** 解析逐小时预报（取未来 24 小时） */
+            _parseHourly(h24) {
+                const list = h24.hourly || [];
+                const now = Date.now();
+                const future = list.filter(h => new Date(h.fxTime).getTime() >= now - 30 * 60 * 1000);
+                return future.slice(0, 24).map(h => {
+                    const date = new Date(h.fxTime);
+                    const ws = String(h.windScale || '').match(/(\d+)\s*-\s*(\d+)/);
+                    const windLevel = ws ? parseInt(ws[2], 10) : (parseInt(h.windScale, 10) || 0);
+                    const windDir = (h.windDir || '').includes('风') ? h.windDir : (h.windDir || '') + '风';
+                    return {
+                        time: date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
+                        hourNum: date.getHours(),
+                        temp: Math.round(parseFloat(h.temp) || 0),
+                        weather: h.text || '未知',
+                        weatherCode: parseInt(h.icon, 10) || 999,
+                        wind: { level: windLevel, text: windDir },
+                        precip: Math.round(parseFloat(h.pop || 0) || 0),
+                        humidity: parseInt(h.humidity, 10) || 0
+                    };
+                });
+            },
+
+            /** 解析每日预报 */
+            _parseDaily(d7) {
+                const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+                return (d7.daily || []).map(d => {
+                    const date = new Date(d.fxDate + 'T00:00:00+08:00');
+                    const ws = String(d.windScaleDay || '').match(/(\d+)\s*-\s*(\d+)/);
+                    const windLevel = ws ? parseInt(ws[2], 10) : (parseInt(d.windScaleDay, 10) || 0);
+                    return {
+                        date,
+                        dateStr: date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
+                        day: weekDays[date.getDay()],
+                        weather: d.textDay || '未知',
+                        weatherCode: parseInt(d.iconDay, 10) || 999,
+                        high: Math.round(parseFloat(d.tempMax) || 0),
+                        low: Math.round(parseFloat(d.tempMin) || 0),
+                        precip: Math.round(parseFloat(d.precip) || 0),
+                        wind: windLevel,
+                        sunrise: d.sunrise || '--:--',
+                        sunset: d.sunset || '--:--',
+                        uv: parseInt(d.uvIndex, 10) || 0
+                    };
+                });
+            },
+
+            /** 解析空气质量（AQI + 6 项污染物） */
+            _parseAqi(air) {
+                if (!air || !air.indexes || !Array.isArray(air.indexes) || air.indexes.length === 0) {
+                    return null;
+                }
+                // 优先取中国 GB 3095 标准 AQI；和风 indexes[0] 通常为 "qaqi"（全站点综合）
+                const idx = air.indexes.find(i => i.code === 'qaqi') || air.indexes[0];
+                const aqiVal = parseInt(idx.aqi, 10) || 0;
+
+                // 等级判定（GB 3095-2012）
+                let level = '优', cls = 1;
+                if (aqiVal > 300)      { level = '严重';   cls = 6; }
+                else if (aqiVal > 200) { level = '重度';   cls = 5; }
+                else if (aqiVal > 150) { level = '中度';   cls = 4; }
+                else if (aqiVal > 100) { level = '轻度';   cls = 3; }
+                else if (aqiVal > 50)  { level = '良';     cls = 2; }
+
+                // 污染物（和风 pollutants 数组里找 code 匹配的）
+                const pollutants = air.pollutants || [];
+                const findPoll = code => {
+                    const p = pollutants.find(pp => pp.code === code);
+                    return p ? parseFloat(p.concentration?.value || 0) : 0;
+                };
+
+                return {
+                    value: aqiVal,
+                    level,
+                    class: cls,
+                    pm25: findPoll('pm2p5'),
+                    pm10: findPoll('pm10'),
+                    o3: findPoll('o3'),
+                    no2: findPoll('no2'),
+                    so2: findPoll('so2'),
+                    co: findPoll('co')
+                };
+            },
+
+            /** 判定当前是否白天（基于本地时间和日出日落估算） */
+            _isDaytime(obsTime) {
+                const h = obsTime ? new Date(obsTime).getHours() : new Date().getHours();
+                return h >= 6 && h < 19;
+            }
+        };
+
         // ==================== 天气 API 接入 (WeatherAPI.com) ====================
         /**
          * 天气 API 管理器
@@ -13297,7 +15380,11 @@
              * WMO 国际气象代码 → 中文天气描述
              * 参考：https://open-meteo.com/en/docs
              */
-            _codeToText(code) {
+            _codeToText(code, source = 'wmo') {
+                // 和风天气 icon 代码 → 中文（追光页用，权威数据）
+                if (source === 'qweather' || (typeof code === 'string' && /^[1-5]\d{2}$/.test(String(code)))) {
+                    return this._qweatherIconToText(code);
+                }
                 const map = {
                     0: '晴',
                     1: '大部晴朗',
@@ -13329,6 +15416,67 @@
                     99: '雷阵雨伴冰雹'
                 };
                 return map[code] !== undefined ? map[code] : '未知';
+            },
+
+            /**
+             * 和风天气 icon 数字 → 中文天气描述
+             * 参考：https://dev.qweather.com/docs/resource/icons/
+             * 100-199 晴/云系；200-299 风系；300-399 雨系；400-499 雪系；500-515 雾/沙尘
+             */
+            _qweatherIconToText(code) {
+                const c = String(code);
+                const map = {
+                    '100': '晴',
+                    '101': '多云',
+                    '102': '少云',
+                    '103': '晴间多云',
+                    '104': '阴',
+                    '150': '晴',
+                    '151': '多云',
+                    '152': '少云',
+                    '153': '晴间多云',
+                    '300': '阵雨',
+                    '301': '强阵雨',
+                    '302': '雷阵雨',
+                    '305': '小雨',
+                    '306': '中雨',
+                    '307': '大雨',
+                    '310': '暴雨',
+                    '311': '大暴雨',
+                    '312': '特大暴雨',
+                    '313': '冻雨',
+                    '314': '小到中雨',
+                    '315': '中到大雨',
+                    '316': '大到暴雨',
+                    '317': '暴雨到大暴雨',
+                    '318': '大暴雨到特大暴雨',
+                    '350': '阵雨',
+                    '351': '强阵雨',
+                    '400': '小雪',
+                    '401': '中雪',
+                    '402': '大雪',
+                    '403': '暴雪',
+                    '407': '阵雪',
+                    '408': '小到中雪',
+                    '409': '中到大雪',
+                    '410': '大到暴雪',
+                    '456': '阵雪',
+                    '457': '阵雪',
+                    '500': '薄雾',
+                    '501': '雾',
+                    '502': '霾',
+                    '509': '浓雾',
+                    '510': '强浓雾',
+                    '511': '中度霾',
+                    '512': '重度霾',
+                    '513': '严重霾',
+                    '514': '大雾',
+                    '515': '特强浓雾',
+                    '900': '热',
+                    '901': '冷',
+                    '999': '未知'
+                };
+                return map[c] !== undefined ? map[c] : '未知';
             }
         };
 
@@ -13384,12 +15532,60 @@
          */
 
         /**
-         * 根据 WMO 代码获取天气图标 SVG
-         * @param {number} code - WMO 天气代码
+         * 根据 WMO / 和风天气 / WeatherAPI.com 代码获取天气图标 SVG
+         * @param {number|string} code - 天气代码
          * @param {boolean} isDay - 是否白天（决定晴/多云的样式）
          * @returns {string} SVG 字符串
          */
         function wxGetIconByCode(code, isDay = true) {
+            const numCode = typeof code === 'string' ? parseInt(code, 10) : code;
+
+            // === 和风天气 QWeather icon 代码（100-515 范围） ===
+            // 优先级最高：追光页（#chase）走和风；范围 100-599 与 WeatherAPI 的 1000+ 错开
+            if (numCode >= 100 && numCode < 600) {
+                // 100/150 = 晴（白天/夜间）
+                if (numCode === 100 || numCode === 150) {
+                    return isDay
+                        ? `<svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66-1.41 1.41M19.07 4.93-1.41 1.41"/></svg>`
+                        : `<svg viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
+                }
+                // 101/103/151/153 = 多云/晴间多云
+                if (numCode === 101 || numCode === 103 || numCode === 151 || numCode === 153) {
+                    return `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" stroke="#94a3b8"/><path d="M12 7a5 5 0 0 1 0 10" stroke="#f59e0b" fill="none"/><circle cx="15" cy="9" r="3" stroke="#f59e0b" fill="none"/></svg>`;
+                }
+                // 102/152 = 少云
+                if (numCode === 102 || numCode === 152) {
+                    return isDay
+                        ? `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="3" stroke="#f59e0b" fill="none"/><path d="M17 19H9a5 5 0 1 1 4.5-7.6" stroke="#94a3b8"/></svg>`
+                        : `<svg viewBox="0 0 24 24" fill="none" stroke="#c4b5fd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
+                }
+                // 104 = 阴
+                if (numCode === 104) {
+                    return `<svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>`;
+                }
+                // 雾/霾/沙尘 500-515
+                if (numCode >= 500 && numCode <= 515) {
+                    return `<svg viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M6 8h12M10 16h4M4 4h16"/></svg>`;
+                }
+                // 雪系 400-499
+                if (numCode >= 400 && numCode < 500) {
+                    const heavy = [402, 403, 410, 457].includes(numCode);
+                    return `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 1 1 0 9Z" stroke="#6b7280"/><path d="${heavy?'M7 17v3M11 18v2M15 17v3M19 18v2':'M8 18v2M12 19v1M16 18v2'}" stroke="#93c5fd"/></svg>`;
+                }
+                // 雷阵雨 302 / 雷阵雨伴冰雹 304
+                if (numCode === 302 || numCode === 304) {
+                    return `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.326A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 .5 8.973" stroke="#6b7280"/><path d="m13 12-3 5h4l-3 5" stroke="#fbbf24"/></svg>`;
+                }
+                // 其他雨系 300-399
+                if (numCode >= 300 && numCode < 400) {
+                    const heavy = [307, 310, 311, 312, 316, 317, 318, 351].includes(numCode);
+                    return `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 1 1 0 9Z" stroke="${heavy?'#4b5563':'#9ca3af'}"/><path d="${heavy?'M6 17v4M10 18v3M14 17v4M18 18v3':'M8 19v2M12 20v2M16 19v2'}" stroke="#3b82f6"/></svg>`;
+                }
+                // 200-299 风系 + 900-999 极端
+                // 兜底用阴天图标
+                return `<svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>`;
+            }
+
             // === WeatherAPI.com 天气代码映射 ===
             // 1000=晴 1003=多云 1006=阴 1009=阴
             if (code === 1000) {
@@ -13633,12 +15829,13 @@
 
         /**
          * 刷新天气数据（主入口）
+         * 数据源优先级：和风天气 QWeather（深圳准确）→ WeatherAPI.com（兜底）→ 演示数据
          * 支持手动刷新和城市切换后刷新
          */
         async function refreshWeather(triggerBtn) {
             const btn = triggerBtn || document.getElementById('wxRefreshBtn');
             const cityId = document.getElementById('wxCitySelect')?.value || '440300';
-            const city = WeatherAPI.cities[cityId] || WeatherAPI.cities['440300'];
+            const city = (QWeatherClient.cities[cityId] || QWeatherClient.cities['440300']);
 
             // 显示加载状态
             _setWxLoading(true, false);
@@ -13649,29 +15846,71 @@
                 btn.classList.add('is-loading');
             }
 
+            // 来源徽标辅助函数（页面顶部小角标，标识当前用的是哪一家）
+            const setSourceBadge = (source) => {
+                const el = document.getElementById('wxSourceBadge');
+                if (!el) return;
+                if (source === 'qweather') {
+                    el.textContent = '数据：和风天气';
+                    el.className = 'wx-source-badge wx-source-badge--primary';
+                    el.style.display = '';
+                } else if (source === 'weatherapi') {
+                    el.textContent = '数据：WeatherAPI.com（兜底）';
+                    el.className = 'wx-source-badge wx-source-badge--fallback';
+                    el.style.display = '';
+                } else if (source === 'demo') {
+                    el.textContent = '演示数据';
+                    el.className = 'wx-source-badge wx-source-badge--demo';
+                    el.style.display = '';
+                }
+            };
+
+            // 主路径：和风天气优先
             try {
-                // 并行获取：天气数据（含 AQI）
-                wxData = await WeatherAPI.getWeather(cityId);
+                wxData = await QWeatherClient.getWeather(cityId);
                 _applyWxData(wxData);
                 _setWxLoading(false, false);
                 _resetWxAutoRefresh();
                 const demoBadge = document.getElementById('wxDemoBadge');
                 if (demoBadge) demoBadge.style.display = 'none';
-                showToast(`${wxData.city}天气已更新`, 'success');
-            } catch (e) {
-                console.error('[Weather] 刷新失败:', e);
-                // API 失败时加载演示数据兜底
-                try {
-                    wxData = await WeatherAPI.getDemoData(cityId);
-                } catch {
-                    wxData = await WeatherAPI.getDemoData(cityId);
-                }
+                setSourceBadge('qweather');
+                showToast(`${wxData.city}天气已更新（和风天气）`, 'success');
+                return;
+            } catch (qErr) {
+                console.warn('[Weather] 和风天气获取失败，降级到 WeatherAPI.com:', qErr.message);
+            }
+
+            // 兜底路径：WeatherAPI.com
+            try {
+                wxData = await WeatherAPI.getWeather(cityId);
+                // 标记为降级源，UI 可显示徽标
+                wxData.source = 'weatherapi';
+                _applyWxData(wxData);
+                _setWxLoading(false, false);
+                _resetWxAutoRefresh();
+                const demoBadge = document.getElementById('wxDemoBadge');
+                if (demoBadge) demoBadge.style.display = 'none';
+                setSourceBadge('weatherapi');
+                showToast('已切换到 WeatherAPI.com 数据源', 'info');
+                return;
+            } catch (wErr) {
+                console.warn('[Weather] WeatherAPI 也失败了，使用演示数据:', wErr.message);
+            }
+
+            // 最后兜底：演示数据
+            try {
+                wxData = await WeatherAPI.getDemoData(cityId);
+                wxData.source = 'demo';
                 _applyWxData(wxData);
                 _setWxLoading(false, false);
                 const demoBadge = document.getElementById('wxDemoBadge');
                 if (demoBadge) demoBadge.style.display = 'inline';
+                setSourceBadge('demo');
                 showToast('当前为演示数据，请检查 API Key 配置', 'info');
                 _resetWxAutoRefresh();
+            } catch (e) {
+                console.error('[Weather] 演示数据也加载失败:', e);
+                _setWxLoading(false, true, '所有数据源均不可用，请检查网络');
             } finally {
                 if (btn) {
                     btn.disabled = false;
@@ -13684,7 +15923,10 @@
          * 切换城市
          */
         function wxChangeCity(cityId) {
-            const cityName = WeatherAPI.cities[cityId]?.name || '深圳市';
+            // 优先用 QWeatherClient 的中文城市名（和风是主数据源）
+            const cityName = QWeatherClient.cities[cityId]?.name
+                || WeatherAPI.cities[cityId]?.name
+                || '深圳市';
             document.getElementById('wxCityName').textContent = cityName;
             refreshWeather();
         }
@@ -14149,6 +16391,8 @@
                 el.addEventListener('click', function(e) {
                     // 忽略嵌套元素的冒泡（如卡片内的按钮）
                     const page = this.dataset.targetPage;
+                    // 关于页是外链（about.html），交给元素自身的 onclick 处理
+                    if (page === 'about') return;
                     if (page) navigateTo(page, e);
                 });
                 // 键盘支持（可访问性）
@@ -14156,6 +16400,11 @@
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         const page = this.dataset.targetPage;
+                        // 关于页是外链，Enter/Space 触发 onclick 跳转
+                        if (page === 'about') {
+                            this.click();
+                            return;
+                        }
                         if (page) navigateTo(page, e);
                     }
                 });
@@ -14474,6 +16723,7 @@
             const mtn = CHASE_MOUNTAINS.find(m => m.id === id);
             if (mtn) {
                 chaseState.currentMountain = mtn;
+                // 如果该山峰已有缓存，loadChaseData 会自动命中（30 分钟内不重发请求）
                 loadChaseData();
             }
         }
@@ -14490,22 +16740,129 @@
         }
 
         /**
-         * 刷新数据
+         * 刷新数据（用户主动触发，绕过客户端缓存）
+         * 使用 .then().finally() 模式，确保无论 loadChaseData 抛出何种异常
+         * 都能恢复刷新按钮的 is-loading 状态，避免 spinner 永远转动的视觉卡死。
          */
         function chaseRefresh() {
             const btn = document.getElementById('chaseRefreshBtn');
             if (btn) btn.classList.add('is-loading');
-            loadChaseData();
+            Promise.resolve()
+                .then(() => loadChaseData(true))
+                .catch(err => {
+                    // 兜底：即便 loadChaseData 内部未处理异常，也要显示错误状态
+                    console.error('[Chase] chaseRefresh 未捕获异常:', err);
+                    const loadingEl = document.getElementById('chaseLoading');
+                    const errorEl = document.getElementById('chaseError');
+                    const contentEl = document.getElementById('chaseContent');
+                    if (loadingEl) loadingEl.style.display = 'none';
+                    if (errorEl) errorEl.style.display = 'flex';
+                    if (contentEl) contentEl.style.display = 'none';
+                    const errMsg = document.getElementById('chaseErrorMsg');
+                    if (errMsg) errMsg.textContent = `数据加载失败 (${err?.message || '未知错误'})，请检查网络后点击刷新`;
+                    chaseState.isLoading = false;
+                })
+                .finally(() => {
+                    if (btn) btn.classList.remove('is-loading');
+                });
         }
 
         /**
-         * 核心函数：从 Open-Meteo API 获取山峰天气数据并渲染
-         * 请求：每日预报（7天，含日出日落、天气、温度、风速、降水概率）
-         * 重试机制：最多 2 次重试（网络不稳定时自动降级到演示数据）
+         * 追光页客户端缓存：30 分钟内同一山峰不重发请求
+         * key: mountainId
+         * value: { data, timestamp }
+         * 注意：用户主动点击刷新按钮时绕过缓存
          */
-        async function loadChaseData() {
+        const CHASE_CACHE_TTL_MS = 30 * 60 * 1000; // 30 分钟
+        const chaseClientCache = new Map();
+
+        /**
+         * WeatherAPI.com 代码 → WMO 等价值
+         * 用于 chaseCalcIndex 内部评分（WMO 代码空间：0-99）
+         * 参考：https://www.weatherapi.com/docs/weather_conditions.json
+         */
+        const WEATHERAPI_TO_WMO = {
+            1000: 0,   // Sunny/Clear        → 晴
+            1003: 2,   // Partly cloudy      → 多云
+            1006: 3,   // Cloudy             → 阴
+            1009: 3,   // Overcast           → 阴
+            1030: 45,  // Mist               → 雾
+            1135: 45,  // Fog                → 雾
+            1147: 48,  // Freezing fog       → 雾凇
+            // 雨系
+            1063: 80,  // Patchy rain possible → 阵雨
+            1150: 51, 1153: 53,             // Drizzle
+            1180: 80, 1183: 61, 1186: 63, 1189: 63,
+            1192: 65, 1195: 65,             // Rain
+            1240: 80, 1243: 81, 1246: 82,   // Rain showers
+            // 雪系
+            1066: 85, 1210: 85, 1213: 71, 1216: 73,
+            1219: 73, 1222: 75, 1225: 75,   // Snow
+            1255: 85, 1258: 86,             // Snow showers
+            // 雷暴
+            1087: 95, 1273: 95, 1276: 95,
+            1279: 96, 1282: 99              // Thunder
+        };
+
+        /**
+         * WeatherAPI 风速 mph → 蒲福风力等级（用于追光指数计算）
+         * WeatherAPI 给的是 mph，需先换算到 m/s 再查等级
+         */
+        function _mphToBeaufort(mph) {
+            const ms = mph * 0.44704;
+            if (ms < 0.3) return 0;
+            if (ms < 1.6) return 1;
+            if (ms < 3.4) return 2;
+            if (ms < 5.5) return 3;
+            if (ms < 8.0) return 4;
+            if (ms < 10.8) return 5;
+            if (ms < 13.9) return 6;
+            if (ms < 17.2) return 7;
+            if (ms < 20.8) return 8;
+            if (ms < 24.5) return 9;
+            if (ms < 28.5) return 10;
+            if (ms < 32.7) return 11;
+            return 12;
+        }
+
+        /**
+         * WeatherAPI astro 时间字符串（"05:39 AM"）→ 24 小时制（"05:39"）
+         * 解析失败时返回原字符串
+         */
+        function _formatTime12to24(s) {
+            if (!s || typeof s !== 'string') return '';
+            const m = s.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM|am|pm)?$/);
+            if (!m) return s;
+            let h = parseInt(m[1], 10);
+            const min = m[2];
+            const ap = (m[3] || '').toUpperCase();
+            if (ap === 'PM' && h < 12) h += 12;
+            else if (ap === 'AM' && h === 12) h = 0;
+            return `${String(h).padStart(2, '0')}:${min}`;
+        }
+
+        /**
+         * 核心函数：从 WeatherAPI.com 获取山峰天气数据并渲染
+         * 数据源：WeatherAPI.com（/v1/forecast.json）
+         * 优点：浏览器直连支持 CORS，无需后端代理；免费版每月 10 万次调用
+         * 重试机制：最多 2 次重试（网络不稳定时显示错误状态）
+         * 客户端缓存：30 分钟内同一山峰不重发请求
+         */
+        async function loadChaseData(forceRefresh = false) {
             const mtn = chaseState.currentMountain;
             if (!mtn) return;
+
+            // 客户端 dedup：30 分钟内同一山峰不重发（用户主动刷新按钮可绕过）
+            const cacheKey = mtn.id;
+            if (!forceRefresh) {
+                const cached = chaseClientCache.get(cacheKey);
+                if (cached && (Date.now() - cached.timestamp) < CHASE_CACHE_TTL_MS) {
+                    console.log(`[Chase] 使用客户端缓存（${mtn.name}，剩余 ${Math.round((CHASE_CACHE_TTL_MS - (Date.now() - cached.timestamp)) / 60000)} 分钟）`);
+                    chaseState.data = cached.data;
+                    _renderChaseSuccess();
+                    return;
+                }
+            }
 
             // 显示加载状态
             document.getElementById('chaseLoading').style.display = 'flex';
@@ -14513,97 +16870,174 @@
             document.getElementById('chaseContent').style.display = 'none';
             chaseState.isLoading = true;
 
+            // 检查 API Key
+            const apiKey = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.WEATHER_API_KEY)
+                ? APP_CONFIG.WEATHER_API_KEY : '';
+            if (!apiKey || apiKey === 'YOUR_WEATHER_API_KEY') {
+                _showChaseError(new Error('WeatherAPI Key 未配置'));
+                return;
+            }
+
             const MAX_RETRIES = 2;
             let lastError = null;
+            // 把 controller/timeout 提到 try 块外（catch 块也能访问）
+            let controller = null;
+            let timeout = null;
 
             for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+                controller = new AbortController();
+                timeout = setTimeout(() => controller.abort(), 12000);
                 try {
-                    const controller = new AbortController();
-                    const timeout = setTimeout(() => controller.abort(), 12000);
-                    // 只请求一次 daily 预报（已包含所有需要的数据）
-                    const res = await fetch(
-                        `https://api.open-meteo.com/v1/forecast?latitude=${mtn.lat}&longitude=${mtn.lng}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,sunrise,sunset&forecast_days=7&timezone=Asia%2FShanghai`,
-                        { signal: controller.signal }
-                    );
-                    clearTimeout(timeout);
+                    // WeatherAPI.com 7 天预报（含每小时 + astro），浏览器直连 CORS
+                    const loc = `${mtn.lat.toFixed(2)},${mtn.lng.toFixed(2)}`;
+                    const url = `https://api.weatherapi.com/v1/forecast.json?key=${encodeURIComponent(apiKey)}&q=${encodeURIComponent(loc)}&days=7&aqi=yes&alerts=yes&lang=zh`;
 
-                    if (!res.ok) throw new Error(`API 返回错误: ${res.status}`);
+                    const res = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timeout); timeout = null;
+
+                    if (!res.ok) {
+                        const errText = await res.text().catch(() => '');
+                        throw new Error(`API 返回错误: ${res.status}${errText ? ' ' + errText.substring(0, 120) : ''}`);
+                    }
 
                     const data = await res.json();
-                    if (!data.daily || !data.daily.time) throw new Error('API 数据格式异常');
+                    if (!data.forecast || !Array.isArray(data.forecast.forecastday)) {
+                        throw new Error('API 响应缺少 forecast.forecastday');
+                    }
 
                     // 标准化数据
                     const today = new Date();
                     today.setHours(0, 0, 0, 0);
 
-                    chaseState.data = data.daily.time.map((dateStr, i) => {
-                        const date = new Date(dateStr + 'T00:00:00+08:00');
+                    chaseState.data = data.forecast.forecastday.map((d) => {
+                        const date = new Date(d.date + 'T00:00:00+08:00');
                         const isToday = date.getTime() === today.getTime();
                         const dayDiff = Math.round((date - today) / (1000 * 60 * 60 * 24));
+                        const wapiCode = d.day.condition.code;
+                        const wmoCode = WEATHERAPI_TO_WMO[wapiCode] !== undefined ? WEATHERAPI_TO_WMO[wapiCode] : 2; // 默认多云
 
-                        // 解析日出日落（API 返回 ISO 格式时间字符串）
-                        let sunriseStr = '--:--', sunsetStr = '--:--';
-                        try {
-                            if (data.daily.sunrise && data.daily.sunrise[i]) {
-                                sunriseStr = new Date(data.daily.sunrise[i]).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Shanghai' });
-                            }
-                            if (data.daily.sunset && data.daily.sunset[i]) {
-                                sunsetStr = new Date(data.daily.sunset[i]).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Shanghai' });
-                            }
-                        } catch (e) { /* use defaults */ }
+                        // 降水概率（WeatherAPI 直接给百分比；缺失则按 totalprecip_mm 推算）
+                        let precipProb = parseInt(d.day.daily_chance_of_rain, 10);
+                        if (isNaN(precipProb)) {
+                            const mm = parseFloat(d.day.totalprecip_mm) || 0;
+                            precipProb = Math.min(100, Math.round(mm * 20));
+                        }
+
+                        // 云量（按白天天气的逐小时数据取均值；缺失则根据代码估算）
+                        let cloudCover = null;
+                        if (Array.isArray(d.hour)) {
+                            const dayHours = d.hour.filter(h => h.is_day === 1);
+                            const pool = dayHours.length ? dayHours : d.hour;
+                            const sum = pool.reduce((s, h) => s + (parseInt(h.cloud, 10) || 0), 0);
+                            cloudCover = Math.round(sum / pool.length);
+                        }
+                        if (cloudCover === null || isNaN(cloudCover)) {
+                            // 兜底：按 WMO 类别估算
+                            cloudCover = wmoCode === 0 ? 5 : wmoCode === 1 ? 15
+                                : wmoCode === 2 ? 50 : wmoCode === 3 ? 90
+                                : wmoCode >= 45 && wmoCode <= 48 ? 95
+                                : wmoCode >= 51 && wmoCode <= 67 ? 80
+                                : wmoCode >= 71 && wmoCode <= 86 ? 85 : 70;
+                        }
+
+                        // 风力等级（WeatherAPI 给 mph，换算到蒲福）
+                        const windMph = parseFloat(d.day.maxwind_mph) || 0;
+                        const windSpeed = _mphToBeaufort(windMph);
+
+                        const high = Math.round(parseFloat(d.day.maxtemp_c) || 0);
+                        const low = Math.round(parseFloat(d.day.mintemp_c) || 0);
+                        const temp = Math.round((high + low) / 2);
 
                         return {
-                            date: date,
+                            date,
                             dateStr: date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
-                            dateFull: dateStr,
+                            dateFull: d.date,
                             dayLabel: isToday ? '今天' : (dayDiff === 1 ? '明天' : ['周日','周一','周二','周三','周四','周五','周六'][date.getDay()]),
                             dayDiff,
-                            weatherCode: data.daily.weather_code[i],
-                            weatherText: WeatherAPI._codeToText(data.daily.weather_code[i]),
-                            high: Math.round(data.daily.temperature_2m_max[i]),
-                            low: Math.round(data.daily.temperature_2m_min[i]),
-                            precipProb: Math.round(data.daily.precipitation_probability_max[i] || 0),
-                            windSpeed: Math.round(data.daily.wind_speed_10m_max[i]),
-                            sunrise: sunriseStr,
-                            sunset: sunsetStr,
-                            cloudCover: _estimateCloudCover(data.daily.weather_code[i])
+                            // weatherCode 保留 WeatherAPI 原值，给 _codeToText 与 wxGetIconByCode 用
+                            weatherCode: wapiCode,
+                            weatherClass: wmoCode, // 内部 WMO 等价值，给 chaseCalcIndex 用
+                            weatherSource: 'weatherapi',
+                            weatherText: d.day.condition.text || WeatherAPI._codeToText(wapiCode, 'wmo'),
+                            high,
+                            low,
+                            temp,
+                            precipProb,
+                            windSpeed,
+                            windMph,
+                            windKph: parseFloat(d.day.maxwind_kph) || 0,
+                            sunrise: _formatTime12to24(d.astro?.sunrise) || '--:--',
+                            sunset: _formatTime12to24(d.astro?.sunset) || '--:--',
+                            moonrise: _formatTime12to24(d.astro?.moonrise) || '',
+                            moonset: _formatTime12to24(d.astro?.moonset) || '',
+                            moonPhase: d.astro?.moon_phase || '',
+                            cloudCover,
+                            humidity: parseInt(d.day.avghumidity, 10) || 0,
+                            uv: parseFloat(d.day.uv) || 0
                         };
                     });
 
                     // 计算每天追光指数
                     chaseState.data.forEach(d => {
-                        d.score = chaseCalcIndex(d, chaseState.mode);
+                        // chaseCalcIndex 期望的字段是 weatherCode（按 WMO 评估），我们临时把 weatherClass 注入进去
+                        const tmp = { ...d, weatherCode: d.weatherClass };
+                        d.score = chaseCalcIndex(tmp, chaseState.mode);
                         d.level = chaseGetLevel(d.score);
                     });
 
-                    // 渲染页面
-                    document.getElementById('chaseLoading').style.display = 'none';
-                    document.getElementById('chaseContent').style.display = 'block';
-                    renderChaseContent();
+                    // 写入客户端缓存
+                    chaseClientCache.set(cacheKey, {
+                        data: chaseState.data,
+                        timestamp: Date.now()
+                    });
 
-                    // 重置自动刷新计时
-                    resetChaseAutoRefresh();
+                    _renderChaseSuccess();
                     return; // 成功，直接返回
 
                 } catch (err) {
-                    clearTimeout(timeout);
+                    if (timeout) { clearTimeout(timeout); timeout = null; }
                     lastError = err;
                     console.warn(`[Chase] 第 ${attempt + 1} 次加载失败:`, err.message);
                     if (attempt < MAX_RETRIES) {
-                        // 等待后重试（指数退避）
                         await new Promise(r => setTimeout(r, 1000 * Math.pow(2, attempt)));
                     }
                 }
             }
 
-            // 所有重试均失败，显示错误状态（而非直接降级到演示数据）
+            // 所有重试均失败，显示错误状态
+            _showChaseError(lastError);
+        }
+
+        /**
+         * 内部共用：显示追光页错误状态
+         * @param {Error} lastError
+         */
+        function _showChaseError(lastError) {
             console.error('[Chase] 全部重试失败:', lastError);
-            document.getElementById('chaseLoading').style.display = 'none';
-            document.getElementById('chaseError').style.display = 'flex';
-            document.getElementById('chaseErrorMsg').textContent =
+            const loadingEl = document.getElementById('chaseLoading');
+            const errorEl = document.getElementById('chaseError');
+            const contentEl = document.getElementById('chaseContent');
+            const errMsg = document.getElementById('chaseErrorMsg');
+            if (loadingEl) loadingEl.style.display = 'none';
+            if (errorEl) errorEl.style.display = 'flex';
+            if (contentEl) contentEl.style.display = 'none';
+            if (errMsg) errMsg.textContent =
                 `数据加载失败 (${lastError?.message || '网络错误'})，请检查网络后点击刷新`;
-            document.getElementById('chaseContent').style.display = 'none';
-            // 重置加载状态（修复：原 finally 块为孤立结构，已移出）
+            chaseState.isLoading = false;
+            const btn = document.getElementById('chaseRefreshBtn');
+            if (btn) btn.classList.remove('is-loading');
+        }
+
+        /**
+         * 渲染成功状态（追光数据已就绪）
+         * 内部共用函数，避免 loadChaseData 与 loadChaseDemoData 重复
+         */
+        function _renderChaseSuccess() {
+            document.getElementById('chaseLoading').style.display = 'none';
+            document.getElementById('chaseError').style.display = 'none';
+            document.getElementById('chaseContent').style.display = 'block';
+            renderChaseContent();
+            resetChaseAutoRefresh();
             chaseState.isLoading = false;
             const btn = document.getElementById('chaseRefreshBtn');
             if (btn) btn.classList.remove('is-loading');
@@ -14611,33 +17045,42 @@
 
         /**
          * 演示数据兜底加载（API 失败时调用）
+         * 使用和风 icon 代码格式以保持 UI 一致
          */
         function loadChaseDemoData() {
             const mtn = chaseState.currentMountain;
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+            // 和风 icon 格式：100=晴, 101=多云, 104=阴, 305=小雨, 400=小雪
+            const demoCodes = ['100', '101', '104', '305', '400'];
 
             chaseState.data = [];
             for (let i = 0; i < 7; i++) {
                 const d = new Date(today);
                 d.setDate(d.getDate() + i);
                 const dayDiff = i;
+                const code = parseInt(demoCodes[i % 5], 10);
+                const high = 22 + Math.round(Math.random() * 6);
+                const low = 16 + Math.round(Math.random() * 4);
                 chaseState.data.push({
                     date: d,
                     dateStr: d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
                     dateFull: d.toISOString().split('T')[0],
                     dayLabel: i === 0 ? '今天' : (i === 1 ? '明天' : weekDays[d.getDay()]),
                     dayDiff,
-                    weatherCode: [1, 2, 3, 61, 71][i % 5],
-                    weatherText: WeatherAPI._codeToText([1, 2, 3, 61, 71][i % 5]),
-                    high: 22 + Math.round(Math.random() * 6),
-                    low: 16 + Math.round(Math.random() * 4),
+                    weatherCode: code,
+                    weatherSource: 'demo',
+                    weatherText: WeatherAPI._codeToText(code, 'qweather'),
+                    high,
+                    low,
+                    temp: Math.round((high + low) / 2),
                     precipProb: Math.round(Math.random() * 70),
                     windSpeed: Math.round(Math.random() * 6) + 2,
                     sunrise: '06:18',
                     sunset: '18:42',
                     cloudCover: 30 + Math.round(Math.random() * 50),
+                    humidity: 60 + Math.round(Math.random() * 20),
                     score: Math.round(Math.random() * 40) + 50,
                     level: 'medium',
                     isDemo: true
@@ -14649,14 +17092,8 @@
                 d.level = chaseGetLevel(d.score);
             });
 
-            document.getElementById('chaseLoading').style.display = 'none';
-            document.getElementById('chaseContent').style.display = 'block';
-            renderChaseContent();
-            resetChaseAutoRefresh();
+            _renderChaseSuccess();
             showToast('当前为演示数据，请检查网络连接', 'info');
-            chaseState.isLoading = false;
-            const btn = document.getElementById('chaseRefreshBtn');
-            if (btn) btn.classList.remove('is-loading');
         }
 
         /**
@@ -14825,128 +17262,1251 @@
          */
         window.initChasePageV3 = initChasePageV3;
 
-        // Trail Feature
+        // ====================================================
+        // Trail Feature · 青山不迷 · 户外徒步轨迹记录
+        // ====================================================
         let isTracking = false;
         let trailPoints = [];
-        let trailInterval;
+        let trailInterval = null;
+        let trailSeconds = 0;
+        let trailDistance = 0;
+        let trailElevation = 0;
+        let trailElevSeries = []; // 海拔变化曲线数据
+        let trailBgRec = false;
+        let trailPowerSave = false;
+        let currentMapMode = 'offline';
+        let gpsState = 'idle'; // idle | live | lost
+        let trailLongPressTimer = null;
+        let trailRenamingId = null;
+        let trailActiveLibraryId = null;
 
-        /**
-         * 初始化轨迹画布（页面切换到轨迹Tab时调用）
-         */
+        const TRAIL_PALETTE = ['#2d5a3d', '#5c946e', '#c08552', '#8a9b8c', '#b06f0b', '#4a7c59', '#7d8b69'];
+        const TRAIL_STORAGE_KEYS = {
+            points: 'xiaoShanQing_trailPoints',
+            library: 'xiaoShanQing_trailLibrary',
+            mode: 'xiaoShanQing_lastMapMode',
+            layerOpts: 'xiaoShanQing_layerOpts'
+        };
+
+        const layerOptsDefault = {
+            contour: 50,
+            contourOpacity: 70,
+            heat: 'time',
+            dangerSlope: true,
+            ridgeValley: true,
+            poiLabels: true
+        };
+
+        function loadLayerOpts() {
+            try {
+                const raw = localStorage.getItem(TRAIL_STORAGE_KEYS.layerOpts);
+                if (!raw) return Object.assign({}, layerOptsDefault);
+                return Object.assign({}, layerOptsDefault, JSON.parse(raw));
+            } catch (e) {
+                return Object.assign({}, layerOptsDefault);
+            }
+        }
+
+        let layerOpts = loadLayerOpts();
+
+        function saveLayerOpts() {
+            try { localStorage.setItem(TRAIL_STORAGE_KEYS.layerOpts, JSON.stringify(layerOpts)); } catch (e) {}
+        }
+
+        function fmtPace(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = Math.floor(seconds % 60);
+            const pad = n => n.toString().padStart(2, '0');
+            return h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+        }
+
+        function fmtCoord(v, type) {
+            const num = Number(v).toFixed(4);
+            return type === 'lng' ? `${num}°E` : `${num}°N`;
+        }
+
+        function getCanvas() {
+            const c = document.getElementById('trailCanvas');
+            if (!c) return null;
+            const dpr = window.devicePixelRatio || 1;
+            const rect = c.parentElement.getBoundingClientRect();
+            const w = Math.max(640, Math.floor(rect.width));
+            const h = Math.max(360, Math.floor(rect.height));
+            if (c.width !== w * dpr || c.height !== h * dpr) {
+                c.width = w * dpr;
+                c.height = h * dpr;
+                c.style.width = w + 'px';
+                c.style.height = h + 'px';
+            }
+            const ctx = c.getContext('2d');
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            return { canvas: c, ctx, w, h };
+        }
+
+        function drawTrailHistory(ctx, w, h) {
+            if (trailPoints.length < 1) return;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            for (let i = 1; i < trailPoints.length; i++) {
+                const a = trailPoints[i - 1];
+                const b = trailPoints[i];
+                ctx.strokeStyle = i === trailPoints.length - 1 ? '#c0392b' : 'rgba(192, 57, 43, 0.55)';
+                ctx.lineWidth = i === trailPoints.length - 1 ? 3 : 2;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+            }
+            const last = trailPoints[trailPoints.length - 1];
+            ctx.fillStyle = '#fff';
+            ctx.strokeStyle = '#c0392b';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(last.x, last.y, 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = '#c0392b';
+            ctx.beginPath();
+            ctx.arc(last.x, last.y, 3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawOfflineMap(ctx, w, h) {
+            // 地形晕渲 + 山道 / 水源 / 营地
+            const grad = ctx.createLinearGradient(0, 0, 0, h);
+            grad.addColorStop(0, 'rgba(196, 168, 122, 0.15)');
+            grad.addColorStop(1, 'rgba(122, 156, 134, 0.18)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
+
+            // 山脊晕染
+            ctx.fillStyle = 'rgba(45, 90, 61, 0.18)';
+            ctx.beginPath();
+            ctx.moveTo(0, h);
+            ctx.bezierCurveTo(w * 0.15, h * 0.55, w * 0.32, h * 0.5, w * 0.45, h * 0.62);
+            ctx.bezierCurveTo(w * 0.6, h * 0.74, w * 0.78, h * 0.58, w, h * 0.7);
+            ctx.lineTo(w, h);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = 'rgba(74, 124, 89, 0.18)';
+            ctx.beginPath();
+            ctx.moveTo(0, h);
+            ctx.bezierCurveTo(w * 0.2, h * 0.7, w * 0.4, h * 0.78, w * 0.55, h * 0.72);
+            ctx.bezierCurveTo(w * 0.72, h * 0.66, w * 0.88, h * 0.78, w, h * 0.82);
+            ctx.lineTo(w, h);
+            ctx.closePath();
+            ctx.fill();
+
+            // 山道
+            ctx.strokeStyle = 'rgba(192, 134, 82, 0.55)';
+            ctx.lineWidth = 1.8;
+            ctx.setLineDash([6, 4]);
+            ctx.beginPath();
+            ctx.moveTo(w * 0.08, h * 0.92);
+            ctx.bezierCurveTo(w * 0.25, h * 0.78, w * 0.45, h * 0.62, w * 0.62, h * 0.52);
+            ctx.bezierCurveTo(w * 0.78, h * 0.44, w * 0.9, h * 0.36, w * 0.96, h * 0.3);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // 水源（蓝色圆点）
+            if (layerOpts.poiLabels) {
+                ctx.fillStyle = '#4f86a8';
+                ctx.beginPath();
+                ctx.arc(w * 0.34, h * 0.78, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#5a6b5c';
+                ctx.font = '11px -apple-system, "PingFang SC", sans-serif';
+                ctx.fillText('水源', w * 0.34 + 7, h * 0.78 + 4);
+
+                ctx.fillStyle = '#c08552';
+                ctx.beginPath();
+                ctx.arc(w * 0.72, h * 0.6, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#5a6b5c';
+                ctx.fillText('营地', w * 0.72 + 7, h * 0.6 + 4);
+
+                ctx.fillStyle = '#5a6b5c';
+                ctx.beginPath();
+                ctx.arc(w * 0.5, h * 0.42, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillText('山道 起点', w * 0.5 + 7, h * 0.42 + 4);
+            }
+        }
+
+        function drawHeatmap(ctx, w, h) {
+            // 多条历史轨迹淡色叠加
+            const palette = TRAIL_PALETTE;
+            const trails = getLibraryTrails();
+            // 把当前轨迹放最后高亮
+            const all = trails.slice(0, 6);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            all.forEach((t, idx) => {
+                const pts = (t.points && t.points.length) ? t.points : generateFakeTrail(w, h, idx);
+                if (pts.length < 2) return;
+                ctx.strokeStyle = hexToRgba(palette[idx % palette.length], idx === trailActiveLibraryId ? 0.95 : 0.32);
+                ctx.lineWidth = idx === trailActiveLibraryId ? 3.2 : 2.4;
+                ctx.beginPath();
+                ctx.moveTo(pts[0].x, pts[0].y);
+                pts.forEach(p => ctx.lineTo(p.x, p.y));
+                ctx.stroke();
+                if (idx === trailActiveLibraryId) {
+                    const last = pts[pts.length - 1];
+                    ctx.fillStyle = palette[idx % palette.length];
+                    ctx.beginPath();
+                    ctx.arc(last.x, last.y, 6, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+
+            // 热力染色维度标签
+            const labels = { time: '染色：时间', speed: '染色：速度', altitude: '染色：海拔' };
+            ctx.fillStyle = 'rgba(26, 58, 40, 0.65)';
+            ctx.font = '11px -apple-system, "PingFang SC", sans-serif';
+            ctx.fillText(labels[layerOpts.heat] || '染色：时间', 12, 18);
+        }
+
+        function generateFakeTrail(w, h, seed) {
+            const pts = [];
+            let x = (seed + 1) * (w * 0.12);
+            let y = h - 20;
+            const len = 8 + (seed % 4);
+            for (let i = 0; i < len; i++) {
+                x += (Math.sin((i + seed) * 0.7) * 60) + (seed * 20);
+                y -= 25 + Math.random() * 20;
+                pts.push({ x: Math.max(20, Math.min(w - 20, x)), y: Math.max(40, Math.min(h - 20, y)) });
+            }
+            return pts;
+        }
+
+        function hexToRgba(hex, a) {
+            const m = hex.replace('#', '');
+            const r = parseInt(m.substring(0, 2), 16);
+            const g = parseInt(m.substring(2, 4), 16);
+            const b = parseInt(m.substring(4, 6), 16);
+            return `rgba(${r}, ${g}, ${b}, ${a})`;
+        }
+
+        function drawContour(ctx, w, h) {
+            const step = layerOpts.contour; // 等高距
+            const opacity = layerOpts.contourOpacity / 100;
+            // 横向等高线
+            ctx.lineCap = 'round';
+            for (let y = 40; y < h; y += 28) {
+                const amp = 8 + Math.sin(y * 0.04) * 6;
+                const steep = y < h * 0.4 ? 0.85 : 0.4; // 陡坡区域线条更密
+                ctx.strokeStyle = `rgba(45, 90, 61, ${opacity * 0.55})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                for (let x = 0; x <= w; x += 12) {
+                    ctx.lineTo(x, y + Math.sin(x * 0.018 + y * 0.03) * amp);
+                }
+                ctx.stroke();
+            }
+
+            // 海拔数值
+            if (layerOpts.ridgeValley) {
+                ctx.fillStyle = `rgba(26, 58, 40, ${opacity})`;
+                ctx.font = '10px -apple-system, "PingFang SC", sans-serif';
+                for (let y = 60; y < h; y += 84) {
+                    ctx.fillText(`${(380 + (h - y) * 1.2).toFixed(0)} m`, 8, y);
+                }
+
+                // 山脊 / 山谷标记
+                ctx.fillStyle = '#b06f0b';
+                ctx.beginPath();
+                ctx.arc(w * 0.5, h * 0.42, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#3d6b4f';
+                ctx.fillText('山脊', w * 0.5 + 7, h * 0.42 + 4);
+
+                ctx.fillStyle = '#4f86a8';
+                ctx.beginPath();
+                ctx.arc(w * 0.3, h * 0.78, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#5a6b5c';
+                ctx.fillText('山谷', w * 0.3 + 7, h * 0.78 + 4);
+            }
+
+            // 危险陡坡红色警示
+            if (layerOpts.dangerSlope) {
+                ctx.fillStyle = 'rgba(231, 76, 60, 0.18)';
+                ctx.beginPath();
+                ctx.moveTo(w * 0.6, h);
+                ctx.lineTo(w * 0.62, h * 0.4);
+                ctx.lineTo(w * 0.78, h * 0.4);
+                ctx.lineTo(w * 0.8, h);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.strokeStyle = 'rgba(192, 57, 43, 0.85)';
+                ctx.lineWidth = 1.4;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(w * 0.6, h);
+                ctx.lineTo(w * 0.62, h * 0.4);
+                ctx.lineTo(w * 0.78, h * 0.4);
+                ctx.lineTo(w * 0.8, h);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.fillStyle = '#c0392b';
+                ctx.font = 'bold 11px -apple-system, "PingFang SC", sans-serif';
+                ctx.fillText('≥30° 陡坡危险', w * 0.6 + 4, h * 0.55);
+            }
+
+            // 等高距标注
+            ctx.fillStyle = 'rgba(26, 58, 40, 0.55)';
+            ctx.font = '11px -apple-system, "PingFang SC", sans-serif';
+            ctx.fillText(`等高距 ${step} m`, 12, 18);
+        }
+
+        function renderCanvas(mode) {
+            const obj = getCanvas();
+            if (!obj) return;
+            const { ctx, w, h } = obj;
+            ctx.clearRect(0, 0, w, h);
+
+            if (mode === 'offline') drawOfflineMap(ctx, w, h);
+            else if (mode === 'heatmap') drawHeatmap(ctx, w, h);
+            else if (mode === 'contour') drawContour(ctx, w, h);
+
+            // 在所有图层上方叠加：当前活动轨迹
+            if (isTracking || trailPoints.length > 1) {
+                drawTrailHistory(ctx, w, h);
+            }
+        }
+
+        // ====================================================
+        // 初始化画布（页面切换到轨迹Tab时调用）
+        // ====================================================
         function initTrailCanvas() {
+            // 恢复当前轨迹点
+            try {
+                const saved = localStorage.getItem(TRAIL_STORAGE_KEYS.points);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed)) trailPoints = parsed;
+                }
+            } catch (e) { /* ignore */ }
+
+            // 记忆上次选中图层
+            try {
+                const last = localStorage.getItem(TRAIL_STORAGE_KEYS.mode);
+                if (last && ['offline', 'heatmap', 'contour'].includes(last)) {
+                    currentMapMode = last;
+                }
+            } catch (e) { /* ignore */ }
+
+            bindTrailEvents();
+            syncLayerTabsUI();
+            updateGpsIndicator();
+            renderElevationChart();
+            renderCanvas(currentMapMode);
+            updateMiniWeather();
+        }
+
+        function bindTrailEvents() {
+            // Tab 切换
+            document.querySelectorAll('#trail .layer-tab').forEach(btn => {
+                if (btn.__bound) return;
+                btn.__bound = true;
+                btn.addEventListener('click', e => {
+                    const mode = btn.dataset.mode;
+                    if (!mode) return;
+                    currentMapMode = mode;
+                    try { localStorage.setItem(TRAIL_STORAGE_KEYS.mode, mode); } catch (err) {}
+                    syncLayerTabsUI();
+                    const canvas = document.getElementById('trailCanvas');
+                    if (canvas) {
+                        canvas.style.opacity = '0.55';
+                        setTimeout(() => { canvas.style.opacity = '1'; }, 120);
+                    }
+                    renderCanvas(mode);
+                });
+            });
+
+            // 齿轮弹窗
+            const settingsBtn = document.getElementById('layerSettingsBtn');
+            if (settingsBtn && !settingsBtn.__bound) {
+                settingsBtn.__bound = true;
+                settingsBtn.addEventListener('click', () => openModal('layerModal'));
+            }
+
+            // 轨迹库
+            const libBtn = document.getElementById('trailLibraryBtn');
+            if (libBtn && !libBtn.__bound) {
+                libBtn.__bound = true;
+                libBtn.addEventListener('click', () => {
+                    renderLibraryList();
+                    openModal('libraryModal');
+                });
+            }
+
+            // 弹窗关闭（遮罩 / 按钮）
+            document.querySelectorAll('[data-close]').forEach(el => {
+                if (el.__bound) return;
+                el.__bound = true;
+                el.addEventListener('click', () => {
+                    const target = el.getAttribute('data-close');
+                    if (target === 'modal') closeModal('layerModal');
+                    else if (target === 'library') closeModal('libraryModal');
+                    else if (target === 'rename') closeModal('renameModal');
+                });
+            });
+
+            // 等高距 chip
+            document.querySelectorAll('[data-contour]').forEach(chip => {
+                if (chip.__bound) return;
+                chip.__bound = true;
+                chip.addEventListener('click', () => {
+                    layerOpts.contour = Number(chip.dataset.contour);
+                    document.querySelectorAll('[data-contour]').forEach(c => {
+                        const active = c === chip;
+                        c.classList.toggle('is-active', active);
+                        c.setAttribute('aria-checked', active ? 'true' : 'false');
+                    });
+                    saveLayerOpts();
+                    if (currentMapMode === 'contour') renderCanvas('contour');
+                });
+            });
+
+            // 透明度滑块
+            const opacityEl = document.getElementById('contourOpacity');
+            const opacityVal = document.getElementById('contourOpacityValue');
+            if (opacityEl && !opacityEl.__bound) {
+                opacityEl.value = layerOpts.contourOpacity;
+                if (opacityVal) opacityVal.textContent = layerOpts.contourOpacity + '%';
+                opacityEl.__bound = true;
+                opacityEl.addEventListener('input', () => {
+                    layerOpts.contourOpacity = Number(opacityEl.value);
+                    if (opacityVal) opacityVal.textContent = layerOpts.contourOpacity + '%';
+                    saveLayerOpts();
+                    if (currentMapMode === 'contour') renderCanvas('contour');
+                });
+            }
+
+            // 热力染色维度
+            document.querySelectorAll('[data-heat]').forEach(chip => {
+                if (chip.__bound) return;
+                chip.__bound = true;
+                chip.addEventListener('click', () => {
+                    layerOpts.heat = chip.dataset.heat;
+                    document.querySelectorAll('[data-heat]').forEach(c => {
+                        const active = c === chip;
+                        c.classList.toggle('is-active', active);
+                        c.setAttribute('aria-checked', active ? 'true' : 'false');
+                    });
+                    saveLayerOpts();
+                    if (currentMapMode === 'heatmap') renderCanvas('heatmap');
+                });
+            });
+
+            // 复选框
+            const dangerEl = document.getElementById('dangerSlope');
+            if (dangerEl && !dangerEl.__bound) {
+                dangerEl.checked = layerOpts.dangerSlope;
+                dangerEl.__bound = true;
+                dangerEl.addEventListener('change', () => {
+                    layerOpts.dangerSlope = dangerEl.checked;
+                    saveLayerOpts();
+                    if (currentMapMode === 'contour') renderCanvas('contour');
+                });
+            }
+            const ridgeEl = document.getElementById('ridgeValley');
+            if (ridgeEl && !ridgeEl.__bound) {
+                ridgeEl.checked = layerOpts.ridgeValley;
+                ridgeEl.__bound = true;
+                ridgeEl.addEventListener('change', () => {
+                    layerOpts.ridgeValley = ridgeEl.checked;
+                    saveLayerOpts();
+                    if (currentMapMode === 'contour') renderCanvas('contour');
+                });
+            }
+            const poiEl = document.getElementById('poiLabels');
+            if (poiEl && !poiEl.__bound) {
+                poiEl.checked = layerOpts.poiLabels;
+                poiEl.__bound = true;
+                poiEl.addEventListener('change', () => {
+                    layerOpts.poiLabels = poiEl.checked;
+                    saveLayerOpts();
+                    if (currentMapMode === 'offline') renderCanvas('offline');
+                });
+            }
+
+            // 地图悬浮控件
+            const fabGps = document.getElementById('fabGps');
+            if (fabGps && !fabGps.__bound) {
+                fabGps.__bound = true;
+                fabGps.addEventListener('click', () => {
+                    simulateGpsFix();
+                    renderCanvas(currentMapMode);
+                });
+            }
+            const fabIn = document.getElementById('fabZoomIn');
+            const fabOut = document.getElementById('fabZoomOut');
+            if (fabIn && !fabIn.__bound) {
+                fabIn.__bound = true;
+                fabIn.addEventListener('click', () => zoomCanvas(1.2));
+            }
+            if (fabOut && !fabOut.__bound) {
+                fabOut.__bound = true;
+                fabOut.addEventListener('click', () => zoomCanvas(0.85));
+            }
+            const fabFs = document.getElementById('fabFullscreen');
+            if (fabFs && !fabFs.__bound) {
+                fabFs.__bound = true;
+                fabFs.addEventListener('click', () => {
+                    const stage = document.querySelector('.page--trail .map-stage');
+                    if (!stage) return;
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen?.();
+                    } else {
+                        stage.requestFullscreen?.();
+                    }
+                });
+            }
+
+            // 底部 CTA 按钮
+            const cta = document.getElementById('trailCtaBtn');
+            if (cta && !cta.__bound) {
+                cta.__bound = true;
+                const start = (e) => { e.preventDefault(); startTracking(); };
+                cta.addEventListener('click', start);
+                // 长按弹出拓展菜单
+                cta.addEventListener('pointerdown', () => {
+                    clearTimeout(trailLongPressTimer);
+                    trailLongPressTimer = setTimeout(() => openMoreMenu(), 520);
+                });
+                ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => {
+                    cta.addEventListener(ev, () => clearTimeout(trailLongPressTimer));
+                });
+            }
+
+            // SOS 按钮
+            const sosBtn = document.getElementById('trailSosBtn');
+            if (sosBtn && !sosBtn.__bound) {
+                sosBtn.__bound = true;
+                sosBtn.addEventListener('click', () => triggerSosFromTrail());
+            }
+            // 更多按钮（拓展菜单触发）
+            const moreBtn = document.getElementById('trailMoreBtn');
+            if (moreBtn && !moreBtn.__bound) {
+                moreBtn.__bound = true;
+                moreBtn.addEventListener('click', () => openMoreMenu());
+            }
+
+            // 拓展菜单项
+            const bgBtn = document.getElementById('trailBgRec');
+            if (bgBtn && !bgBtn.__bound) {
+                bgBtn.__bound = true;
+                bgBtn.addEventListener('click', () => {
+                    trailBgRec = !trailBgRec;
+                    bgBtn.setAttribute('aria-checked', trailBgRec ? 'true' : 'false');
+                    flashToast(trailBgRec ? '已开启后台持续记录' : '已关闭后台持续记录');
+                });
+            }
+            const psBtn = document.getElementById('trailPowerSave');
+            if (psBtn && !psBtn.__bound) {
+                psBtn.__bound = true;
+                psBtn.addEventListener('click', () => {
+                    trailPowerSave = !trailPowerSave;
+                    psBtn.setAttribute('aria-checked', trailPowerSave ? 'true' : 'false');
+                    flashToast(trailPowerSave ? '已切换低电量省电模式' : '已关闭省电模式');
+                });
+            }
+            const importBtn = document.getElementById('trailImportGpx');
+            if (importBtn && !importBtn.__bound) {
+                importBtn.__bound = true;
+                importBtn.addEventListener('click', () => document.getElementById('libraryGpxInput')?.click());
+            }
+            const exportBtn = document.getElementById('trailExportGpx');
+            if (exportBtn && !exportBtn.__bound) {
+                exportBtn.__bound = true;
+                exportBtn.addEventListener('click', () => exportCurrentTrail());
+            }
+            const teamBtn = document.getElementById('trailBindTeam');
+            if (teamBtn && !teamBtn.__bound) {
+                teamBtn.__bound = true;
+                teamBtn.addEventListener('click', () => flashToast('同行队友绑定已就绪（演示）'));
+            }
+            const gearBtn = document.getElementById('trailBindGear');
+            if (gearBtn && !gearBtn.__bound) {
+                gearBtn.__bound = true;
+                gearBtn.addEventListener('click', () => flashToast('已绑定登山装备（演示）'));
+            }
+            const logBtn = document.getElementById('trailGenerateLog');
+            if (logBtn && !logBtn.__bound) {
+                logBtn.__bound = true;
+                logBtn.addEventListener('click', () => flashToast('徒步日志已生成（演示）'));
+            }
+
+            // GPX 文件输入
+            const gpxInput = document.getElementById('libraryGpxInput');
+            if (gpxInput && !gpxInput.__bound) {
+                gpxInput.__bound = true;
+                gpxInput.addEventListener('change', e => handleGpxImport(e.target.files?.[0]));
+            }
+
+            // 搜索过滤
+            const search = document.getElementById('librarySearch');
+            if (search && !search.__bound) {
+                search.__bound = true;
+                search.addEventListener('input', () => renderLibraryList(search.value));
+            }
+
+            // 导出全部
+            const exportAll = document.getElementById('libraryExportAll');
+            if (exportAll && !exportAll.__bound) {
+                exportAll.__bound = true;
+                exportAll.addEventListener('click', () => exportAllTrails());
+            }
+
+            // 重命名确认
+            const renameConfirm = document.getElementById('renameConfirm');
+            if (renameConfirm && !renameConfirm.__bound) {
+                renameConfirm.__bound = true;
+                renameConfirm.addEventListener('click', () => {
+                    const input = document.getElementById('renameInput');
+                    const name = (input?.value || '').trim();
+                    if (!name || !trailRenamingId) {
+                        closeModal('renameModal');
+                        return;
+                    }
+                    const lib = getLibraryTrails();
+                    const idx = lib.findIndex(t => t.id === trailRenamingId);
+                    if (idx >= 0) {
+                        lib[idx].name = name;
+                        saveLibraryTrails(lib);
+                        renderLibraryList();
+                    }
+                    closeModal('renameModal');
+                    flashToast('已重命名轨迹');
+                });
+            }
+
+            // 新手引导立即开始
+            const emptyStart = document.getElementById('mapEmptyStart');
+            if (emptyStart && !emptyStart.__bound) {
+                emptyStart.__bound = true;
+                emptyStart.addEventListener('click', () => {
+                    hideEmptyGuide();
+                    startTracking();
+                });
+            }
+
+            // 关闭 SOS toast
+            const sosClose = document.getElementById('trailSosClose');
+            if (sosClose && !sosClose.__bound) {
+                sosClose.__bound = true;
+                sosClose.addEventListener('click', () => {
+                    document.getElementById('trailSosToast')?.setAttribute('hidden', '');
+                });
+            }
+
+            // 关闭追光参考叠加
+            const routeClose = document.getElementById('routeOverlayClose');
+            if (routeClose && !routeClose.__bound) {
+                routeClose.__bound = true;
+                routeClose.addEventListener('click', () => {
+                    document.getElementById('routeOverlay')?.setAttribute('hidden', '');
+                    flashToast('已隐藏追光参考路线');
+                });
+            }
+        }
+
+        function syncLayerTabsUI() {
+            document.querySelectorAll('#trail .layer-tab').forEach(btn => {
+                const active = btn.dataset.mode === currentMapMode;
+                btn.classList.toggle('is-active', active);
+                btn.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+        }
+
+        function openModal(id) {
+            const m = document.getElementById(id);
+            if (!m) return;
+            m.removeAttribute('hidden');
+        }
+
+        function closeModal(id) {
+            const m = document.getElementById(id);
+            if (!m) return;
+            m.setAttribute('hidden', '');
+        }
+
+        function openMoreMenu() {
+            const menu = document.getElementById('trailMoreMenu');
+            if (!menu) return;
+            menu.removeAttribute('hidden');
+            const onDocClick = (e) => {
+                if (!menu.contains(e.target)) {
+                    menu.setAttribute('hidden', '');
+                    document.removeEventListener('click', onDocClick);
+                }
+            };
+            setTimeout(() => document.addEventListener('click', onDocClick), 0);
+        }
+
+        function zoomCanvas(ratio) {
             const canvas = document.getElementById('trailCanvas');
             if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#e8f5e9';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            // 恢复已保存的轨迹点
+            canvas.style.transition = 'transform 0.25s ease';
+            const cur = Number(canvas.dataset.zoom || 1);
+            const next = Math.min(2.5, Math.max(0.6, cur * ratio));
+            canvas.dataset.zoom = next;
+            canvas.style.transformOrigin = 'center center';
+            canvas.style.transform = `scale(${next})`;
+            flashToast(next > cur ? '已放大' : '已缩小');
+        }
+
+        function simulateGpsFix() {
+            gpsState = 'live';
+            updateGpsIndicator();
+            flashToast('已回到当前 GPS 定位');
+        }
+
+        function updateGpsIndicator() {
+            const el = document.getElementById('gpsIndicator');
+            const text = document.getElementById('gpsIndicatorText');
+            const heroMeta = document.getElementById('trailHeroMeta');
+            const heroDot = heroMeta?.querySelector('.trail-hero-dot');
+            const heroText = heroMeta?.querySelector('.trail-hero-meta-text');
+            if (!el) return;
+            el.dataset.state = gpsState;
+            if (text) {
+                text.textContent = gpsState === 'live' ? 'GPS 已定位' : (gpsState === 'lost' ? '信号丢失' : 'GPS 待定位');
+            }
+            if (heroMeta) {
+                heroMeta.dataset.state = gpsState === 'live' ? 'live' : '';
+            }
+            if (heroText) {
+                heroText.textContent = gpsState === 'live' ? 'GPS 实时定位中' : (gpsState === 'lost' ? 'GPS 信号丢失' : 'GPS 待定位');
+            }
+        }
+
+        // ====================================================
+        // setMapMode：保留为向后兼容（onclick 使用），内部走新逻辑
+        // ====================================================
+        function setMapMode(mode) {
+            if (!['offline', 'heatmap', 'contour'].includes(mode)) return;
+            currentMapMode = mode;
+            try { localStorage.setItem(TRAIL_STORAGE_KEYS.mode, mode); } catch (e) {}
+            syncLayerTabsUI();
+            renderCanvas(mode);
+        }
+
+        // ====================================================
+        // 轨迹记录控制
+        // ====================================================
+        function startTracking() {
+            if (isTracking) {
+                stopTracking(true);
+                return;
+            }
+            isTracking = true;
+            trailPoints = [];
+            trailSeconds = 0;
+            trailDistance = 0;
+            trailElevation = 300 + Math.random() * 200;
+            trailElevSeries = [trailElevation];
+            hideEmptyGuide();
+            updateCtaUi('recording');
+            updateGpsIndicator();
+            setMapMode('offline');
+
+            const interval = trailPowerSave ? 2000 : 1000;
+            trailInterval = setInterval(() => trackStep(), interval);
+            flashToast('轨迹记录已开始');
+        }
+
+        function stopTracking(save) {
+            if (trailInterval) {
+                clearInterval(trailInterval);
+                trailInterval = null;
+            }
+            isTracking = false;
+            updateCtaUi('idle');
+
+            if (save) {
+                if (trailPoints.length >= 2) {
+                    const trail = {
+                        id: 'trail_' + Date.now(),
+                        name: `徒步记录 ${new Date().toLocaleString('zh-CN', { hour12: false })}`,
+                        date: new Date().toISOString(),
+                        distance: trailDistance,
+                        elevation: trailElevation,
+                        duration: trailSeconds,
+                        points: trailPoints.slice(-200)
+                    };
+                    const lib = getLibraryTrails();
+                    lib.unshift(trail);
+                    saveLibraryTrails(lib);
+                    flashToast('轨迹已保存到历史轨迹库');
+                } else {
+                    flashToast('轨迹点过少，未保存');
+                }
+            }
+        }
+
+        function trackStep() {
+            const obj = getCanvas();
+            if (!obj) return;
+            const { w, h } = obj;
+            const last = trailPoints[trailPoints.length - 1];
+            const x = last ? last.x + (Math.random() - 0.5) * 30 : w * 0.5;
+            const y = last ? last.y - (5 + Math.random() * 12) : h * 0.7;
+            trailPoints.push({
+                x: Math.max(20, Math.min(w - 20, x)),
+                y: Math.max(20, Math.min(h - 20, y))
+            });
+
+            trailSeconds++;
+            trailDistance += 0.005 + Math.random() * 0.04;
+            trailElevation += (Math.random() - 0.45) * 12;
+            trailElevSeries.push(trailElevation);
+            if (trailElevSeries.length > 60) trailElevSeries.shift();
+
+            try { localStorage.setItem(TRAIL_STORAGE_KEYS.points, JSON.stringify(trailPoints.slice(-100))); } catch (e) {}
+
+            document.getElementById('trailDistance').textContent = trailDistance.toFixed(2);
+            document.getElementById('trailElevation').textContent = Math.round(trailElevation);
+            document.getElementById('trailTime').textContent = fmtPace(trailSeconds);
+
+            const offset = (Math.random() * 18 - 9);
+            const offsetEl = document.getElementById('trailOffset');
+            const offsetCard = document.getElementById('trailOffsetCard');
+            if (offsetEl) offsetEl.textContent = offset.toFixed(1) + '°';
+            if (offsetCard) offsetCard.classList.toggle('is-warn', Math.abs(offset) >= 15);
+
+            updateCoordDisplay();
+            renderElevationChart();
+            renderCanvas(currentMapMode);
+
+            if (gpsState === 'idle' && trailSeconds > 3) gpsState = 'live';
+            if (gpsState === 'live' && Math.random() < 0.005) gpsState = 'lost';
+            updateGpsIndicator();
+        }
+
+        function updateCtaUi(state) {
+            const cta = document.getElementById('trailCtaBtn');
+            const text = document.getElementById('trailCtaText');
+            if (!cta || !text) return;
+            cta.dataset.state = state;
+            text.textContent = state === 'recording' ? '停止保存轨迹' : '开始轨迹记录';
+            cta.setAttribute('aria-label', text.textContent);
+        }
+
+        function hideEmptyGuide() {
+            const g = document.getElementById('mapEmptyGuide');
+            if (g) g.classList.add('is-hidden');
+        }
+
+        function updateCoordDisplay() {
+            const lng = 113.9456 + (Math.random() - 0.5) * 0.0006;
+            const lat = 22.5430 + (Math.random() - 0.5) * 0.0006;
+            const lngEl = document.getElementById('coordLng');
+            const latEl = document.getElementById('coordLat');
+            const altEl = document.getElementById('coordAlt');
+            if (lngEl) lngEl.textContent = fmtCoord(lng, 'lng');
+            if (latEl) latEl.textContent = fmtCoord(lat, 'lat');
+            if (altEl) altEl.textContent = `${Math.round(trailElevation || 312)} m`;
+        }
+
+        function renderElevationChart() {
+            const svg = document.getElementById('elevChart');
+            if (!svg) return;
+            const series = trailElevSeries.length ? trailElevSeries : [312];
+            const min = Math.min(...series);
+            const max = Math.max(...series);
+            const w = 320, h = 80, pad = 4;
+            const range = Math.max(1, max - min);
+            const stepX = series.length > 1 ? (w - pad * 2) / (series.length - 1) : 0;
+
+            const pts = series.map((v, i) => {
+                const x = pad + i * stepX;
+                const y = h - pad - ((v - min) / range) * (h - pad * 2);
+                return [x, y];
+            });
+
+            const linePath = pts.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+            const areaPath = linePath + ` L${pts[pts.length - 1][0].toFixed(1)},${h - pad} L${pts[0][0].toFixed(1)},${h - pad} Z`;
+
+            svg.innerHTML = `
+                <path class="elev-axis" d="M0,${pad} L${w},${pad} M0,${(h + pad) / 2} L${w},${(h + pad) / 2} M0,${h - pad} L${w},${h - pad}" />
+                <path class="elev-area" d="${areaPath}" />
+                <path class="elev-line" d="${linePath}" />
+            `;
+
+            const elevMin = document.getElementById('elevMin');
+            const elevMax = document.getElementById('elevMax');
+            const elevGain = document.getElementById('elevGain');
+            if (elevMin) elevMin.textContent = `${Math.round(min)} m`;
+            if (elevMax) elevMax.textContent = `${Math.round(max)} m`;
+            if (elevGain) elevGain.textContent = `+${Math.round(max - min)} m`;
+        }
+
+        // ====================================================
+        // 历史轨迹库
+        // ====================================================
+        function getLibraryTrails() {
             try {
-                const saved = localStorage.getItem('xiaoShanQing_trailPoints');
-                if (saved) {
-                    trailPoints = JSON.parse(saved);
-                    trailPoints.forEach(p => drawTrailPoint(p.x, p.y));
+                const raw = localStorage.getItem(TRAIL_STORAGE_KEYS.library);
+                if (!raw) return getSeedTrails();
+                const parsed = JSON.parse(raw);
+                if (!Array.isArray(parsed)) return getSeedTrails();
+                // 合并首次演示 seed（不污染已存在 id）
+                const ids = new Set(parsed.map(t => t.id));
+                const seed = getSeedTrails().filter(t => !ids.has(t.id));
+                return [...seed, ...parsed];
+            } catch (e) {
+                return getSeedTrails();
+            }
+        }
+
+        function saveLibraryTrails(lib) {
+            try { localStorage.setItem(TRAIL_STORAGE_KEYS.library, JSON.stringify(lib.slice(0, 60))); } catch (e) {}
+        }
+
+        function getSeedTrails() {
+            // 演示用 3 条历史轨迹
+            return [
+                {
+                    id: 'seed_wutong',
+                    name: '梧桐山 · 泰山涧',
+                    date: '2026-05-12T06:30:00.000Z',
+                    distance: 12.6,
+                    elevation: 943,
+                    duration: 4 * 3600 + 28 * 60,
+                    teammates: '阿森、灯灯',
+                    gear: '登山杖×2',
+                    points: []
+                },
+                {
+                    id: 'seed_nanshan',
+                    name: '南山 · 大南山环线',
+                    date: '2026-04-20T07:10:00.000Z',
+                    distance: 6.4,
+                    elevation: 336,
+                    duration: 2 * 3600 + 12 * 60,
+                    teammates: '—',
+                    gear: '—',
+                    points: []
+                },
+                {
+                    id: 'seed_qiniang',
+                    name: '七娘山 · 主峰大环',
+                    date: '2026-03-08T05:50:00.000Z',
+                    distance: 18.2,
+                    elevation: 867,
+                    duration: 6 * 3600 + 4 * 60,
+                    teammates: '阿森、林北',
+                    gear: '登山杖×2 头灯',
+                    points: []
+                }
+            ];
+        }
+
+        function renderLibraryList(filter) {
+            const list = document.getElementById('libraryList');
+            const stat = document.getElementById('libraryStat');
+            if (!list) return;
+            const trails = getLibraryTrails();
+            const kw = (filter || '').trim().toLowerCase();
+            const filtered = kw
+                ? trails.filter(t => [t.name, t.teammates, t.gear].filter(Boolean).join(' ').toLowerCase().includes(kw))
+                : trails;
+
+            list.innerHTML = '';
+            if (!filtered.length) {
+                list.innerHTML = '<div class="library-empty">暂无匹配轨迹，试试导入 GPX 路线</div>';
+            } else {
+                filtered.forEach((t, idx) => {
+                    const item = document.createElement('div');
+                    item.className = 'library-item' + (trailActiveLibraryId === t.id ? ' is-active' : '');
+                    item.setAttribute('role', 'listitem');
+                    const dateStr = new Date(t.date).toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                    item.innerHTML = `
+                        <span class="library-item-color" style="background:${TRAIL_PALETTE[idx % TRAIL_PALETTE.length]}"></span>
+                        <div class="library-item-info">
+                            <span class="library-item-name">${escapeHtml(t.name)}</span>
+                            <span class="library-item-meta">
+                                <span>${dateStr}</span>
+                                <span>· ${t.distance.toFixed(1)} km</span>
+                                <span>· ${Math.round(t.elevation)} m</span>
+                                <span>· ${fmtPace(t.duration)}</span>
+                            </span>
+                        </div>
+                        <div class="library-item-actions">
+                            <button class="library-item-action" data-action="overlay" title="叠加到画布" aria-label="叠加到画布">
+                                <svg class="lucide" viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/></svg>
+                            </button>
+                            <button class="library-item-action" data-action="rename" title="重命名" aria-label="重命名">
+                                <svg class="lucide" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                            </button>
+                            <button class="library-item-action" data-action="export" title="导出 GPX" aria-label="导出 GPX">
+                                <svg class="lucide" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 9l5-5 5 5"/><path d="M12 4v12"/></svg>
+                            </button>
+                            <button class="library-item-action" data-action="delete" title="删除" aria-label="删除">
+                                <svg class="lucide" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            </button>
+                        </div>
+                    `;
+                    item.querySelector('[data-action="overlay"]').addEventListener('click', e => {
+                        e.stopPropagation();
+                        trailActiveLibraryId = t.id;
+                        renderLibraryList(filter);
+                        setMapMode('heatmap');
+                        closeModal('libraryModal');
+                        flashToast(`已叠加「${t.name}」到热力图`);
+                    });
+                    item.querySelector('[data-action="rename"]').addEventListener('click', e => {
+                        e.stopPropagation();
+                        trailRenamingId = t.id;
+                        const input = document.getElementById('renameInput');
+                        if (input) input.value = t.name;
+                        openModal('renameModal');
+                        setTimeout(() => input?.focus(), 50);
+                    });
+                    item.querySelector('[data-action="export"]').addEventListener('click', e => {
+                        e.stopPropagation();
+                        exportTrailById(t.id);
+                    });
+                    item.querySelector('[data-action="delete"]').addEventListener('click', e => {
+                        e.stopPropagation();
+                        const lib = getLibraryTrails().filter(x => x.id !== t.id);
+                        saveLibraryTrails(lib);
+                        renderLibraryList(filter);
+                        flashToast('已删除轨迹');
+                    });
+                    item.addEventListener('click', () => {
+                        trailActiveLibraryId = trailActiveLibraryId === t.id ? null : t.id;
+                        renderLibraryList(filter);
+                        if (currentMapMode === 'heatmap') renderCanvas('heatmap');
+                    });
+                    list.appendChild(item);
+                });
+            }
+            if (stat) stat.textContent = `共 ${filtered.length} 条轨迹`;
+        }
+
+        function escapeHtml(s) {
+            return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        // ====================================================
+        // GPX 导入 / 导出
+        // ====================================================
+        function handleGpxImport(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                const text = e.target.result;
+                const pts = parseGpxPoints(text);
+                if (!pts.length) {
+                    flashToast('GPX 文件未解析到轨迹点');
+                    return;
+                }
+                const trail = {
+                    id: 'trail_' + Date.now(),
+                    name: (file.name || '导入轨迹').replace(/\.gpx$/i, ''),
+                    date: new Date().toISOString(),
+                    distance: totalDistance(pts),
+                    elevation: Math.max(...pts.map(p => p.ele || 0)),
+                    duration: pts[pts.length - 1].t ? Math.floor((pts[pts.length - 1].t - pts[0].t) / 1000) : 0,
+                    teammates: '',
+                    gear: '',
+                    points: pts
+                };
+                const lib = getLibraryTrails();
+                lib.unshift(trail);
+                saveLibraryTrails(lib);
+                renderLibraryList();
+                flashToast(`已导入「${trail.name}」（${pts.length} 个点）`);
+            };
+            reader.readAsText(file);
+        }
+
+        function parseGpxPoints(text) {
+            const pts = [];
+            try {
+                const doc = new DOMParser().parseFromString(text, 'application/xml');
+                const nodes = doc.querySelectorAll('trkpt');
+                nodes.forEach(n => {
+                    const lat = parseFloat(n.getAttribute('lat'));
+                    const lon = parseFloat(n.getAttribute('lon'));
+                    const ele = parseFloat(n.querySelector('ele')?.textContent || '0');
+                    const tEl = n.querySelector('time')?.textContent;
+                    const t = tEl ? Date.parse(tEl) : 0;
+                    if (!isNaN(lat) && !isNaN(lon)) {
+                        pts.push({ x: lon, y: lat, ele, t });
+                    }
+                });
+            } catch (err) { /* ignore */ }
+            return pts;
+        }
+
+        function totalDistance(pts) {
+            let d = 0;
+            for (let i = 1; i < pts.length; i++) {
+                d += haversine(pts[i - 1], pts[i]);
+            }
+            return d;
+        }
+
+        function haversine(a, b) {
+            const R = 6371;
+            const toRad = v => v * Math.PI / 180;
+            const dLat = toRad(b.y - a.y);
+            const dLon = toRad(b.x - a.x);
+            const lat1 = toRad(a.y);
+            const lat2 = toRad(b.y);
+            const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+            return 2 * R * Math.asin(Math.sqrt(h));
+        }
+
+        function exportCurrentTrail() {
+            if (trailPoints.length < 2) {
+                flashToast('当前没有可导出的轨迹');
+                return;
+            }
+            const blob = new Blob([buildGpx(trailPoints, '当前记录')], { type: 'application/gpx+xml' });
+            downloadBlob(blob, `trail_${Date.now()}.gpx`);
+            flashToast('GPX 已导出');
+        }
+
+        function exportTrailById(id) {
+            const t = getLibraryTrails().find(x => x.id === id);
+            if (!t) return;
+            const pts = t.points && t.points.length ? t.points : [];
+            const blob = new Blob([buildGpx(pts, t.name)], { type: 'application/gpx+xml' });
+            downloadBlob(blob, `${t.name}.gpx`);
+            flashToast(`已导出「${t.name}」`);
+        }
+
+        function exportAllTrails() {
+            const lib = getLibraryTrails();
+            if (!lib.length) {
+                flashToast('暂无轨迹可导出');
+                return;
+            }
+            lib.forEach(t => {
+                if (!t.points || !t.points.length) return;
+                const blob = new Blob([buildGpx(t.points, t.name)], { type: 'application/gpx+xml' });
+                downloadBlob(blob, `${t.name}.gpx`);
+            });
+            flashToast(`已导出 ${lib.filter(t => t.points && t.points.length).length} 条 GPX`);
+        }
+
+        function buildGpx(pts, name) {
+            const safe = (s) => String(s || '').replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]));
+            const trkpts = pts.map(p => {
+                const lat = isFinite(p.y) ? p.y : 22.5430;
+                const lon = isFinite(p.x) ? p.x : 113.9456;
+                const ele = isFinite(p.ele) ? p.ele : 0;
+                return `<trkpt lat="${lat}" lon="${lon}"><ele>${ele}</ele></trkpt>`;
+            }).join('');
+            return `<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="晓山青 · 青山不迷" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>${safe(name)}</name><time>${new Date().toISOString()}</time></metadata>
+  <trk><name>${safe(name)}</name><trkseg>${trkpts}</trkseg></trk>
+</gpx>`;
+        }
+
+        function downloadBlob(blob, filename) {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                URL.revokeObjectURL(a.href);
+                a.remove();
+            }, 0);
+        }
+
+        // ====================================================
+        // 迷你天气卡 / SOS / 跨页面联动
+        // ====================================================
+        function updateMiniWeather() {
+            const tempEl = document.getElementById('miniWeatherTemp');
+            const descEl = document.getElementById('miniWeatherDesc');
+            const humiEl = document.getElementById('miniWeatherHumi');
+            if (!tempEl) return;
+            try {
+                const raw = localStorage.getItem('xiaoShanQing_weatherSummary');
+                if (raw) {
+                    const w = JSON.parse(raw);
+                    if (w.temp != null) tempEl.textContent = `${Math.round(w.temp)}°`;
+                    if (w.desc) descEl.textContent = w.desc;
+                    if (w.humidity != null) humiEl.textContent = `湿度 ${w.humidity}%`;
+                    const warn = document.getElementById('miniWeatherWarn');
+                    if (warn) {
+                        if (w.warning) {
+                            warn.removeAttribute('hidden');
+                            warn.textContent = w.warning;
+                            warn.dataset.level = w.warningLevel || 'warning';
+                        } else {
+                            warn.setAttribute('hidden', '');
+                        }
+                    }
                 }
             } catch (e) { /* ignore */ }
         }
 
-        function setMapMode(mode) {
-            document.querySelectorAll('.map-controls button').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            const canvas = document.getElementById('trailCanvas');
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw map background
-            ctx.fillStyle = '#e8f5e9';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            if (mode === 'heatmap') {
-                // Draw heatmap trails
-                ctx.strokeStyle = 'rgba(244, 164, 96, 0.5)';
-                ctx.lineWidth = 3;
-                for (let i = 0; i < 5; i++) {
-                    ctx.beginPath();
-                    const startX = Math.random() * canvas.width;
-                    ctx.moveTo(startX, canvas.height);
-                    for (let j = 0; j < 10; j++) {
-                        ctx.lineTo(Math.random() * canvas.width, canvas.height * 0.2 + Math.random() * canvas.height * 0.6);
-                    }
-                    ctx.stroke();
-                }
-            } else if (mode === 'contour') {
-                // Draw contour lines
-                ctx.strokeStyle = 'rgba(45, 90, 61, 0.3)';
-                ctx.lineWidth = 1;
-                for (let y = 50; y < canvas.height; y += 30) {
-                    ctx.beginPath();
-                    ctx.moveTo(0, y);
-                    for (let x = 0; x < canvas.width; x += 20) {
-                        ctx.lineTo(x, y + Math.sin(x * 0.02) * 10);
-                    }
-                    ctx.stroke();
-                }
+        function triggerSosFromTrail() {
+            const lng = document.getElementById('coordLng')?.textContent || '—';
+            const lat = document.getElementById('coordLat')?.textContent || '—';
+            const alt = document.getElementById('coordAlt')?.textContent || '—';
+            const toast = document.getElementById('trailSosToast');
+            const coordEl = document.getElementById('trailSosCoord');
+            if (coordEl) coordEl.textContent = `坐标：${lat} · ${lng} · 海拔：${alt}`;
+            if (toast) toast.removeAttribute('hidden');
+            // 若项目已具备 SOS 函数则优先调用
+            if (typeof toggleSOS === 'function') {
+                try { toggleSOS(); } catch (e) {}
             }
-            
-            // Draw trail if tracking
-            if (trailPoints.length > 0) {
-                ctx.strokeStyle = '#e74c3c';
-                ctx.lineWidth = 3;
-                ctx.beginPath();
-                ctx.moveTo(trailPoints[0].x, trailPoints[0].y);
-                trailPoints.forEach(p => ctx.lineTo(p.x, p.y));
-                ctx.stroke();
-                
-                // Draw current position
-                const lastPoint = trailPoints[trailPoints.length - 1];
-                ctx.fillStyle = '#e74c3c';
-                ctx.beginPath();
-                ctx.arc(lastPoint.x, lastPoint.y, 8, 0, Math.PI * 2);
-                ctx.fill();
-            }
+            setTimeout(() => toast?.setAttribute('hidden', ''), 6000);
         }
 
-        /**
-         * 轨迹记录 [演示模式 - TODO: 接入真实 GPS 数据源]
-         * 注意：当前用 Math.random() 模拟轨迹点，真实使用时应替换为 navigator.geolocation
-         */
-        function startTracking() {
-            if (isTracking) {
-                clearInterval(trailInterval);
-                isTracking = false;
-                event.target.textContent = '🎯 开始轨迹记录';
-                return;
-            }
-            
-            isTracking = true;
-            event.target.textContent = '⏸️ 暂停记录';
-            trailPoints = [];
-            
-            let distance = 0;
-            let elevation = 1200;
-            let seconds = 0;
-            
-            trailInterval = setInterval(() => {
-                const canvas = document.getElementById('trailCanvas');
-                const x = Math.random() * (canvas.width - 40) + 20;
-                const y = Math.random() * (canvas.height - 40) + 20;
-                trailPoints.push({ x, y });
-                try { localStorage.setItem('xiaoShanQing_trailPoints', JSON.stringify(trailPoints)); } catch(e) { /* ignore */ }
-
-                distance += Math.random() * 0.1;
-                elevation += Math.random() * 10 - 3;
-                seconds++;
-                
-                document.getElementById('trailDistance').textContent = distance.toFixed(2);
-                document.getElementById('trailElevation').textContent = Math.round(elevation);
-                document.getElementById('trailTime').textContent = 
-                    `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`;
-                document.getElementById('trailOffset').textContent = (Math.random() * 10 - 5).toFixed(1) + '°';
-                
-                setMapMode('offline');
-            }, 1000);
+        function flashToast(text) {
+            const el = document.createElement('div');
+            el.textContent = text;
+            el.style.cssText = `
+                position:fixed;left:50%;bottom:160px;transform:translateX(-50%);
+                z-index:120;padding:0.55rem 1rem;background:rgba(26,58,40,0.94);
+                color:#f5f3ee;border-radius:999px;font-size:0.82rem;font-weight:500;
+                box-shadow:0 10px 24px rgba(15,36,24,0.28);
+                animation:trailMoreIn 0.18s ease-out;
+            `;
+            document.body.appendChild(el);
+            setTimeout(() => {
+                el.style.opacity = '0';
+                el.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => el.remove(), 320);
+            }, 1800);
         }
+
+        // 跨页面联动：天气页更新后通知本页面刷新
+        window.addEventListener('storage', e => {
+            if (e.key === 'xiaoShanQing_weatherSummary') updateMiniWeather();
+        });
+        // 同窗口内自定义事件
+        window.addEventListener('xiaoShanQing:weather-updated', updateMiniWeather);
+        // 追光页叠加：监听追光页保存的参考路线
+        window.addEventListener('xiaoShanQing:chase-route-selected', e => {
+            const overlay = document.getElementById('routeOverlay');
+            const nameEl = document.getElementById('routeOverlayName');
+            if (overlay && e?.detail?.name) {
+                if (nameEl) nameEl.textContent = e.detail.name;
+                overlay.removeAttribute('hidden');
+                flashToast(`已叠加追光参考「${e.detail.name}」`);
+            }
+        });
 
         // SOS Feature
         let sosActive = false;
