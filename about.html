@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>关于 晓山青 Viridiore</title>
+    <meta name="description" content="晓山青 Viridiore — 户外智能出行伴侣。集天气、追光、轨迹、紧急救援、路书分享、AI 助手于一体的渐进式 Web 应用。">
+    <meta name="theme-color" content="#1a3a28">
+    <title>关于 晓山青 Viridiore · 户外智能出行伴侣</title>
     <script src="./config.js"></script>
     <script>
         if (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.AMAP) {
@@ -13,7 +15,6 @@
         }
     </script>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235c946e'/%3E%3Cstop offset='100%25' stop-color='%232d5a3d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='98' fill='url(%23g)'/%3E%3Cpath d='M100 35 L135 85 L115 85 L115 135 L85 135 L85 85 L55 85 Z' fill='%23f4a460'/%3E%3Cpath d='M25 155 L100 95 L175 155 L175 175 L25 175 Z' fill='%232d5a3d'/%3E%3C/svg%3E">
-    <!-- 外部样式 -->
     <link rel="stylesheet" href="./css/shared.css">
     <link rel="stylesheet" href="./css/about.css">
 </head>
@@ -29,9 +30,8 @@
             <span class="about-nav-brand-name">晓山青 Viridiore</span>
         </a>
         <ul class="about-nav-links">
-            <li><a href="#philosophy">理念</a></li>
             <li><a href="#features">功能</a></li>
-            <li><a href="#tech">技术</a></li>
+            <li><a href="#philosophy">理念</a></li>
             <li><a href="#changelog">更新</a></li>
         </ul>
         <a href="app.html" class="about-nav-back">
@@ -40,18 +40,16 @@
         </a>
     </nav>
 
-    <!-- Hero 区域 -->
+    <!-- Hero -->
     <section class="about-hero">
         <div class="about-hero-bg"></div>
 
-        <!-- 山脉背景 SVG -->
         <svg class="about-hero-mountain" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path fill="rgba(45,90,61,0.08)" d="M0,256L48,240C96,224,192,192,288,181.3C384,171,480,181,576,197.3C672,213,768,235,864,229.3C960,224,1056,192,1152,181.3C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"/>
             <path fill="rgba(45,90,61,0.12)" d="M0,288L60,277.3C120,267,240,245,360,229.3C480,213,600,203,720,213.3C840,224,960,256,1080,250.7C1200,245,1320,203,1380,181.3L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"/>
             <path fill="rgba(26,58,40,0.15)" d="M0,320L80,298.7C160,277,320,235,480,224C640,213,800,235,960,256C1120,277,1280,299,1360,309.3L1440,320L1440,320L0,320Z"/>
         </svg>
 
-        <!-- 浮动粒子 -->
         <div class="about-hero-particles" id="particles"></div>
 
         <div class="about-hero-content">
@@ -102,7 +100,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     立即体验
                 </a>
-                <a href="#outdoor-data" class="btn-secondary">
+                <a href="#features" class="btn-secondary">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                     了解更多
                 </a>
@@ -137,113 +135,144 @@
         </div>
     </section>
 
-    <!-- 户外运动数据 -->
-    <section class="about-outdoor-data" id="outdoor-data">
-        <div class="about-section-header reveal">
-            <div class="about-section-eyebrow">Market Data</div>
-            <h2 class="about-section-title">户外运动，正在改变数亿人的生活</h2>
-            <p class="about-section-desc">数据来源：国家体育总局《中国户外运动产业发展报告（2024-2025）》、美国户外行业协会（OIA）、Adventure Travel Trade Association</p>
-        </div>
+    <!-- 核心功能 -->
+    <section class="about-features" id="features">
+        <div class="about-features-inner">
+            <div class="about-section-header reveal">
+                <div class="about-section-eyebrow">Features</div>
+                <h2 class="about-section-title">核心功能</h2>
+                <p class="about-section-desc">十大功能模块，覆盖从出发前的规划到回程后的分享全流程。</p>
+            </div>
 
-        <div class="outdoor-data-grid">
-            <!-- 中国 -->
-            <div class="outdoor-data-card reveal">
-                <div class="outdoor-data-card-header">
-                    <div class="outdoor-data-card-icon outdoor-data-card-icon-cn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 17l4-8 4 4 4-4 4 8H3z"/>
-                            <path d="M7 21h10"/>
+            <div class="feature-showcase reveal">
+                <div class="feature-showcase-visual" style="background: linear-gradient(135deg, #fff8e7 0%, #ffeaa7 100%);">
+                    <div class="feature-visual-icon" style="background: linear-gradient(135deg, rgba(255,213,79,0.2), rgba(255,152,0,0.1));">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#E6A254" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M8 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/>
                         </svg>
                     </div>
-                    <span class="outdoor-data-card-title">中国户外运动数据</span>
+                    <span class="feature-visual-label">追光计划</span>
                 </div>
-                <div class="outdoor-data-stats">
-                    <div class="outdoor-data-stat">
-                        <div class="outdoor-data-stat-number">6000万</div>
-                        <div class="outdoor-data-stat-label">全国徒步爱好者总数</div>
+                <div class="feature-showcase-text">
+                    <h3>追光计划</h3>
+                    <p>智能推荐最佳日出观赏日和云海观赏日。基于云量、风力、降水量、空气质量四维综合评分，自动计算最优日期。告别盲目等待，让追光更有把握。</p>
+                    <div class="feature-showcase-tags">
+                        <span class="feature-tag">云海预测</span>
+                        <span class="feature-tag">日出推荐</span>
+                        <span class="feature-tag">多维评分</span>
+                        <span class="feature-tag">天气聚合</span>
                     </div>
-                    <div class="outdoor-data-stat">
-                        <div class="outdoor-data-stat-number">800万</div>
-                        <div class="outdoor-data-stat-label">高海拔徒步爱好者<br>（3000米以上）</div>
-                    </div>
-                    <div class="outdoor-data-stat">
-                        <div class="outdoor-data-stat-number">160亿</div>
-                        <div class="outdoor-data-stat-label">小红书徒步笔记<br>点击量（2024年）</div>
-                    </div>
-                    <div class="outdoor-data-stat">
-                        <div class="outdoor-data-stat-number">57%</div>
-                        <div class="outdoor-data-stat-label">女性参与者比例<br>（较2018年38%显著提升）</div>
-                    </div>
-                </div>
-                <div class="outdoor-data-insight">
-                    2020年以来徒步爱好者增长近<strong style="color:var(--accent-color)">2倍</strong>，Z世代（20-35岁）占比达<strong style="color:var(--accent-color)">62%</strong>，户外运动正从小众体验走向大众生活。
                 </div>
             </div>
 
-            <!-- 美国 -->
-            <div class="outdoor-data-card reveal">
-                <div class="outdoor-data-card-header">
-                    <div class="outdoor-data-card-icon outdoor-data-card-icon-us">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-                            <path d="M2 12h20"/>
+            <div class="feature-showcase reveal">
+                <div class="feature-showcase-visual" style="background: linear-gradient(135deg, #e8f5e9 0%, #a5d6a7 100%);">
+                    <div class="feature-visual-icon" style="background: linear-gradient(135deg, rgba(92,148,110,0.2), rgba(45,90,61,0.1));">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#4a7c59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" x2="9" y1="3" y2="18"/><line x1="15" x2="15" y1="6" y2="21"/>
                         </svg>
                     </div>
-                    <span class="outdoor-data-card-title">美国户外运动数据</span>
+                    <span class="feature-visual-label">青山不迷</span>
                 </div>
-                <div class="outdoor-data-stats">
-                    <div class="outdoor-data-stat">
-                        <div class="outdoor-data-stat-number">6340万</div>
-                        <div class="outdoor-data-stat-label">徒步参与人数<br>（2024年历史新高）</div>
+                <div class="feature-showcase-text">
+                    <h3>青山不迷 — 轨迹守护</h3>
+                    <p>GPS 实时记录徒步、骑行等户外轨迹。内置 Web Worker 后台计算总距离、累计爬升/下降、海拔范围，自动评估轨迹难度（1-5 星），支持离线缓存和 GPX 导出。</p>
+                    <div class="feature-showcase-tags">
+                        <span class="feature-tag">实时 GPS</span>
+                        <span class="feature-tag">Web Worker</span>
+                        <span class="feature-tag">难度评估</span>
+                        <span class="feature-tag">GPX 导出</span>
                     </div>
-                    <div class="outdoor-data-stat">
-                        <div class="outdoor-data-stat-number">1.81亿</div>
-                        <div class="outdoor-data-stat-label">户外休闲参与总人数<br>（占人口58.6%）</div>
-                    </div>
-                    <div class="outdoor-data-stat">
-                        <div class="outdoor-data-stat-number">+3%</div>
-                        <div class="outdoor-data-stat-label">年度参与增长率<br>（2024年）</div>
-                    </div>
-                    <div class="outdoor-data-stat">
-                        <div class="outdoor-data-stat-number">58.6%</div>
-                        <div class="outdoor-data-stat-label">户外参与率<br>（6岁以上人口）</div>
-                    </div>
-                </div>
-                <div class="outdoor-data-insight">
-                    徒步（Hiking）已成为美国<strong style="color:#5dade2">最受欢迎</strong>的户外单项活动，自2012年以来参与人数接近翻倍，持续保持强劲增长态势。
                 </div>
             </div>
-        </div>
 
-        <!-- 全球 -->
-        <div class="outdoor-data-global reveal">
-            <div class="outdoor-data-global-title">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-                    <path d="M2 12h20"/>
-                </svg>
-                全球视野
+            <div class="feature-showcase reveal">
+                <div class="feature-showcase-visual" style="background: linear-gradient(135deg, #e3f2fd 0%, #90caf9 100%);">
+                    <div class="feature-visual-icon" style="background: linear-gradient(135deg, rgba(52,152,219,0.2), rgba(41,128,185,0.1));">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#3498db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                        </svg>
+                    </div>
+                    <span class="feature-visual-label">精准天气</span>
+                </div>
+                <div class="feature-showcase-text">
+                    <h3>精准天气预报</h3>
+                    <p>和风天气 API 驱动，提供实时天气、逐小时预报、7 日天气预报，含穿衣指数、户外建议、AQI 空气质量等贴心提示。支持城市切换和自动刷新。</p>
+                    <div class="feature-showcase-tags">
+                        <span class="feature-tag">7 日预报</span>
+                        <span class="feature-tag">穿衣指数</span>
+                        <span class="feature-tag">AQI 质量</span>
+                        <span class="feature-tag">自动刷新</span>
+                    </div>
+                </div>
             </div>
-            <div class="outdoor-data-global-stats">
-                <div class="outdoor-data-stat">
-                    <div class="outdoor-data-stat-number">67%</div>
-                    <div class="outdoor-data-stat-label">徒步/登山参与率<br>（全球探险旅游者中）</div>
+
+            <div class="feature-showcase reveal">
+                <div class="feature-showcase-visual" style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);">
+                    <div class="feature-visual-icon" style="background: linear-gradient(135deg, rgba(231,76,60,0.2), rgba(192,57,43,0.1));">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>
+                        </svg>
+                    </div>
+                    <span class="feature-visual-label">青鸟 SOS</span>
                 </div>
-                <div class="outdoor-data-stat">
-                    <div class="outdoor-data-stat-number">672亿美元</div>
-                    <div class="outdoor-data-stat-label">全球徒步旅游市场规模<br>（2024年）</div>
+                <div class="feature-showcase-text">
+                    <h3>青鸟 SOS 紧急求救</h3>
+                    <p>极简求救系统，一键触发，5 秒倒计时确认防止误触。实时 GPS 坐标 + 离线缓存 + 自动重试，无网络环境也能发出求救信息，让每一次出行都有备无患。</p>
+                    <div class="feature-showcase-tags">
+                        <span class="feature-tag">5 秒倒计时</span>
+                        <span class="feature-tag">离线缓存</span>
+                        <span class="feature-tag">GPS 坐标</span>
+                        <span class="feature-tag">自动重试</span>
+                    </div>
                 </div>
-                <div class="outdoor-data-stat">
-                    <div class="outdoor-data-stat-number">7.3%</div>
-                    <div class="outdoor-data-stat-label">徒步旅游市场<br>年复合增长率（预测至2033年）</div>
+            </div>
+
+            <div class="feature-showcase reveal">
+                <div class="feature-showcase-visual" style="background: linear-gradient(135deg, #f3e5f5 0%, #ce93d8 100%);">
+                    <div class="feature-visual-icon" style="background: linear-gradient(135deg, rgba(156,39,176,0.15), rgba(103,58,183,0.1));">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#8e44ad" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
+                        </svg>
+                    </div>
+                    <span class="feature-visual-label">AI 助手</span>
+                </div>
+                <div class="feature-showcase-text">
+                    <h3>AI 户外助手</h3>
+                    <p>内置 AI 问答助手，可查询深圳山峰信息（梧桐山、七娘山、马峦山等）、获取日出/云海建议、推荐新手路线、提供户外安全注意事项。快捷问题卡片一键直达。</p>
+                    <div class="feature-showcase-tags">
+                        <span class="feature-tag">山峰数据</span>
+                        <span class="feature-tag">路线推荐</span>
+                        <span class="feature-tag">安全提示</span>
+                        <span class="feature-tag">快捷卡片</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-showcase reveal">
+                <div class="feature-showcase-visual" style="background: linear-gradient(135deg, #fff3e0 0%, #ffcc80 100%);">
+                    <div class="feature-visual-icon" style="background: linear-gradient(135deg, rgba(243,156,18,0.2), rgba(230,126,34,0.1));">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#f39c12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        </svg>
+                    </div>
+                    <span class="feature-visual-label">气压检测</span>
+                </div>
+                <div class="feature-showcase-text">
+                    <h3>气压检测</h3>
+                    <p>实时气压监测，绘制气压变化曲线，自动判断气压趋势（上升/下降/平稳）。气压骤降往往是天气恶化的先兆，提前预警，守护每一次高海拔出行。</p>
+                    <div class="feature-showcase-tags">
+                        <span class="feature-tag">实时监测</span>
+                        <span class="feature-tag">趋势曲线</span>
+                        <span class="feature-tag">天气预警</span>
+                        <span class="feature-tag">高海拔守护</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 理念 -->
+    <!-- 设计理念 -->
     <section class="about-philosophy" id="philosophy">
         <div class="about-section-header reveal">
             <div class="about-section-eyebrow">Core Philosophy</div>
@@ -261,7 +290,7 @@
                     </svg>
                 </div>
                 <h3>安全第一</h3>
-                <p>SOS 紧急求救系统，一键触发，5 秒倒计时确认，防止误触。实时 GPS 坐标自动附带的求救信息，让每一次出行都有备无患。</p>
+                <p>SOS 紧急求救系统一键触发，5 秒倒计时确认防误触。实时 GPS 坐标自动附带的求救信息，让每一次出行都有备无患。</p>
             </div>
 
             <div class="philosophy-card reveal">
@@ -287,106 +316,7 @@
         </div>
     </section>
 
-    <!-- 功能展示 -->
-    <section class="about-features" id="features">
-        <div class="about-features-inner">
-            <div class="about-section-header reveal">
-                <div class="about-section-eyebrow">Features</div>
-                <h2 class="about-section-title">核心功能</h2>
-                <p class="about-section-desc">十大功能模块，覆盖从出发前的规划到回程后的分享全流程。</p>
-            </div>
-
-            <!-- 追光 -->
-            <div class="feature-showcase reveal">
-                <div class="feature-showcase-visual" style="background: linear-gradient(135deg, #fff8e7 0%, #ffeaa7 100%);">
-                    <div class="feature-visual-icon" style="background: linear-gradient(135deg, rgba(255,213,79,0.2), rgba(255,152,0,0.1));">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#E6A254" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M8 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/>
-                        </svg>
-                    </div>
-                    <span class="feature-visual-label">追光计划</span>
-                </div>
-                <div class="feature-showcase-text">
-                    <h3>追光计划</h3>
-                    <p>智能推荐最佳日出观赏日和云海观赏日。基于云量、风力、降水量、空气质量四维综合评分，自动计算最优日期。告别盲目等待，让追光更有把握。</p>
-                    <div class="feature-showcase-tags">
-                        <span class="feature-tag">云海预测</span>
-                        <span class="feature-tag">日出推荐</span>
-                        <span class="feature-tag">多维评分</span>
-                        <span class="feature-tag">天气聚合</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 轨迹 -->
-            <div class="feature-showcase reveal">
-                <div class="feature-showcase-visual" style="background: linear-gradient(135deg, #e8f5e9 0%, #a5d6a7 100%);">
-                    <div class="feature-visual-icon" style="background: linear-gradient(135deg, rgba(92,148,110,0.2), rgba(45,90,61,0.1));">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#4a7c59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" x2="9" y1="3" y2="18"/><line x1="15" x2="15" y1="6" y2="21"/>
-                        </svg>
-                    </div>
-                    <span class="feature-visual-label">青山不迷</span>
-                </div>
-                <div class="feature-showcase-text">
-                    <h3>青山不迷 — 轨迹守护</h3>
-                    <p>GPS 实时记录徒步、骑行等户外轨迹。内置 Web Worker 后台计算总距离、累计爬升/下降、海拔范围，自动评估轨迹难度（1-5 星），支持离线缓存和 GPX 导出。</p>
-                    <div class="feature-showcase-tags">
-                        <span class="feature-tag">实时 GPS</span>
-                        <span class="feature-tag">Web Worker</span>
-                        <span class="feature-tag">难度评估</span>
-                        <span class="feature-tag">GPX 导出</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 天气 -->
-            <div class="feature-showcase reveal">
-                <div class="feature-showcase-visual" style="background: linear-gradient(135deg, #e3f2fd 0%, #90caf9 100%);">
-                    <div class="feature-visual-icon" style="background: linear-gradient(135deg, rgba(52,152,219,0.2), rgba(41,128,185,0.1));">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#3498db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-                        </svg>
-                    </div>
-                    <span class="feature-visual-label">天气</span>
-                </div>
-                <div class="feature-showcase-text">
-                    <h3>精准天气预报</h3>
-                    <p>和风天气 API 驱动，提供实时天气、逐小时预报、7 日天气预报，含穿衣指数、户外建议、AQI 空气质量等贴心提示。支持城市切换和自动刷新。</p>
-                    <div class="feature-showcase-tags">
-                        <span class="feature-tag">7 日预报</span>
-                        <span class="feature-tag">穿衣指数</span>
-                        <span class="feature-tag">AQI 质量</span>
-                        <span class="feature-tag">自动刷新</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- AI 助手 -->
-            <div class="feature-showcase reveal">
-                <div class="feature-showcase-visual" style="background: linear-gradient(135deg, #f3e5f5 0%, #ce93d8 100%);">
-                    <div class="feature-visual-icon" style="background: linear-gradient(135deg, rgba(156,39,176,0.15), rgba(103,58,183,0.1));">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#8e44ad" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
-                        </svg>
-                    </div>
-                    <span class="feature-visual-label">AI 助手</span>
-                </div>
-                <div class="feature-showcase-text">
-                    <h3>AI 户外助手</h3>
-                    <p>内置 AI 问答助手，可查询深圳山峰信息（梧桐山、七娘山、马峦山等）、获取日出/云海建议、推荐新手路线、提供户外安全注意事项。快捷问题卡片一键直达。</p>
-                    <div class="feature-showcase-tags">
-                        <span class="feature-tag">山峰数据</span>
-                        <span class="feature-tag">路线推荐</span>
-                        <span class="feature-tag">安全提示</span>
-                        <span class="feature-tag">快捷卡片</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 更新日志 -->
+    <!-- 更新历程 -->
     <section class="about-timeline" id="changelog">
         <div class="about-timeline-inner">
             <div class="about-section-header reveal">
@@ -424,7 +354,7 @@
         <div class="about-cta-content reveal">
             <h2>带上晓山青，出发吧</h2>
             <p>无论是清晨的梧桐山顶，还是傍晚的马峦山径，晓山青始终是你最可靠的影子向导。</p>
-                <a href="app.html" class="btn-light">
+            <a href="app.html" class="btn-light">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 打开应用
             </a>
@@ -444,11 +374,10 @@
             </div>
             <p class="footer-copy">户外智能出行伴侣 · MIT License · 2026</p>
             <div class="footer-links">
-                <a href="about.html">应用首页</a>
+                <a href="app.html">应用首页</a>
                 <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
-                <a href="about.html#weather">天气</a>
-                <a href="about.html#trail">轨迹</a>
-                <a href="about.html#ai">AI 助手</a>
+                <a href="#features">功能</a>
+                <a href="#changelog">更新</a>
             </div>
         </div>
     </footer>
@@ -457,6 +386,7 @@
         // 粒子效果
         (function() {
             const container = document.getElementById('particles');
+            if (!container) return;
             const count = window.innerWidth < 768 ? 8 : 16;
             for (let i = 0; i < count; i++) {
                 const p = document.createElement('div');
@@ -474,7 +404,7 @@
             }
         })();
 
-        // 数字递增动画（只执行一次）
+        // 数字递增动画
         let countersAnimated = false;
         function animateCounters() {
             if (countersAnimated) return;
@@ -500,9 +430,8 @@
             });
         }
 
-        // 滚动显示动画（兼容首屏）
+        // 滚动显示动画
         function initReveal() {
-            // 对于首屏可见的元素，直接显示
             const allReveal = document.querySelectorAll('.reveal');
             allReveal.forEach(el => {
                 const rect = el.getBoundingClientRect();
@@ -511,7 +440,6 @@
                 }
             });
 
-            // 统计数字单独触发（首屏可见就动）
             const statsSection = document.querySelector('.about-stats');
             if (statsSection) {
                 const rect = statsSection.getBoundingClientRect();
@@ -520,15 +448,17 @@
                 }
             }
 
-            // 滚动时持续观察
+            if (!('IntersectionObserver' in window)) {
+                allReveal.forEach(el => el.classList.add('visible'));
+                return;
+            }
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
                         const statItem = entry.target.querySelector('.stat-number[data-target]');
-                        if (statItem) {
-                            animateCounters();
-                        }
+                        if (statItem) animateCounters();
                         observer.unobserve(entry.target);
                     }
                 });
@@ -537,25 +467,23 @@
             allReveal.forEach(el => observer.observe(el));
         }
 
-        // 深色模式同步
-        function syncTheme() {
-            // 主题由 about.html 全局管理，此页面跟随系统
+        // 深色模式
+        function applyTheme() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else if (saved === 'light') {
+                document.body.classList.remove('dark-mode');
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.body.classList.add('dark-mode');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // 检测是否来自 about.html 的深色模式
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-            }
-            // 立即执行一次（不依赖滚动）
-            setTimeout(() => {
-                initReveal();
-            }, 50);
-            syncTheme();
+            applyTheme();
+            setTimeout(initReveal, 50);
         });
 
-        // 跟随系统主题变化
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
             if (!localStorage.getItem('theme')) {
                 document.body.classList.toggle('dark-mode', e.matches);

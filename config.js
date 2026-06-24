@@ -10,7 +10,8 @@
  * .env 文件格式示例：
  *   VITE_AMAP_KEY=你的高德地图密钥
  *   VITE_AMAP_SECURITY_CODE=你的高德安全码
- *   VITE_HEWEATHER_KEY=你的和风天气密钥
+ *   VITE_HEWEATHER_KEY=你的和风天气 API Key
+ *   VITE_QWEATHER_HOST=你的和风天气个人 API Host（如 abc1234xyz.qweatherapi.com）
  *   VITE_WEATHER_API_KEY=你的WeatherAPI密钥
  */
 
@@ -25,11 +26,15 @@ const APP_CONFIG = {
 
     // 和风天气 API 配置
     // 请前往 https://dev.qweather.com 申请免费 API Key
-    // 免费版每日 1000 次调用额度，支持：实时天气、逐小时预报、气象预警等
+    // 免费版每月 5 万次调用额度，支持：实时天气、逐小时预报、气象预警等
     // 预警数据接口: /v7/warning/now
     HEWEATHER: {
-        key: (window.__ENV__ && window.__ENV__.VITE_HEWEATHER_KEY) || '39b559550a484ebc976360cf9277646b'
+        key: (window.__ENV__ && window.__ENV__.VITE_HEWEATHER_KEY) || '39b559550a484ebc976360cf9277646b',
+        host: (window.__ENV__ && window.__ENV__.VITE_QWEATHER_HOST) || ''
     },
+
+    // 和风天气 API 代理前缀（前端 fetch 入口，统一走 dev-server.js 代理）
+    QWEATHER_API_BASE: '/api/qweather',
 
     // 天气 API 配置（推荐，WeatherAPI.com，数据与中国气象标准一致）
     // 请前往 https://www.weatherapi.com/signup.aspx 申请免费 API Key

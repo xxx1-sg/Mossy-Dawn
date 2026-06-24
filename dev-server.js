@@ -119,6 +119,92 @@ function proxyNmc(req, res, apiPath) {
     proxyReq.end();
 }
 
+/**
+ * 和风天气 QWeather 代理
+ * 转发到 https://{API_HOST}/{apiPath}，带 X-QW-Api-Key 头
+ * 自动处理 gzip 响应（Node zlib.gunzip）
+ *
+ * 缓存策略：
+ *   - 实时天气 / 空气质量：60s（天气变化快，避免代理回源压力）
+ *   - 24h 预报：          10 分钟
+ *   - 7d / 15d 预报：     30 分钟（追光页/天气页 7 日共用）
+ *   - 预警：              5 分钟（需要及时但避免请求轰炸）
+ */
+function proxyQWeather(req, res, apiPath, queryString) {
+    const apiKey = process.env.VITE_HEWEATHER_KEY;
+    if (!apiKey || apiKey === 'YOUR_HEWEATHER_KEY') {
+        res.writeHead(503, {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Control-Allow-Origin': '*'
+        });
+        res.end(JSON.stringify({
+            error: 'qweather_no_key',
+            msg: '和风天气 API Key 未配置，请在 .env 中设置 VITE_HEWEATHER_KEY（详见 https://dev.qweather.com）'
+        }));
+        return;
+    }
+
+    // 优先使用个人 API Host，降级到公共地址
+    const apiHost = process.env.VITE_QWEATHER_HOST || 'api.qweather.com';
+    const targetUrl = `https://${apiHost}${apiPath}${queryString ? '?' + queryString : ''}`;
+
+    // 根据子路径决定缓存时间
+    let cacheMaxAge = 1800; // 默认 30 分钟
+    if (apiPath.includes('/weather/now') || apiPath.includes('/air-quality/')) {
+        cacheMaxAge = 60; // 实时/空气质量：1 分钟
+    } else if (apiPath.includes('/weather/24h')) {
+        cacheMaxAge = 600; // 逐小时：10 分钟
+    } else if (apiPath.includes('/weatheralert/')) {
+        cacheMaxAge = 300; // 预警：5 分钟
+    }
+
+    const url = new URL(targetUrl);
+    const opts = {
+        hostname: url.hostname,
+        port: 443,
+        path: url.pathname + url.search,
+        method: req.method,
+        headers: {
+            'X-QW-Api-Key': apiKey,
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'application/json',
+            'Accept-Encoding': 'gzip'
+        }
+    };
+
+    const proxyReq = require('https').request(opts, proxyRes => {
+        const contentEncoding = (proxyRes.headers['content-encoding'] || '').toLowerCase();
+        const headers = {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Access-Control-Allow-Origin': '*',
+            'Cache-Control': `public, max-age=${cacheMaxAge}`
+        };
+        res.writeHead(proxyRes.statusCode, headers);
+
+        if (contentEncoding === 'gzip') {
+            const zlib = require('zlib');
+            const gunzip = zlib.createGunzip();
+            gunzip.on('error', err => {
+                console.error('[和风代理] gzip 解压失败:', err.message);
+                res.end();
+            });
+            proxyRes.pipe(gunzip).pipe(res);
+        } else {
+            proxyRes.pipe(res);
+        }
+    });
+
+    proxyReq.on('error', err => {
+        console.error('[和风代理] 失败:', err.message);
+        if (!res.headersSent) {
+            res.writeHead(502, { 'Content-Type': 'application/json' });
+        }
+        res.end(JSON.stringify({ error: 'qweather_proxy_failed: ' + err.message }));
+    });
+
+    proxyReq.end();
+}
+
 const server = http.createServer((req, res) => {
     // 去掉查询参数
     let urlPath = req.url.split('?')[0];
@@ -134,6 +220,13 @@ const server = http.createServer((req, res) => {
     if (urlPath.startsWith('/api/nmc/alarmDetail')) {
         const detailPath = urlPath.replace('/api/nmc', '');
         proxyNmc(req, res, detailPath);
+        return;
+    }
+    // 3. 和风天气 QWeather 代理（前缀 /api/qweather/*）
+    if (urlPath.startsWith('/api/qweather/')) {
+        const qwPath = urlPath.replace('/api/qweather', '');
+        const qwQuery = req.url.split('?')[1] || '';
+        proxyQWeather(req, res, qwPath, qwQuery);
         return;
     }
 
@@ -181,14 +274,19 @@ server.listen(PORT, () => {
         console.log('    [ ] VITE_AMAP_KEY (未配置)');
     }
     if (process.env.VITE_HEWEATHER_KEY && process.env.VITE_HEWEATHER_KEY !== 'YOUR_HEWEATHER_KEY') {
-        console.log('    [x] VITE_HEWEATHER_KEY');
+        console.log('    [x] VITE_HEWEATHER_KEY（追光页已切换到 WeatherAPI.com，本字段可忽略）');
     } else {
-        console.log('    [ ] VITE_HEWEATHER_KEY (未配置)');
+        console.log('    [ ] VITE_HEWEATHER_KEY（追光页已切换到 WeatherAPI.com，本字段已不需要）');
     }
-    if (process.env.VITE_WEATHER_API_KEY) {
-        console.log('    [x] VITE_WEATHER_API_KEY');
+    if (process.env.VITE_QWEATHER_HOST) {
+        console.log('    [x] VITE_QWEATHER_HOST -> ' + process.env.VITE_QWEATHER_HOST);
     } else {
-        console.log('    [ ] VITE_WEATHER_API_KEY (未配置)');
+        console.log('    [ ] VITE_QWEATHER_HOST（已不再使用，和风公共主机 api.qweather.com 返回 403）');
+    }
+    if (process.env.VITE_WEATHER_API_KEY && process.env.VITE_WEATHER_API_KEY !== 'YOUR_WEATHER_API_KEY') {
+        console.log('    [x] VITE_WEATHER_API_KEY（追光页主数据源）');
+    } else {
+        console.log('    [ ] VITE_WEATHER_API_KEY（未配置，追光页将走演示数据）');
     }
     console.log('');
     console.log('  按 Ctrl+C 停止服务器');

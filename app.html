@@ -3260,6 +3260,47 @@
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
+        .trail-more-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.35rem 0.5rem 0.5rem;
+            border-bottom: 1px solid rgba(26, 58, 40, 0.08);
+            margin-bottom: 0.2rem;
+        }
+
+        .trail-more-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-light);
+            letter-spacing: 0.03em;
+        }
+
+        .trail-more-close {
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.15s ease, color 0.15s ease;
+            padding: 0;
+        }
+
+        .trail-more-close .lucide {
+            width: 15px;
+            height: 15px;
+        }
+
+        .trail-more-close:hover {
+            background: rgba(26, 58, 40, 0.08);
+            color: var(--primary-color);
+        }
+
         .trail-more-item {
             display: flex;
             align-items: center;
@@ -3742,6 +3783,10 @@
             font-size: 0.84rem;
             max-width: calc(100% - 32px);
             animation: sosToastIn 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .sos-toast[hidden] {
+            display: none !important;
         }
 
         .sos-toast .lucide {
@@ -11211,42 +11256,8 @@
                 </div>
             </footer>
 
-            <!-- 长按按钮拓展菜单 -->
-            <div class="trail-more-menu" id="trailMoreMenu" hidden role="menu" aria-label="拓展功能">
-                <button class="trail-more-item" id="trailBgRec" type="button" role="menuitemcheckbox" aria-checked="false">
-                    <svg class="lucide" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-                    <span>后台持续记录</span>
-                    <span class="trail-more-switch" aria-hidden="true"></span>
-                </button>
-                <button class="trail-more-item" id="trailPowerSave" type="button" role="menuitemcheckbox" aria-checked="false">
-                    <svg class="lucide" viewBox="0 0 24 24"><path d="M12 2 4 14h7l-1 8 9-12h-7Z"/></svg>
-                    <span>低电量省电模式</span>
-                    <span class="trail-more-switch" aria-hidden="true"></span>
-                </button>
-                <button class="trail-more-item" id="trailImportGpx" type="button" role="menuitem">
-                    <svg class="lucide" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-                    <span>导入 GPX 路线</span>
-                </button>
-                <button class="trail-more-item" id="trailExportGpx" type="button" role="menuitem">
-                    <svg class="lucide" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 9l5-5 5 5"/><path d="M12 4v12"/></svg>
-                    <span>导出 GPX</span>
-                </button>
-                <button class="trail-more-item" id="trailBindTeam" type="button" role="menuitem">
-                    <svg class="lucide" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    <span>绑定同行队友</span>
-                </button>
-                <button class="trail-more-item" id="trailBindGear" type="button" role="menuitem">
-                    <svg class="lucide" viewBox="0 0 24 24"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23Z"/></svg>
-                    <span>绑定登山装备</span>
-                </button>
-                <button class="trail-more-item" id="trailGenerateLog" type="button" role="menuitem">
-                    <svg class="lucide" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
-                    <span>生成徒步日志</span>
-                </button>
-            </div>
-
             <!-- 图层管理齿轮弹窗 -->
-            <div class="layer-modal" id="layerModal" hidden role="dialog" aria-modal="true" aria-label="图层管理">
+            <div class="layer-modal" id="layerModal" style="display:none" role="dialog" aria-modal="true" aria-label="图层管理">
                 <div class="layer-modal-mask" data-close="modal"></div>
                 <div class="layer-modal-panel" role="document">
                     <header class="layer-modal-head">
@@ -11299,7 +11310,7 @@
             </div>
 
             <!-- 历史轨迹库弹窗 -->
-            <div class="library-modal" id="libraryModal" hidden role="dialog" aria-modal="true" aria-label="历史轨迹库">
+            <div class="library-modal" id="libraryModal" style="display:none" role="dialog" aria-modal="true" aria-label="历史轨迹库">
                 <div class="layer-modal-mask" data-close="library"></div>
                 <div class="layer-modal-panel" role="document">
                     <header class="layer-modal-head">
@@ -11328,7 +11339,7 @@
             </div>
 
             <!-- 路线重命名弹窗 -->
-            <div class="rename-modal" id="renameModal" hidden role="dialog" aria-modal="true" aria-label="重命名">
+            <div class="rename-modal" id="renameModal" style="display:none" role="dialog" aria-modal="true" aria-label="重命名">
                 <div class="layer-modal-mask" data-close="rename"></div>
                 <div class="rename-panel" role="document">
                     <h3>重命名轨迹</h3>
@@ -17272,11 +17283,8 @@
         let trailDistance = 0;
         let trailElevation = 0;
         let trailElevSeries = []; // 海拔变化曲线数据
-        let trailBgRec = false;
-        let trailPowerSave = false;
         let currentMapMode = 'offline';
         let gpsState = 'idle'; // idle | live | lost
-        let trailLongPressTimer = null;
         let trailRenamingId = null;
         let trailActiveLibraryId = null;
 
@@ -17777,14 +17785,6 @@
                 cta.__bound = true;
                 const start = (e) => { e.preventDefault(); startTracking(); };
                 cta.addEventListener('click', start);
-                // 长按弹出拓展菜单
-                cta.addEventListener('pointerdown', () => {
-                    clearTimeout(trailLongPressTimer);
-                    trailLongPressTimer = setTimeout(() => openMoreMenu(), 520);
-                });
-                ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => {
-                    cta.addEventListener(ev, () => clearTimeout(trailLongPressTimer));
-                });
             }
 
             // SOS 按钮
@@ -17792,57 +17792,6 @@
             if (sosBtn && !sosBtn.__bound) {
                 sosBtn.__bound = true;
                 sosBtn.addEventListener('click', () => triggerSosFromTrail());
-            }
-            // 更多按钮（拓展菜单触发）
-            const moreBtn = document.getElementById('trailMoreBtn');
-            if (moreBtn && !moreBtn.__bound) {
-                moreBtn.__bound = true;
-                moreBtn.addEventListener('click', () => openMoreMenu());
-            }
-
-            // 拓展菜单项
-            const bgBtn = document.getElementById('trailBgRec');
-            if (bgBtn && !bgBtn.__bound) {
-                bgBtn.__bound = true;
-                bgBtn.addEventListener('click', () => {
-                    trailBgRec = !trailBgRec;
-                    bgBtn.setAttribute('aria-checked', trailBgRec ? 'true' : 'false');
-                    flashToast(trailBgRec ? '已开启后台持续记录' : '已关闭后台持续记录');
-                });
-            }
-            const psBtn = document.getElementById('trailPowerSave');
-            if (psBtn && !psBtn.__bound) {
-                psBtn.__bound = true;
-                psBtn.addEventListener('click', () => {
-                    trailPowerSave = !trailPowerSave;
-                    psBtn.setAttribute('aria-checked', trailPowerSave ? 'true' : 'false');
-                    flashToast(trailPowerSave ? '已切换低电量省电模式' : '已关闭省电模式');
-                });
-            }
-            const importBtn = document.getElementById('trailImportGpx');
-            if (importBtn && !importBtn.__bound) {
-                importBtn.__bound = true;
-                importBtn.addEventListener('click', () => document.getElementById('libraryGpxInput')?.click());
-            }
-            const exportBtn = document.getElementById('trailExportGpx');
-            if (exportBtn && !exportBtn.__bound) {
-                exportBtn.__bound = true;
-                exportBtn.addEventListener('click', () => exportCurrentTrail());
-            }
-            const teamBtn = document.getElementById('trailBindTeam');
-            if (teamBtn && !teamBtn.__bound) {
-                teamBtn.__bound = true;
-                teamBtn.addEventListener('click', () => flashToast('同行队友绑定已就绪（演示）'));
-            }
-            const gearBtn = document.getElementById('trailBindGear');
-            if (gearBtn && !gearBtn.__bound) {
-                gearBtn.__bound = true;
-                gearBtn.addEventListener('click', () => flashToast('已绑定登山装备（演示）'));
-            }
-            const logBtn = document.getElementById('trailGenerateLog');
-            if (logBtn && !logBtn.__bound) {
-                logBtn.__bound = true;
-                logBtn.addEventListener('click', () => flashToast('徒步日志已生成（演示）'));
             }
 
             // GPX 文件输入
@@ -17930,26 +17879,13 @@
         function openModal(id) {
             const m = document.getElementById(id);
             if (!m) return;
-            m.removeAttribute('hidden');
+            m.style.display = 'flex';
         }
 
         function closeModal(id) {
             const m = document.getElementById(id);
             if (!m) return;
-            m.setAttribute('hidden', '');
-        }
-
-        function openMoreMenu() {
-            const menu = document.getElementById('trailMoreMenu');
-            if (!menu) return;
-            menu.removeAttribute('hidden');
-            const onDocClick = (e) => {
-                if (!menu.contains(e.target)) {
-                    menu.setAttribute('hidden', '');
-                    document.removeEventListener('click', onDocClick);
-                }
-            };
-            setTimeout(() => document.addEventListener('click', onDocClick), 0);
+            m.style.display = 'none';
         }
 
         function zoomCanvas(ratio) {
@@ -18019,7 +17955,7 @@
             updateGpsIndicator();
             setMapMode('offline');
 
-            const interval = trailPowerSave ? 2000 : 1000;
+            const interval = 1000;
             trailInterval = setInterval(() => trackStep(), interval);
             flashToast('轨迹记录已开始');
         }
