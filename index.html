@@ -14275,79 +14275,85 @@
         }
 
         /**
-         * 核心函数：从 Open-Meteo API 获取山峰天气数据并渲染
-         * 请求：实时天气 + 小时预报（降水概率）+ 每日预报（7天，含日出日落）
+         * 追光数据加载（与天气页面一致的三级数据源）
+         * 优先级：和风天气 QWeather（/api/qweather 代理）→ WeatherAPI.com（直连兜底）→ 演示数据
          */
         async function loadChaseData() {
             const mtn = chaseState.currentMountain;
             if (!mtn) return;
 
-            // 显示加载状态
             document.getElementById('chaseLoading').style.display = 'flex';
             document.getElementById('chaseError').style.display = 'none';
             document.getElementById('chaseContent').style.display = 'none';
             chaseState.isLoading = true;
 
+            const loc = `${mtn.lat.toFixed(2)},${mtn.lng.toFixed(2)}`;
+            const qwBase = '/api/qweather';
+
+            // ---- 优先级 1：和风天气 QWeather（走代理，Key 不泄露）----
+            const qwApiKey = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.HEWEATHER?.key)
+                ? APP_CONFIG.HEWEATHER.key : '';
+            const useQWeather = qwApiKey && qwApiKey !== 'YOUR_HEWEATHER_KEY';
+
+            if (useQWeather) {
+                try {
+                    const d7Res = await _indexChaseFetch(`${qwBase}/v7/weather/7d?location=${encodeURIComponent(loc)}&lang=zh&unit=m`);
+                    if (d7Res.code !== '200') throw new Error(`QWeather 7d 错误: ${d7Res.code}`);
+
+                    chaseState.data = _indexNormalizeQWeather7d(d7Res);
+
+                    chaseState.data.forEach(d => {
+                        d.score = chaseCalcIndex(d, chaseState.mode);
+                        d.level = chaseGetLevel(d.score);
+                    });
+
+                    document.getElementById('chaseLoading').style.display = 'none';
+                    document.getElementById('chaseContent').style.display = 'block';
+                    renderChaseContent();
+                    resetChaseAutoRefresh();
+                    return;
+                } catch (qErr) {
+                    console.warn('[Chase] 和风天气失败，降级到 WeatherAPI.com:', qErr.message);
+                }
+            } else {
+                console.warn('[Chase] 和风天气 Key 未配置，降级到 WeatherAPI.com');
+            }
+
+            // ---- 优先级 2：WeatherAPI.com 直连兜底 ----
+            const wapiKey = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.WEATHER_API_KEY)
+                ? APP_CONFIG.WEATHER_API_KEY : '';
+            if (!wapiKey || wapiKey === 'YOUR_WEATHER_API_KEY') {
+                loadChaseDemoData();
+                return;
+            }
+
             try {
                 const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 8000);
-                const [currentRes, hourlyRes, dailyRes] = await Promise.all([
-                    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${mtn.lat}&longitude=${mtn.lng}&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m&hourly=precipitation_probability,weather_code,temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,sunrise,sunset&forecast_days=7&timezone=Asia/Shanghai`, { signal: controller.signal }),
-                    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${mtn.lat}&longitude=${mtn.lng}&hourly=precipitation_probability,weather_code&forecast_days=2&timezone=Asia/Shanghai`, { signal: controller.signal }),
-                    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${mtn.lat}&longitude=${mtn.lng}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,sunrise,sunset&forecast_days=7&timezone=Asia/Shanghai`, { signal: controller.signal })
-                ]);
+                const timeout = setTimeout(() => controller.abort(), 12000);
+                const url = `https://api.weatherapi.com/v1/forecast.json?key=${encodeURIComponent(wapiKey)}&q=${encodeURIComponent(loc)}&days=7&aqi=yes&alerts=yes&lang=zh`;
+                const res = await fetch(url, { signal: controller.signal });
                 clearTimeout(timeout);
+                if (!res.ok) throw new Error(`API ${res.status}`);
 
-                if (!currentRes.ok || !dailyRes.ok) throw new Error('API 请求失败');
+                const data = await res.json();
+                if (!data.forecast || !Array.isArray(data.forecast.forecastday)) {
+                    throw new Error('响应缺少 forecast.forecastday');
+                }
 
-                const currentData = await currentRes.json();
-                const dailyData = await dailyRes.json();
+                chaseState.data = _indexNormalizeWeatherAPIForecast(data);
 
-                // 标准化数据
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-
-                chaseState.data = dailyData.daily.time.map((dateStr, i) => {
-                    const date = new Date(dateStr);
-                    const isToday = date.getTime() === today.getTime();
-                    const dayDiff = Math.round((date - today) / (1000 * 60 * 60 * 24));
-
-                    return {
-                        date: date,
-                        dateStr: date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
-                        dateFull: dateStr,
-                        dayLabel: isToday ? '今天' : (dayDiff === 1 ? '明天' : ['周日','周一','周二','周三','周四','周五','周六'][date.getDay()]),
-                        dayDiff,
-                        weatherCode: dailyData.daily.weather_code[i],
-                        weatherText: WeatherAPI._codeToText(dailyData.daily.weather_code[i]),
-                        high: Math.round(dailyData.daily.temperature_2m_max[i]),
-                        low: Math.round(dailyData.daily.temperature_2m_min[i]),
-                        precipProb: Math.round(dailyData.daily.precipitation_probability_max[i] || 0),
-                        windSpeed: Math.round(dailyData.daily.wind_speed_10m_max[i]),
-                        sunrise: new Date(dailyData.daily.sunrise[i]).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
-                        sunset: new Date(dailyData.daily.sunset[i]).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
-                        cloudCover: _estimateCloudCover(dailyData.daily.weather_code[i])
-                    };
-                });
-
-                // 计算每天追光指数
                 chaseState.data.forEach(d => {
                     d.score = chaseCalcIndex(d, chaseState.mode);
                     d.level = chaseGetLevel(d.score);
                 });
 
-                // 渲染页面
                 document.getElementById('chaseLoading').style.display = 'none';
                 document.getElementById('chaseContent').style.display = 'block';
                 renderChaseContent();
-
-                // 重置自动刷新计时
                 resetChaseAutoRefresh();
-
             } catch (err) {
                 clearTimeout(timeout);
                 console.error('[Chase] 加载失败:', err);
-                // API 失败时加载演示数据兜底
                 loadChaseDemoData();
             } finally {
                 chaseState.isLoading = false;
@@ -14356,8 +14362,147 @@
             }
         }
 
+        /** 带 3s 超时的 fetch（和风天气专用） */
+        async function _indexChaseFetch(url) {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 3000);
+            try {
+                const res = await fetch(url, { signal: controller.signal });
+                clearTimeout(timer);
+                if (!res.ok) {
+                    const body = await res.text().catch(() => '');
+                    throw new Error(`HTTP ${res.status}: ${body.slice(0, 120)}`);
+                }
+                return await res.json();
+            } catch (e) {
+                clearTimeout(timer);
+                if (e.name === 'AbortError') throw new Error(`${url} 超时（>3s）`);
+                throw e;
+            }
+        }
+
         /**
-         * 演示数据兜底加载（API 失败时调用）
+         * 标准化 QWeather /v7/weather/7d 响应 → chaseState.data
+         * weatherCode 输出 WMO 码（与 chaseCalcIndex 期望一致）
+         */
+        function _indexNormalizeQWeather7d(d7Res) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const weekDays = ['周日','周一','周二','周三','周四','周五','周六'];
+
+            return (d7Res.daily || []).map(d => {
+                const date = new Date(d.fxDate + 'T00:00:00+08:00');
+                const isToday = date.getTime() === today.getTime();
+                const dayDiff = Math.round((date - today) / (1000 * 60 * 60 * 24));
+                const qwCode = parseInt(d.iconDay, 10) || 100;
+
+                return {
+                    date,
+                    dateStr: date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
+                    dateFull: d.fxDate,
+                    dayLabel: isToday ? '今天' : (dayDiff === 1 ? '明天' : weekDays[date.getDay()]),
+                    dayDiff,
+                    weatherCode: _qwToWmo(qwCode),   // WMO 码，供追光指数计算
+                    weatherText: d.textDay || '',
+                    high: Math.round(parseFloat(d.tempMax) || 0),
+                    low: Math.round(parseFloat(d.tempMin) || 0),
+                    precipProb: Math.round(parseFloat(d.precip) || 0),
+                    windSpeed: parseInt(d.windScaleDay, 10) || 0,
+                    sunrise: d.sunrise || '--:--',
+                    sunset: d.sunset || '--:--',
+                    cloudCover: _qwCloudCover(qwCode)
+                };
+            });
+        }
+
+        /** QWeather 天气代码 → WMO 码（chaseCalcIndex 使用 WMO） */
+        function _qwToWmo(code) {
+            if ([100].includes(code)) return 0;        // 晴
+            if ([101, 102, 103].includes(code)) return 2; // 多云
+            if ([104].includes(code)) return 3;          // 阴
+            if (code >= 200 && code <= 213) return 45;  // 雾/沙尘
+            if (code >= 300 && code <= 349) return 63;   // 雨
+            if (code >= 350 && code <= 399) return 61;   // 毛毛雨
+            if (code >= 400 && code <= 499) return 95;   // 雷雨
+            if (code >= 500 && code <= 599) return 71;   // 雪
+            return 2;
+        }
+
+        /** QWeather 代码 → 云量估算 */
+        function _qwCloudCover(code) {
+            if ([100].includes(code)) return 5;
+            if ([101, 102, 103].includes(code)) return 40;
+            if ([104].includes(code)) return 90;
+            if (code >= 200 && code <= 213) return 95;
+            if (code >= 300 && code <= 349) return 75;
+            if (code >= 350 && code <= 399) return 80;
+            if (code >= 400 && code <= 499) return 80;
+            if (code >= 500 && code <= 599) return 70;
+            return 50;
+        }
+
+        /**
+         * 标准化 WeatherAPI.com forecast → chaseState.data
+         */
+        function _indexNormalizeWeatherAPIForecast(data) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            return data.forecast.forecastday.map(d => {
+                const date = new Date(d.date + 'T00:00:00+08:00');
+                const isToday = date.getTime() === today.getTime();
+                const dayDiff = Math.round((date - today) / (1000 * 60 * 60 * 24));
+                const wapiCode = d.day.condition.code;
+
+                return {
+                    date,
+                    dateStr: date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
+                    dateFull: d.date,
+                    dayLabel: isToday ? '今天' : (dayDiff === 1 ? '明天' : ['周日','周一','周二','周三','周四','周五','周六'][date.getDay()]),
+                    dayDiff,
+                    weatherCode: wapiCode,
+                    weatherText: d.day.condition.text || '',
+                    high: Math.round(parseFloat(d.day.maxtemp_c) || 0),
+                    low: Math.round(parseFloat(d.day.mintemp_c) || 0),
+                    precipProb: parseInt(d.day.daily_chance_of_rain, 10) || 0,
+                    windSpeed: _mphToBeaufort(parseFloat(d.day.maxwind_mph) || 0),
+                    sunrise: _formatTime12to24(d.astro?.sunrise) || '--:--',
+                    sunset: _formatTime12to24(d.astro?.sunset) || '--:--',
+                    cloudCover: _estimateCloudCover(wapiCode)
+                };
+            });
+        }
+
+        /** mph → 蒲福风力等级 */
+        function _mphToBeaufort(mph) {
+            const kph = mph * 1.60934;
+            if (kph <= 1)    return 0;
+            if (kph <= 5.5)  return 1;
+            if (kph <= 11)   return 2;
+            if (kph <= 19)   return 3;
+            if (kph <= 28)   return 4;
+            if (kph <= 38)   return 5;
+            if (kph <= 49)   return 6;
+            if (kph <= 61)   return 7;
+            if (kph <= 74)   return 8;
+            if (kph <= 88)   return 9;
+            if (kph <= 102)  return 10;
+            if (kph <= 117)  return 11;
+            return 12;
+        }
+
+        function _formatTime12to24(str) {
+            if (!str) return '--:--';
+            const m = str.match(/(\d+):(\d+)\s*(AM|PM)/i);
+            if (!m) return str;
+            let h = parseInt(m[1], 10), min = m[2];
+            if (/pm/i.test(m[3]) && h < 12) h += 12;
+            if (/am/i.test(m[3]) && h === 12) h = 0;
+            return `${String(h).padStart(2,'0')}:${min}`;
+        }
+
+        /**
+         * 演示数据兜底加载
          */
         function loadChaseDemoData() {
             const mtn = chaseState.currentMountain;
@@ -14369,15 +14514,14 @@
             for (let i = 0; i < 7; i++) {
                 const d = new Date(today);
                 d.setDate(d.getDate() + i);
-                const dayDiff = i;
                 chaseState.data.push({
                     date: d,
                     dateStr: d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
                     dateFull: d.toISOString().split('T')[0],
                     dayLabel: i === 0 ? '今天' : (i === 1 ? '明天' : weekDays[d.getDay()]),
-                    dayDiff,
-                    weatherCode: [1, 2, 3, 61, 71][i % 5],
-                    weatherText: WeatherAPI._codeToText([1, 2, 3, 61, 71][i % 5]),
+                    dayDiff: i,
+                    weatherCode: [0, 2, 3, 63, 71][i % 5],
+                    weatherText: ['', '多云', '阴', '阵雨', '小雪'][i % 5] || '多云',
                     high: 22 + Math.round(Math.random() * 6),
                     low: 16 + Math.round(Math.random() * 4),
                     precipProb: Math.round(Math.random() * 70),
@@ -14385,8 +14529,6 @@
                     sunrise: '06:18',
                     sunset: '18:42',
                     cloudCover: 30 + Math.round(Math.random() * 50),
-                    score: Math.round(Math.random() * 40) + 50,
-                    level: 'medium',
                     isDemo: true
                 });
             }
@@ -14401,6 +14543,9 @@
             renderChaseContent();
             resetChaseAutoRefresh();
             showToast('当前为演示数据，请检查网络连接', 'info');
+            chaseState.isLoading = false;
+            const btn = document.getElementById('chaseRefreshBtn');
+            if (btn) btn.classList.remove('is-loading');
         }
 
         /**
@@ -15624,7 +15769,7 @@
 
             /**
              * 加载预警数据
-             * 优先从 API 获取，失败时从本地缓存或演示数据
+             * 优先级：和风天气 → WeatherAPI.com → 演示数据
              */
             async loadData() {
                 if (this.isLoading) return;
@@ -15636,15 +15781,17 @@
 
                 try {
                     if (HEWEATHER_KEY && HEWEATHER_KEY !== 'YOUR_HEWEATHER_KEY') {
-                        // 真实API调用
-                        await this.fetchFromAPI(area);
+                        try {
+                            await this.fetchFromAPI(area);
+                        } catch (qwErr) {
+                            console.warn('[预警] 和风天气失败，降级 WeatherAPI:', qwErr);
+                            await this.loadDemoData(area);
+                        }
                     } else {
-                        // 演示模式：加载模拟数据
                         await this.loadDemoData(area);
                     }
                 } catch (err) {
                     console.error('[预警] 数据加载失败:', err);
-                    // 尝试用缓存
                     if (!this.loadFromCache()) {
                         await this.loadDemoData(area);
                     }

@@ -1,13 +1,94 @@
 {
-  "name": "xiaoshanqing",
+  "name": "xiaoshanqing-desktop",
   "version": "1.0.0",
-  "description": "晓山青 Viridiore - 户外智能出行伴侣",
-  "main": "dev-server.js",
+  "description": "晓山青 Viridiore - 户外智能出行伴侣（桌面版）",
+  "main": "electron/main.js",
+  "author": "晓山青团队",
+  "license": "MIT",
   "scripts": {
-    "dev": "node dev-server.js",
-    "teammate": "node server-teammate.js"
+    "start": "electron .",
+    "dev": "node dev-server.js & electron .",
+    "build": "electron-builder",
+    "build:dir": "electron-builder --dir",
+    "build:win": "electron-builder --win",
+    "build:win:nsis": "electron-builder --win nsis",
+    "build:win:portable": "electron-builder --win portable"
   },
-  "dependencies": {
-    "ws": "^8.18.0"
+  "devDependencies": {
+    "electron": "^33.4.0",
+    "electron-builder": "^25.1.8",
+    "png-to-ico": "^3.0.1",
+    "sharp": "^0.35.2"
+  },
+  "build": {
+    "appId": "com.viridiore.xiaoshanqing",
+    "productName": "晓山青",
+    "copyright": "Copyright © 2024 晓山青团队",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "app.html",
+      "about.html",
+      "index.html",
+      "config.js",
+      "db.js",
+      "sw.js",
+      "worker.js",
+      "js/**",
+      "css/**",
+      "pages/**",
+      "electron/**",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/.cache/**",
+      "!**/node_modules/*/component.json"
+    ],
+    "extraMetadata": {
+      "main": "electron/main.js"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "晓山青 Viridiore",
+      "license": "LICENSE.txt"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-Portable.${ext}"
+    },
+    "asar": true,
+    "asarUnpack": [
+      "js/worker.js"
+    ],
+    "electronDist": "node_modules/electron/dist",
+    "publish": null
+  },
+  "allowScripts": {
+    "electron@33.4.11": true
   }
 }

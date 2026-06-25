@@ -34,7 +34,23 @@
             }
         })();
     </script>
-    
+
+    <!-- 桌面适配层：检测 Electron 环境 -->
+    <script>
+    (function() {
+        window.__IS_ELECTRON__ = typeof window.electronAPI !== 'undefined';
+        if (window.__IS_ELECTRON__) {
+            console.info('[晓山青] 桌面版已启动');
+            // 托盘导航：监听来自主进程的页面跳转指令
+            window.electronAPI.onNavigate(function(page) {
+                if (typeof navigateTo === 'function') {
+                    navigateTo(page);
+                }
+            });
+        }
+    })();
+    </script>
+
     <!-- 优化后的网站图标 -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235c946e'/%3E%3Cstop offset='50%25' stop-color='%233d6b4f'/%3E%3Cstop offset='100%25' stop-color='%232d5a3d'/%3E%3C/linearGradient%3E%3ClinearGradient id='sunGrad' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffd93d'/%3E%3Cstop offset='100%25' stop-color='%23ff9500'/%3E%3C/linearGradient%3E%3Cfilter id='glow'%3E%3CfeGaussianBlur stdDeviation='2' result='coloredBlur'/%3E%3CfeMerge%3E%3CfeMergeNode in='coloredBlur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3C!-- 背景圆 --%3E%3Ccircle cx='100' cy='100' r='98' fill='url(%23g)'/%3E%3C!-- 山峰 --%3E%3Cpath d='M100 35 L135 85 L115 85 L115 135 L85 135 L85 85 L55 85 Z' fill='%23f4a460' filter='url(%23glow)'/%3E%3C!-- 山基 --%3E%3Cpath d='M25 155 L100 95 L175 155 L175 175 L25 175 Z' fill='%232d5a3d'/%3E%3C!-- 装饰线条 --%3E%3Cpath d='M35 155 L100 105 L165 155' stroke='%234a7c59' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C!-- 太阳 --%3E%3Ccircle cx='145' cy='55' r='12' fill='url(%23sunGrad)' filter='url(%23glow)'/%3E%3C/svg%3E">
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235c946e'/%3E%3Cstop offset='50%25' stop-color='%233d6b4f'/%3E%3Cstop offset='100%25' stop-color='%232d5a3d'/%3E%3C/linearGradient%3E%3ClinearGradient id='sunGrad' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffd93d'/%3E%3Cstop offset='100%25' stop-color='%23ff9500'/%3E%3C/linearGradient%3E%3Cfilter id='glow'%3E%3CfeGaussianBlur stdDeviation='3' result='coloredBlur'/%3E%3CfeMerge%3E%3CfeMergeNode in='coloredBlur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='92' fill='url(%23g)'/%3E%3Cpath d='M100 30 L140 90 L110 90 L110 150 L90 150 L90 90 L50 90 Z' fill='%23ffd93d' filter='url(%23glow)'/%3E%3Cpath d='M20 160 L100 100 L180 160 L180 180 L20 180 Z' fill='%232d5a3d'/%3E%3Cpath d='M30 160 L100 110 L170 160' stroke='%234a7c59' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='155' cy='50' r='15' fill='url(%23sunGrad)' filter='url(%23glow)'/%3E%3C/svg%3E">
@@ -5346,7 +5362,7 @@
         .rb2-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
         @keyframes cardFadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
         .rb2-card-image { position: relative; height: 160px; overflow: hidden; }
-        .rb2-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+        .rb2-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; }
         .rb2-card:hover .rb2-card-image img { transform: scale(1.05); }
         .rb2-card-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, rgba(26, 58, 40, 0.6) 100%); pointer-events: none; }
         .rb2-card-tags { position: absolute; top: 0.6rem; left: 0.6rem; display: flex; gap: 0.35rem; flex-wrap: wrap; z-index: 1; }
@@ -11589,7 +11605,7 @@
         <div id="pressure" class="page">
             <div class="feature-header">
                 <h2>📊 气压检测</h2>
-                <p>实时大气压监测，预测天气变化</p>
+                <p>深圳山野气压专业分析 · 户外出行判断</p>
             </div>
             <div class="result-card">
                 <div style="text-align:center;padding:2rem;">
@@ -11597,34 +11613,57 @@
                         <div id="pressureValue" style="font-size:2.5rem;font-weight:bold;color:#fff;">1013</div>
                         <div style="position:absolute;bottom:20px;color:#fff;font-size:0.9rem;">hPa</div>
                     </div>
-                    <div id="pressureTrend" style="font-size:1.2rem;margin-bottom:1rem;">
+                    <div id="pressureTrend" style="font-size:1.2rem;margin-bottom:0.5rem;">
                         <span style="color:var(--success-color);">↗ 气压稳定</span>
                     </div>
-                    <p id="pressureAdvice" style="color:var(--text-light);">当前气压正常，适合户外活动</p>
+                    <p id="pressureAdvice" style="color:var(--text-light);font-size:0.9rem;">当前气压正常，适合户外活动</p>
                 </div>
-                <div style="margin-top:1.5rem;">
-                    <h4 style="margin-bottom:1rem;">📈 气压变化趋势（24 小时）</h4>
-                    <canvas id="pressureChart" width="800" height="150" style="width:100%;border-radius:10px;background:#f5f5f0;"></canvas>
-                </div>
-                <div style="margin-top:1.5rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;">
+                <!-- 四个关键指标 -->
+                <div style="margin:1rem 0;display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;">
                     <div class="trail-stat">
                         <div class="value" id="pressureToday">1013</div>
-                        <div class="label">今日气压</div>
+                        <div class="label">当前气压（hPa）</div>
                     </div>
                     <div class="trail-stat">
-                        <div class="value" id="pressureChange">+2</div>
-                        <div class="label">变化量</div>
+                        <div class="value" id="pressureChange">+2.1</div>
+                        <div class="label">24h 变化量（hPa）</div>
                     </div>
                     <div class="trail-stat">
                         <div class="value" id="pressureAltitude">120m</div>
                         <div class="label">估算海拔</div>
                     </div>
                     <div class="trail-stat">
-                        <div class="value" id="pressureForecast">晴朗</div>
-                        <div class="label">天气预测</div>
+                        <div class="value" id="pressureForecast">晴</div>
+                        <div class="label">参考天气</div>
                     </div>
                 </div>
-                <button class="action-btn action-btn--block action-btn--lg" type="button" onclick="refreshPressure()">🔄 刷新数据</button>
+                <div style="margin:0.75rem 0;padding:0.75rem;background:rgba(45,90,61,0.07);border-radius:10px;border-left:3px solid var(--success-color);">
+                    <div style="font-size:0.8rem;color:var(--text-light);margin-bottom:0.25rem;">气压趋势特征</div>
+                    <div id="pressureTrendCurve" style="font-weight:600;font-size:0.95rem;">平稳上升</div>
+                </div>
+                <!-- 气压变化趋势图 -->
+                <div style="margin-top:1.5rem;">
+                    <h4 style="margin-bottom:1rem;">📈 气压变化趋势（24 小时）</h4>
+                    <canvas id="pressureChart" width="800" height="150" style="width:100%;border-radius:10px;background:#f5f5f0;"></canvas>
+                </div>
+                <!-- AI 专业分析面板 -->
+                <div id="pressureAnalysisPanel" style="margin-top:1.5rem;padding:1rem;background:rgba(45,90,61,0.06);border-radius:12px;border:1px solid rgba(45,90,61,0.15);">
+                    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.75rem;">
+                        <span style="font-size:1.1rem;">🤖</span>
+                        <strong style="font-size:0.95rem;">气压专业分析</strong>
+                        <span id="pressureAnalysisTag" style="margin-left:auto;font-size:0.7rem;padding:0.15rem 0.5rem;background:var(--success-color);color:#fff;border-radius:999px;font-weight:600;">适合户外</span>
+                    </div>
+                    <div id="pressureConclusion" style="font-size:1rem;font-weight:700;margin-bottom:0.75rem;padding:0.5rem 0.75rem;background:rgba(45,90,61,0.1);border-radius:8px;color:var(--primary-color);">
+                        【综合气压结论】当前气压稳定，天气条件良好，适合深圳山野户外活动
+                    </div>
+                    <div style="font-size:0.85rem;line-height:1.7;color:var(--text-secondary);" id="pressureAnalysisContent">
+                        <div id="paStatus"></div>
+                        <div id="paSuggest"></div>
+                        <div id="paSafety"></div>
+                        <div id="paGear"></div>
+                    </div>
+                    <button class="action-btn action-btn--warm action-btn--sm" type="button" onclick="refreshPressure()" style="margin-top:0.75rem;width:100%;">🔄 重新分析</button>
+                </div>
             </div>
         </div>
 
@@ -12509,20 +12548,20 @@
         <div id="ai" class="page">
             <div class="feature-header">
                 <h2>🤖 AI 智能助手</h2>
-                <p>您的户外智能出行顾问，随时为您解答疑问</p>
+                <p>深圳山野专属顾问 · 日出云海 · 路线规划 · 安全提醒</p>
             </div>
             <div class="result-card">
                 <div id="chatContainer" style="max-height:400px;overflow-y:auto;padding:1rem;background:#f9f9f9;border-radius:10px;margin-bottom:1rem;">
                     <div class="chat-message ai">
                         <div class="message-avatar">🤖</div>
                         <div class="message-content">
-                            <strong>晓山青 Viridiore AI 助手</strong>
-                            <p>您好！我是您的户外智能出行助手。我可以帮您：</p>
+                            <strong>晓山青 AI 助手</strong>
+                            <p style="margin-top:0.5rem;">您好！我是「晓山青」深圳山野专属 AI 助手，可以帮您：</p>
                             <ul style="text-align:left;margin-top:0.5rem;">
-                                <li>🌤️ 分析天气和出行建议</li>
-                                <li>🗺️ 推荐合适的徒步路线</li>
-                                <li>⚠️ 提供安全注意事项</li>
-                                <li>📍 解答关于深圳山峰的问题</li>
+                                <li>🌅 分析天气和出行可行性</li>
+                                <li>🗺️ 推荐适合难度的徒步路线</li>
+                                <li>⛅ 判断云海/日出最佳时段</li>
+                                <li>⚠️ 提醒山野安全注意事项</li>
                             </ul>
                             <p style="margin-top:0.5rem;">请问有什么可以帮您的？</p>
                         </div>
@@ -12533,6 +12572,8 @@
                     <button class="quick-btn" onclick="sendQuickQuestion('推荐一条适合新手的徒步路线')">新手路线推荐</button>
                     <button class="quick-btn" onclick="sendQuickQuestion('户外徒步需要注意什么？')">安全注意事项</button>
                     <button class="quick-btn" onclick="sendQuickQuestion('七娘山云海什么时候最容易看到？')">云海最佳时间</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('推荐一条进阶徒步路线')">进阶路线推荐</button>
+                    <button class="quick-btn" onclick="sendQuickQuestion('梧桐山和七娘山哪个更适合看日出？')">梧桐山 vs 七娘山</button>
                 </div>
                 <div class="chat-input-area" style="display:flex;gap:1rem;">
                     <input type="text" id="chatInput" placeholder="输入您的问题..." style="flex:1;padding:1rem;border:2px solid #ddd;border-radius:10px;font-size:1rem;" onkeypress="if(event.key==='Enter')sendMessage()">
@@ -13803,9 +13844,9 @@
             }
 
             const tempText = snapshot.temp == null
-                ? document.getElementById('currentTemp')?.textContent?.trim() || '24°'
+                ? document.getElementById('wxHeroTemp')?.textContent?.trim()?.replace('°', '') || '24°'
                 : (typeof snapshot.temp === 'string' ? snapshot.temp : `${Math.round(Number(snapshot.temp))}°`);
-            const weatherText = snapshot.weather || document.getElementById('weatherDesc')?.textContent?.trim() || '多云';
+            const weatherText = snapshot.weather || document.getElementById('wxHeroDesc')?.textContent?.trim() || '多云';
             const isOnline = navigator.onLine;
             const syncLabel = snapshot.syncLabel || formatHeroSyncLabel();
             const opsSummary = `${isOnline ? '在线模式' : '离线模式'} · ${syncLabel}`;
@@ -13917,17 +13958,17 @@
                     sosCardV3.textContent = `${emergencyContacts.length} 位紧急联系人`;
                 }
 
-                // 天气数据（从首页横幅获取）
+                // 天气数据（从天气页 wxHeroTemp / wxHeroDesc 获取）
                 const tempEl = document.getElementById('heroTempV2');
                 const descEl = document.getElementById('heroWeatherDescV2');
                 const iconEl = document.getElementById('heroWeatherIconV2');
                 if (tempEl && descEl) {
-                    const temp = document.getElementById('currentTemp')?.textContent?.trim();
-                    const desc = document.getElementById('weatherDesc')?.textContent?.trim();
-                    if (temp) tempEl.textContent = temp;
-                    if (desc) {
-                        descEl.textContent = desc;
-                        iconEl.textContent = this.getWeatherIcon(desc);
+                    const wxTemp = document.getElementById('wxHeroTemp')?.textContent?.trim();
+                    const wxDesc = document.getElementById('wxHeroDesc')?.textContent?.trim();
+                    if (wxTemp && wxTemp !== '--°') tempEl.textContent = wxTemp;
+                    if (wxDesc && wxDesc !== '--') {
+                        descEl.textContent = wxDesc;
+                        iconEl.textContent = this.getWeatherIcon(wxDesc);
                     }
                 }
             },
@@ -14005,19 +14046,19 @@
                 }, 30000);
             },
 
-            // 更新 V3 天气显示
+            // 更新 V3 天气显示（从天气页读取 wxHeroTemp / wxHeroDesc）
             updateV3Weather() {
                 const tempEl = document.getElementById('heroTempV3');
                 const descEl = document.getElementById('heroWeatherDescV3');
                 const iconEl = document.getElementById('heroWeatherIconV3');
-                if (tempEl && descEl) {
-                    const temp = document.getElementById('currentTemp')?.textContent?.trim();
-                    const desc = document.getElementById('weatherDesc')?.textContent?.trim();
-                    if (temp) tempEl.textContent = temp;
-                    if (desc) {
-                        descEl.textContent = desc;
-                        if (iconEl) iconEl.innerHTML = this.getWeatherSvgForV3(desc);
-                    }
+                if (!tempEl || !descEl) return;
+
+                const wxTemp = document.getElementById('wxHeroTemp')?.textContent?.trim();
+                const wxDesc = document.getElementById('wxHeroDesc')?.textContent?.trim();
+                if (wxTemp && wxTemp !== '--°') tempEl.textContent = wxTemp;
+                if (wxDesc && wxDesc !== '--') {
+                    descEl.textContent = wxDesc;
+                    if (iconEl) iconEl.innerHTML = this.getWeatherSvgForV3(wxDesc);
                 }
             },
 
@@ -16021,6 +16062,15 @@
                 syncLabel: '刚刚更新'
             });
             HomePageManager.updateV3Weather();
+
+            // 同步轨迹页天气小组件（读取 xiaoShanQing_weatherSummary）
+            try {
+                localStorage.setItem('xiaoShanQing_weatherSummary', JSON.stringify({
+                    temp: c.temp,
+                    desc: c.weather,
+                    humidity: c.humidity
+                }));
+            } catch(e) {}
         }
 
         /**
@@ -16859,6 +16909,10 @@
          * 重试机制：最多 2 次重试（网络不稳定时显示错误状态）
          * 客户端缓存：30 分钟内同一山峰不重发请求
          */
+        /**
+         * 追光数据加载（与天气页面一致的三级数据源）
+         * 优先级：和风天气 QWeather（/api/qweather 代理）→ WeatherAPI.com（直连兜底）→ 演示数据
+         */
         async function loadChaseData(forceRefresh = false) {
             const mtn = chaseState.currentMountain;
             if (!mtn) return;
@@ -16881,142 +16935,294 @@
             document.getElementById('chaseContent').style.display = 'none';
             chaseState.isLoading = true;
 
-            // 检查 API Key
-            const apiKey = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.WEATHER_API_KEY)
+            const loc = `${mtn.lat.toFixed(2)},${mtn.lng.toFixed(2)}`;
+            const qwBase = '/api/qweather';
+
+            // ---- 优先级 1：和风天气 QWeather（走代理，Key 不泄露）----
+            const qwApiKey = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.HEWEATHER?.key)
+                ? APP_CONFIG.HEWEATHER.key : '';
+            const useQWeather = qwApiKey && qwApiKey !== 'YOUR_HEWEATHER_KEY';
+
+            if (useQWeather) {
+                try {
+                    // 3s 严格超时（与天气页面一致）
+                    const [d7Res] = await Promise.all([
+                        _chaseFetch(`${qwBase}/v7/weather/7d?location=${encodeURIComponent(loc)}&lang=zh&unit=m`)
+                    ]);
+                    if (d7Res.code !== '200') throw new Error(`QWeather 7d 错误: ${d7Res.code}`);
+
+                    chaseState.data = _normalizeQWeather7d(d7Res, mtn);
+
+                    // 计算追光指数
+                    chaseState.data.forEach(d => {
+                        const tmp = { ...d, weatherCode: d.weatherClass };
+                        d.score = chaseCalcIndex(tmp, chaseState.mode);
+                        d.level = chaseGetLevel(d.score);
+                    });
+
+                    chaseClientCache.set(cacheKey, { data: chaseState.data, timestamp: Date.now() });
+                    _renderChaseSuccess();
+                    _setChaseSourceBadge('qweather');
+                    return;
+                } catch (qErr) {
+                    console.warn('[Chase] 和风天气失败，降级到 WeatherAPI.com:', qErr.message);
+                }
+            } else {
+                console.warn('[Chase] 和风天气 Key 未配置，降级到 WeatherAPI.com');
+            }
+
+            // ---- 优先级 2：WeatherAPI.com 直连兜底 ----
+            const wapiKey = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.WEATHER_API_KEY)
                 ? APP_CONFIG.WEATHER_API_KEY : '';
-            if (!apiKey || apiKey === 'YOUR_WEATHER_API_KEY') {
+            if (!wapiKey || wapiKey === 'YOUR_WEATHER_API_KEY') {
                 _showChaseError(new Error('WeatherAPI Key 未配置'));
                 return;
             }
 
             const MAX_RETRIES = 2;
             let lastError = null;
-            // 把 controller/timeout 提到 try 块外（catch 块也能访问）
-            let controller = null;
-            let timeout = null;
+            let controller = null, timeout = null;
 
             for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
                 controller = new AbortController();
                 timeout = setTimeout(() => controller.abort(), 12000);
                 try {
-                    // WeatherAPI.com 7 天预报（含每小时 + astro），浏览器直连 CORS
-                    const loc = `${mtn.lat.toFixed(2)},${mtn.lng.toFixed(2)}`;
-                    const url = `https://api.weatherapi.com/v1/forecast.json?key=${encodeURIComponent(apiKey)}&q=${encodeURIComponent(loc)}&days=7&aqi=yes&alerts=yes&lang=zh`;
-
+                    const url = `https://api.weatherapi.com/v1/forecast.json?key=${encodeURIComponent(wapiKey)}&q=${encodeURIComponent(loc)}&days=7&aqi=yes&alerts=yes&lang=zh`;
                     const res = await fetch(url, { signal: controller.signal });
                     clearTimeout(timeout); timeout = null;
-
                     if (!res.ok) {
                         const errText = await res.text().catch(() => '');
-                        throw new Error(`API 返回错误: ${res.status}${errText ? ' ' + errText.substring(0, 120) : ''}`);
+                        throw new Error(`API ${res.status}${errText ? ' ' + errText.substring(0, 120) : ''}`);
                     }
-
                     const data = await res.json();
                     if (!data.forecast || !Array.isArray(data.forecast.forecastday)) {
-                        throw new Error('API 响应缺少 forecast.forecastday');
+                        throw new Error('响应缺少 forecast.forecastday');
                     }
 
-                    // 标准化数据
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
+                    chaseState.data = _normalizeWeatherAPIForecast(data);
 
-                    chaseState.data = data.forecast.forecastday.map((d) => {
-                        const date = new Date(d.date + 'T00:00:00+08:00');
-                        const isToday = date.getTime() === today.getTime();
-                        const dayDiff = Math.round((date - today) / (1000 * 60 * 60 * 24));
-                        const wapiCode = d.day.condition.code;
-                        const wmoCode = WEATHERAPI_TO_WMO[wapiCode] !== undefined ? WEATHERAPI_TO_WMO[wapiCode] : 2; // 默认多云
-
-                        // 降水概率（WeatherAPI 直接给百分比；缺失则按 totalprecip_mm 推算）
-                        let precipProb = parseInt(d.day.daily_chance_of_rain, 10);
-                        if (isNaN(precipProb)) {
-                            const mm = parseFloat(d.day.totalprecip_mm) || 0;
-                            precipProb = Math.min(100, Math.round(mm * 20));
-                        }
-
-                        // 云量（按白天天气的逐小时数据取均值；缺失则根据代码估算）
-                        let cloudCover = null;
-                        if (Array.isArray(d.hour)) {
-                            const dayHours = d.hour.filter(h => h.is_day === 1);
-                            const pool = dayHours.length ? dayHours : d.hour;
-                            const sum = pool.reduce((s, h) => s + (parseInt(h.cloud, 10) || 0), 0);
-                            cloudCover = Math.round(sum / pool.length);
-                        }
-                        if (cloudCover === null || isNaN(cloudCover)) {
-                            // 兜底：按 WMO 类别估算
-                            cloudCover = wmoCode === 0 ? 5 : wmoCode === 1 ? 15
-                                : wmoCode === 2 ? 50 : wmoCode === 3 ? 90
-                                : wmoCode >= 45 && wmoCode <= 48 ? 95
-                                : wmoCode >= 51 && wmoCode <= 67 ? 80
-                                : wmoCode >= 71 && wmoCode <= 86 ? 85 : 70;
-                        }
-
-                        // 风力等级（WeatherAPI 给 mph，换算到蒲福）
-                        const windMph = parseFloat(d.day.maxwind_mph) || 0;
-                        const windSpeed = _mphToBeaufort(windMph);
-
-                        const high = Math.round(parseFloat(d.day.maxtemp_c) || 0);
-                        const low = Math.round(parseFloat(d.day.mintemp_c) || 0);
-                        const temp = Math.round((high + low) / 2);
-
-                        return {
-                            date,
-                            dateStr: date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
-                            dateFull: d.date,
-                            dayLabel: isToday ? '今天' : (dayDiff === 1 ? '明天' : ['周日','周一','周二','周三','周四','周五','周六'][date.getDay()]),
-                            dayDiff,
-                            // weatherCode 保留 WeatherAPI 原值，给 _codeToText 与 wxGetIconByCode 用
-                            weatherCode: wapiCode,
-                            weatherClass: wmoCode, // 内部 WMO 等价值，给 chaseCalcIndex 用
-                            weatherSource: 'weatherapi',
-                            weatherText: d.day.condition.text || WeatherAPI._codeToText(wapiCode, 'wmo'),
-                            high,
-                            low,
-                            temp,
-                            precipProb,
-                            windSpeed,
-                            windMph,
-                            windKph: parseFloat(d.day.maxwind_kph) || 0,
-                            sunrise: _formatTime12to24(d.astro?.sunrise) || '--:--',
-                            sunset: _formatTime12to24(d.astro?.sunset) || '--:--',
-                            moonrise: _formatTime12to24(d.astro?.moonrise) || '',
-                            moonset: _formatTime12to24(d.astro?.moonset) || '',
-                            moonPhase: d.astro?.moon_phase || '',
-                            cloudCover,
-                            humidity: parseInt(d.day.avghumidity, 10) || 0,
-                            uv: parseFloat(d.day.uv) || 0
-                        };
-                    });
-
-                    // 计算每天追光指数
                     chaseState.data.forEach(d => {
-                        // chaseCalcIndex 期望的字段是 weatherCode（按 WMO 评估），我们临时把 weatherClass 注入进去
                         const tmp = { ...d, weatherCode: d.weatherClass };
                         d.score = chaseCalcIndex(tmp, chaseState.mode);
                         d.level = chaseGetLevel(d.score);
                     });
 
-                    // 写入客户端缓存
-                    chaseClientCache.set(cacheKey, {
-                        data: chaseState.data,
-                        timestamp: Date.now()
-                    });
-
+                    chaseClientCache.set(cacheKey, { data: chaseState.data, timestamp: Date.now() });
                     _renderChaseSuccess();
-                    return; // 成功，直接返回
-
+                    _setChaseSourceBadge('weatherapi');
+                    return;
                 } catch (err) {
                     if (timeout) { clearTimeout(timeout); timeout = null; }
                     lastError = err;
-                    console.warn(`[Chase] 第 ${attempt + 1} 次加载失败:`, err.message);
+                    console.warn(`[Chase] WeatherAPI 第 ${attempt + 1} 次失败:`, err.message);
                     if (attempt < MAX_RETRIES) {
                         await new Promise(r => setTimeout(r, 1000 * Math.pow(2, attempt)));
                     }
                 }
             }
 
-            // 所有重试均失败，显示错误状态
-            _showChaseError(lastError);
+            // ---- 优先级 3：演示数据 ----
+            loadChaseDemoData();
+            _setChaseSourceBadge('demo');
+        }
+
+        /** 带 3s 超时的 fetch（和风天气专用，与 QWeatherClient._fetch 保持一致） */
+        async function _chaseFetch(url) {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 3000);
+            try {
+                const res = await fetch(url, { signal: controller.signal });
+                clearTimeout(timer);
+                if (!res.ok) {
+                    const body = await res.text().catch(() => '');
+                    throw new Error(`HTTP ${res.status}: ${body.slice(0, 120)}`);
+                }
+                return await res.json();
+            } catch (e) {
+                clearTimeout(timer);
+                if (e.name === 'AbortError') throw new Error(`${url} 超时（>3s）`);
+                throw e;
+            }
+        }
+
+        /**
+         * 标准化 QWeather /v7/weather/7d 响应 → chaseState.data 内部格式
+         * 与 WeatherAPI._normalizeForecast 共用相同的输出 schema
+         */
+        function _normalizeQWeather7d(d7Res, mtn) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const weekDays = ['周日','周一','周二','周三','周四','周五','周六'];
+
+            return (d7Res.daily || []).map(d => {
+                const date = new Date(d.fxDate + 'T00:00:00+08:00');
+                const isToday = date.getTime() === today.getTime();
+                const dayDiff = Math.round((date - today) / (1000 * 60 * 60 * 24));
+                const qwCode = parseInt(d.iconDay, 10) || 100;
+
+                // QWeather 天气代码体系（100-515 范围）→ WMO 等价值（供追光指数计算）
+                const weatherClass = _qwCodeToWmo(qwCode);
+
+                // 云量按天气代码估算（QWeather 无云量字段）
+                const cloudCover = _qwCodeToCloudCover(qwCode);
+
+                // 风速等级："3-4" → 取上限 4
+                const wsMatch = String(d.windScaleDay || '').match(/(\d+)\s*-\s*(\d+)/);
+                const windSpeed = wsMatch ? parseInt(wsMatch[2], 10) : (parseInt(d.windScaleDay, 10) || 0);
+
+                const high = Math.round(parseFloat(d.tempMax) || 0);
+                const low = Math.round(parseFloat(d.tempMin) || 0);
+
+                return {
+                    date,
+                    dateStr: date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
+                    dateFull: d.fxDate,
+                    dayLabel: isToday ? '今天' : (dayDiff === 1 ? '明天' : weekDays[date.getDay()]),
+                    dayDiff,
+                    weatherCode: qwCode,           // QWeather 原值，供图标和文字用
+                    weatherClass,                   // WMO 等价值，供追光指数用
+                    weatherSource: 'qweather',
+                    weatherText: d.textDay || '',
+                    high,
+                    low,
+                    temp: Math.round((high + low) / 2),
+                    precipProb: Math.round(parseFloat(d.precip) || 0),
+                    windSpeed,
+                    windKph: parseFloat(d.windSpeedDay) || 0,
+                    sunrise: d.sunrise || '--:--',
+                    sunset: d.sunset || '--:--',
+                    cloudCover,
+                    humidity: parseInt(d.humidity, 10) || 0,
+                    uv: parseInt(d.uvIndex, 10) || 0
+                };
+            });
+        }
+
+        /**
+         * QWeather 天气代码 → WMO 数值（供追光指数计算）
+         * QWeather 代码体系：晴 100/101/102/103，多云 104/105/106/107...
+         * 参考：https://dev.qweather.com/docs/icon/
+         */
+        function _qwCodeToWmo(code) {
+            // 晴
+            if ([100].includes(code)) return 0;
+            // 晴间多云 / 多云
+            if ([101, 102, 103].includes(code)) return 2;
+            // 阴
+            if ([104].includes(code)) return 3;
+            // 雾/沙尘
+            if ([200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213].includes(code)) return 45;
+            // 毛毛雨/雨
+            if (code >= 300 && code <= 399) return code >= 350 ? 61 : 51;
+            // 阵雨
+            if (code >= 305 && code <= 349) return 63;
+            // 雷阵雨/雷暴
+            if (code >= 400 && code <= 499) return 95;
+            // 雪
+            if (code >= 500 && code <= 599) return 71;
+            return 2; // 默认多云
+        }
+
+        /** QWeather 天气代码 → 云量百分比估算 */
+        function _qwCodeToCloudCover(code) {
+            if ([100].includes(code)) return 5;
+            if ([101, 102, 103].includes(code)) return 40;
+            if ([104].includes(code)) return 90;
+            if (code >= 200 && code <= 213) return 95;
+            if (code >= 300 && code <= 349) return 75;
+            if (code >= 350 && code <= 399) return 80;
+            if (code >= 400 && code <= 499) return 80;
+            if (code >= 500 && code <= 599) return 70;
+            return 50;
+        }
+
+        /**
+         * 标准化 WeatherAPI.com forecast 响应 → chaseState.data 内部格式
+         * 提取为独立函数，loadChaseData 和未来扩展复用
+         */
+        function _normalizeWeatherAPIForecast(data) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            return data.forecast.forecastday.map(d => {
+                const date = new Date(d.date + 'T00:00:00+08:00');
+                const isToday = date.getTime() === today.getTime();
+                const dayDiff = Math.round((date - today) / (1000 * 60 * 60 * 24));
+                const wapiCode = d.day.condition.code;
+                const wmoCode = WEATHERAPI_TO_WMO[wapiCode] !== undefined ? WEATHERAPI_TO_WMO[wapiCode] : 2;
+
+                let precipProb = parseInt(d.day.daily_chance_of_rain, 10);
+                if (isNaN(precipProb)) {
+                    const mm = parseFloat(d.day.totalprecip_mm) || 0;
+                    precipProb = Math.min(100, Math.round(mm * 20));
+                }
+
+                let cloudCover = null;
+                if (Array.isArray(d.hour)) {
+                    const dayHours = d.hour.filter(h => h.is_day === 1);
+                    const pool = dayHours.length ? dayHours : d.hour;
+                    const sum = pool.reduce((s, h) => s + (parseInt(h.cloud, 10) || 0), 0);
+                    cloudCover = Math.round(sum / pool.length);
+                }
+                if (cloudCover === null || isNaN(cloudCover)) {
+                    cloudCover = wmoCode === 0 ? 5 : wmoCode === 1 ? 15
+                        : wmoCode === 2 ? 50 : wmoCode === 3 ? 90
+                        : wmoCode >= 45 && wmoCode <= 48 ? 95
+                        : wmoCode >= 51 && wmoCode <= 67 ? 80
+                        : wmoCode >= 71 && wmoCode <= 86 ? 85 : 70;
+                }
+
+                const windMph = parseFloat(d.day.maxwind_mph) || 0;
+                const windSpeed = _mphToBeaufort(windMph);
+                const high = Math.round(parseFloat(d.day.maxtemp_c) || 0);
+                const low = Math.round(parseFloat(d.day.mintemp_c) || 0);
+
+                return {
+                    date,
+                    dateStr: date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
+                    dateFull: d.date,
+                    dayLabel: isToday ? '今天' : (dayDiff === 1 ? '明天' : ['周日','周一','周二','周三','周四','周五','周六'][date.getDay()]),
+                    dayDiff,
+                    weatherCode: wapiCode,
+                    weatherClass: wmoCode,
+                    weatherSource: 'weatherapi',
+                    weatherText: d.day.condition.text || WeatherAPI._codeToText(wapiCode, 'wmo'),
+                    high,
+                    low,
+                    temp: Math.round((high + low) / 2),
+                    precipProb,
+                    windSpeed,
+                    windMph,
+                    windKph: parseFloat(d.day.maxwind_kph) || 0,
+                    sunrise: _formatTime12to24(d.astro?.sunrise) || '--:--',
+                    sunset: _formatTime12to24(d.astro?.sunset) || '--:--',
+                    moonrise: _formatTime12to24(d.astro?.moonrise) || '',
+                    moonset: _formatTime12to24(d.astro?.moonset) || '',
+                    moonPhase: d.astro?.moon_phase || '',
+                    cloudCover,
+                    humidity: parseInt(d.day.avghumidity, 10) || 0,
+                    uv: parseFloat(d.day.uv) || 0
+                };
+            });
+        }
+
+        /** 设置追光页数据来源徽标（与天气页保持一致风格） */
+        function _setChaseSourceBadge(source) {
+            const el = document.getElementById('wxSourceBadge');
+            if (!el) return;
+            if (source === 'qweather') {
+                el.textContent = '数据：和风天气';
+                el.className = 'wx-source-badge wx-source-badge--primary';
+                el.style.display = '';
+            } else if (source === 'weatherapi') {
+                el.textContent = '数据：WeatherAPI.com（兜底）';
+                el.className = 'wx-source-badge wx-source-badge--fallback';
+                el.style.display = '';
+            } else {
+                el.textContent = '演示数据';
+                el.className = 'wx-source-badge wx-source-badge--demo';
+                el.style.display = '';
+            }
         }
 
         /**
@@ -18587,72 +18793,72 @@
          */
         const roadbooksV2 = [
             {
-                id: 1, title: '梧桐山日出经典路线', author: '深圳驴友阿明', avatar: 'https://picsum.photos/seed/wutong1/80/80',
+                id: 1, title: '梧桐山日出经典路线', author: '深圳驴友阿明', avatar: 'https://picsum.photos/seed/wutong1/160/160',
                 date: '2026-03-18', mode: 'sunrise', level: 'hard',
                 distance: '12', distanceUnit: 'km', elevation: '943', duration: '5h30m',
                 likes: 456, saved: 89, comments: 34,
                 tags: ['新手友好', '云海线'],
-                coverImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop',
+                coverImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=800&fit=crop&auto=format&q=85',
                 levelLabel: '困难', levelDots: 3,
                 description: '从梧桐山北门出发，沿泰山涧一路上行，途经好汉坡、蝴蝶谷，抵达大梧桐顶。全程风景绝美，是深圳登山的经典路线。'
             },
             {
-                id: 2, title: '七娘山海景徒步路线', author: '大鹏户外达人', avatar: 'https://picsum.photos/seed/qiniang/80/80',
+                id: 2, title: '七娘山海景徒步路线', author: '大鹏户外达人', avatar: 'https://picsum.photos/seed/qiniang/160/160',
                 date: '2026-03-17', mode: 'sunset', level: 'hard',
                 distance: '15', distanceUnit: 'km', elevation: '867', duration: '6h00m',
                 likes: 389, saved: 112, comments: 28,
                 tags: ['海景线', '摄影点'],
-                coverImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop',
+                coverImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=800&fit=crop&auto=format&q=85',
                 levelLabel: '困难', levelDots: 3,
                 description: '穿越七娘山主峰，沿途欣赏大鹏半岛无敌海景。路线有一定挑战性，但风景绝对值得。'
             },
             {
-                id: 3, title: '马峦山瀑布穿越路线', author: '深圳爬山王', avatar: 'https://picsum.photos/seed/maluan/80/80',
+                id: 3, title: '马峦山瀑布穿越路线', author: '深圳爬山王', avatar: 'https://picsum.photos/seed/maluan/160/160',
                 date: '2026-03-16', mode: 'waterfall', level: 'normal',
                 distance: '18', distanceUnit: 'km', elevation: '580', duration: '7h00m',
                 likes: 312, saved: 67, comments: 19,
                 tags: ['瀑布线', '亲子游'],
-                coverImage: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=400&fit=crop',
+                coverImage: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=800&fit=crop&auto=format&q=85',
                 levelLabel: '中等', levelDots: 2,
                 description: '沿着马峦山溯溪而上，穿越多个瀑布群。夏季清凉舒适，适合全家出行。'
             },
             {
-                id: 4, title: '排牙山海岸线路线', author: '海岸线行者', avatar: 'https://picsum.photos/seed/paiya/80/80',
+                id: 4, title: '排牙山海岸线路线', author: '海岸线行者', avatar: 'https://picsum.photos/seed/paiya/160/160',
                 date: '2026-03-15', mode: 'sea', level: 'normal',
                 distance: '10', distanceUnit: 'km', elevation: '708', duration: '4h30m',
                 likes: 278, saved: 54, comments: 15,
                 tags: ['海景线', '日出限定'],
-                coverImage: 'https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=600&h=400&fit=crop',
+                coverImage: 'https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1200&h=800&fit=crop&auto=format&q=85',
                 levelLabel: '中等', levelDots: 2,
                 description: '沿排牙山山脊行进，左侧是连绵山峦，右侧是无敌海景，被誉为深圳最美山脊线。'
             },
             {
-                id: 5, title: '三洲田山海路线', author: '盐田户外群', avatar: 'https://picsum.photos/seed/sanzhou/80/80',
+                id: 5, title: '三洲田山海路线', author: '盐田户外群', avatar: 'https://picsum.photos/seed/sanzhou/160/160',
                 date: '2026-03-14', mode: 'sunset', level: 'easy',
                 distance: '8', distanceUnit: 'km', elevation: '600', duration: '3h45m',
                 likes: 234, saved: 41, comments: 22,
                 tags: ['新手友好', '日落线'],
-                coverImage: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=400&fit=crop',
+                coverImage: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&h=800&fit=crop&auto=format&q=85',
                 levelLabel: '简单', levelDots: 1,
                 description: '三洲田是深圳海拔最高的村庄，路线平缓，适合新手入门，风景秀丽。'
             },
             {
-                id: 6, title: '阳台山环线路线', author: '宝安登山队', avatar: 'https://picsum.photos/seed/yangtai/80/80',
+                id: 6, title: '阳台山环线路线', author: '宝安登山队', avatar: 'https://picsum.photos/seed/yangtai/160/160',
                 date: '2026-03-13', mode: 'cloud', level: 'easy',
                 distance: '14', distanceUnit: 'km', elevation: '587', duration: '5h00m',
                 likes: 198, saved: 33, comments: 11,
                 tags: ['新手友好', '云海线'],
-                coverImage: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&h=400&fit=crop',
+                coverImage: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&h=800&fit=crop&auto=format&q=85',
                 levelLabel: '简单', levelDots: 1,
                 description: '阳台山环线绕山而行，途经多个观景点，春秋季节云海频现，是深圳近郊徒步的好选择。'
             }
         ];
 
         const roadbookNotes = [
-            { username: '山野小王子', avatar: 'https://picsum.photos/seed/note1/64/64', route: '梧桐山日出路线', content: '凌晨三点从北门出发，五点半到好汉坡，天刚好亮了，日出的那一刻真的值了！建议带个头灯，山路有点陡。', likes: 234, time: '2天前' },
-            { username: '户外小白', avatar: 'https://picsum.photos/seed/note2/64/64', route: '马峦山瀑布路线', content: '带娃走了一半路程，小朋友玩水玩得很开心！下次准备走完全程，记得多带点水和零食。', likes: 156, time: '3天前' },
-            { username: '摄影爱好者阿杰', avatar: 'https://picsum.photos/seed/note3/64/64', route: '排牙山海岸线', content: '这条线的机位太棒了！带上了长焦镜头，拍到了超美的海天一色。建议下午三四点到，正好赶上日落。', likes: 412, time: '5天前' },
-            { username: '周末户外', avatar: 'https://picsum.photos/seed/note4/64/64', route: '七娘山海景路线', content: '难度比想象的大，但风景绝对对得起这份付出。带了三升水和两瓶运动饮料，刚好够用。', likes: 189, time: '1周前' }
+            { username: '山野小王子', avatar: 'https://picsum.photos/seed/note1/128/128', route: '梧桐山日出路线', content: '凌晨三点从北门出发，五点半到好汉坡，天刚好亮了，日出的那一刻真的值了！建议带个头灯，山路有点陡。', likes: 234, time: '2天前' },
+            { username: '户外小白', avatar: 'https://picsum.photos/seed/note2/128/128', route: '马峦山瀑布路线', content: '带娃走了一半路程，小朋友玩水玩得很开心！下次准备走完全程，记得多带点水和零食。', likes: 156, time: '3天前' },
+            { username: '摄影爱好者阿杰', avatar: 'https://picsum.photos/seed/note3/128/128', route: '排牙山海岸线', content: '这条线的机位太棒了！带上了长焦镜头，拍到了超美的海天一色。建议下午三四点到，正好赶上日落。', likes: 412, time: '5天前' },
+            { username: '周末户外', avatar: 'https://picsum.photos/seed/note4/128/128', route: '七娘山海景路线', content: '难度比想象的大，但风景绝对对得起这份付出。带了三升水和两瓶运动饮料，刚好够用。', likes: 189, time: '1周前' }
         ];
 
         const RoadbookManager = {
@@ -18981,18 +19187,63 @@
         }
 
         // AI Chat Feature
-        const aiResponses = {
-            '梧桐山': '梧桐山是深圳第一高峰，海拔 943 米。看日出建议选择清晨 5:30 左右出发，登顶后可在东麓观景台欣赏壮丽日出。最佳季节是秋季和冬季，天气晴朗时可见云海奇观。',
-            '七娘山': '七娘山位于大鹏半岛，海拔 867 米，是看日出的绝佳地点。云海模式最佳观赏期在雨后初晴的早晨。建议从大鹏所城出发，全程约 15 公里。',
-            '马峦山': '马峦山以瀑布群闻名，海拔 580 米。适合新手徒步，路线平缓。最佳游玩季节是雨季后的秋季，可观赏到壮观的瀑布群。',
-            '日出': '看日出建议选择天气晴朗的日子，云量低于 30% 为佳。深圳地区最佳观日出地点：梧桐山、七娘山、排牙山。建议提前 1 小时到达山顶等待。',
-            '云海': '云海形成条件：前一日降雨 + 次日清晨湿度>80%+ 风力<3 级。深圳云海高发区：七娘山、梧桐山、三洲田。最佳观赏时间：日出前后 30 分钟。',
-            '新手': '新手推荐路线：1) 阳台山环线 (5.8km, 爬升 300m) 2) 马峦山瀑布线 (8km, 爬升 400m) 3) 大南山环线 (6km, 爬升 250m)。这些路线难度适中，风景优美。',
-            '安全': '户外徒步安全要点：1) 提前查看天气预报 2) 携带足够水和食物 3) 穿着合适的鞋服 4) 携带急救包 5) 告知家人行程 6) 下载离线地图 7) 保持电量充足。',
-            '天气': '查看天气建议：云量<30% 适合出行，风力<4 级较舒适，降水概率<20% 较安全。空气质量>80 为优良。建议使用追光计划功能获取精准预测。',
-            '路线': '深圳经典徒步路线推荐：1) 梧桐山日出线 2) 七娘山穿越线 3) 海岸线徒步 4) 马峦山瀑布线。可在山友路书查看详细路线和驴友分享。',
-            '默认': '我是晓山青 Viridiore AI 助手，可以帮您：\n• 查询深圳山峰信息（梧桐山、七娘山、马峦山等）\n• 获取日出/云海观赏建议\n• 推荐适合新手的徒步路线\n• 提供户外安全注意事项\n• 分析天气和出行建议\n\n请问有什么可以帮您？'
+        const AI_SYSTEM_PROMPT = `你是「晓山青Viridiore户外智能出行助手」，专注服务深圳本地登山、徒步、看日出云海的户外用户，所有回答必须贴合深圳山野场景，拒绝泛泛通用户外话术。
+
+### 核心身份定位
+1. 本地户外顾问：精通深圳所有山峰（梧桐山、七娘山、大雁顶、梅沙尖、阳台山、塘朗山、凤凰山等）路线、日出云海时段、交通、路况；
+2. 安全向导：熟知深圳山野夏季暴雨、雷暴、蚊虫、迷路、陡坡风险，能给出分级安全提醒；
+3. 行程规划师：可根据新手/进阶/专业徒步人群，匹配对应难度路线、装备清单、出发时间；
+4. 天气解读员：结合深圳山区局部小气候，区分市区预报与山顶实际温差、云雾、风力。
+
+### 业务能力边界（用户提问仅在以下范围作答，超出礼貌引导）
+✅ 可回答：
+1. 深圳各山峰日出、日落、云海、星空最佳观赏时间；
+2. 分难度徒步路线推荐（新手亲子/中等徒步/高强度登山）、上下山出入口、公交自驾停车点；
+3. 登山当日/次日山区天气分析、出行可行性判断（是否适合看日出、有无暴雨雷暴）；
+4. 户外装备清单、饮用水、食物、穿搭、驱蚊防晒、急救物资建议；
+5. 山野安全规范：避雷、迷路自救、高温防暑、雨天防滑、禁火规定；
+6. 梧桐山等热门山峰人流、节假日避峰建议；
+7. 轻量化户外技巧、路书规划、夜爬注意事项。
+
+❌ 不回答：
+非深圳区域登山、极限攀岩/野攀无保护路线、违规穿越封闭林区、野泳、危险野路攻略、无关闲聊娱乐内容，遇到超出范围请回复："我仅提供深圳本地徒步登山相关咨询，其他问题无法解答哦～"
+
+### 输出格式规范
+1. 语言简洁易懂，分点清晰，少专业晦涩术语，适配普通户外爱好者；
+2. 用户问出行可行性（如"明天梧桐山看日出"）必须先给【结论】（推荐/谨慎前往/不建议），再分天气、路况、安全三点说明；
+3. 路线推荐必须标注：难度等级、全程时长、起点终点、适合人群；
+4. 安全提示用⚠️符号高亮关键风险；
+5. 主动贴合页面快捷按钮场景：「明天去梧桐山看日出？」「新手路线推荐」「安全注意事项」「云海最佳时间」四类高频问题优先精准回复；
+6. 禁止编造不存在的深圳登山路线、虚假天气数据，不确定信息如实告知。
+
+### 交互风格
+温和务实，偏专业轻量化，不啰嗦，用户是新手就降低门槛、多提醒安全；资深徒步者可补充进阶路线细节。`;
+
+        const AI_FALLBACK_RESPONSES = {
+            '梧桐山': '【结论】推荐前往\n\n🌤️ **天气**：梧桐山海拔 943 米，山顶通常比市区低 4-6°C。秋冬季晴天云量低于 30% 时日出体验最佳；夏季多雷雨，不建议清晨登山。\n📍 **路线**：推荐「泰山涧」路线（正门进 / 凤鸣亭出），约 12km，爬升 900m，时长 4-6h。新手建议走梧桐绿道折返线（约 5km）。\n⚠️ **安全**：非官方路线勿擅闯，雨天的石阶湿滑；节假日人流密集，建议 5:00 前到达山脚。',
+            '七娘山': '【结论】推荐前往（云海季）\n\n🌤️ **天气**：大鹏半岛东侧，雨后初晴湿度 >80% 时云海概率最高。最佳时间：日出前后 30 分钟。\n📍 **路线**：传统路线约 15km，爬升 800m，从大鹏所城或地质博物馆出发。体力一般可走主峰环线（约 8km）。\n⚠️ **安全**：夏季注意防晒和补水；山上信号弱，结伴而行；禁止进入封闭施工区域。',
+            '马峦山': '【结论】推荐前往（新手友好）\n\n📍 **路线**：马峦山郊野公园，约 8km，爬升约 400m，以瀑布群著称。路线平缓，适合亲子和新手，全程约 3-4h。\n🌤️ **天气**：雨季（6-9月）瀑布水量最大最美；冬季干燥瀑布较小。\n⚠️ **安全**：雨后山路湿滑注意防滑；蚊虫较多，做好驱蚊；部分路段无信号。',
+            '阳台山': '【结论】推荐前往（新手/亲子）\n\n📍 **路线**：阳台山环线约 5.8km，爬升约 300m，难度低，风景好，约 2-3h。也可走大浪入口→主峰路线（6km）。\n🌤️ **天气**：全年适宜，夏季注意防暑。\n⚠️ **安全**：山顶平台注意儿童安全；陡坡处靠内行走。',
+            '日出': '【结论】天气晴朗时推荐\n\n🌤️ **天气**：云量 <30%、湿度适中、无雾霾时最佳。深圳看日出推荐地点：梧桐山（5:30 出发）、七娘山（地质公园入口）、梅沙尖（大鹏半岛）。\n📍 **时间**：日出约 6:00-6:30（夏季略早，冬季略晚），建议提前 1-1.5h 到达山顶。\n⚠️ **安全**：夜爬带足照明和保暖衣物；山路陡峭；结伴而行。',
+            '云海': '【结论】条件满足时推荐\n\n🌤️ **形成条件**：前一日降雨 + 次日清晨湿度 >80% + 风力 <3 级 + 昼夜温差大。\n📍 **高发地点**：七娘山（概率最高）、梧桐山（凤鸣亭附近）、三洲田、云海谷。\n⏰ **最佳时间**：日出前后 30 分钟（通常 6:00-7:00）。关注「追光计划」页面有更精准的云海指数预测。\n⚠️ **安全**：云海时能见度低，勿离开步道；山顶风大注意保暖。',
+            '新手': '【结论】推荐以下三条新手友好路线\n\n1️⃣ **阳台山环线**：5.8km，爬升 300m，约 2-3h。难度★☆☆☆☆，适合亲子。\n2️⃣ **马峦山瀑布线**：8km，爬升 400m，约 3-4h。难度★★☆☆☆，风景好。\n3️⃣ **大南山环线**：6km，爬升 250m，约 2-3h。难度★☆☆☆☆，可俯瞰深圳湾。\n\n📦 **新手装备清单**：登山鞋/防滑运动鞋、1.5L 水、运动饮料、能量棒、驱蚊液、防晒霜、充电宝、基础急救包。',
+            '安全': '【结论】安全第一，出发前必看\n\n⚠️ **暴雨/雷暴**：遇雷雨立即停止登山，切勿躲在树下或山脊；\n⚠️ **迷路自救**：留在原地等待救援，用口哨（3 短 3 长）或灯光信号求援；\n⚠️ **高温防暑**：夏季带足水（每人 1.5L+），每小时补盐分；\n⚠️ **雨天防滑**：石阶、青苔路面慢行，穿防滑鞋；\n⚠️ **禁火规定**：梧桐山等景区全年禁火，禁止野外用火。',
+            '天气': '【结论】根据具体日期判断\n\n请告诉我您计划哪座山、哪一天，我可以结合「追光计划」功能给出具体建议。\n\n通用判断标准：\n• 云量 <30%：适合出行\n• 风力 <4 级：舒适\n• 降水概率 <20%：较安全\n• 空气质量 >80：优良\n\n梧桐山山顶与市区温差约 4-6°C，需带保暖层。',
+            '路线': '深圳经典路线推荐（按难度）：\n\n🌱 **入门（★）**：大南山（6km）、阳台山（6km）、塘朗山（8km）\n🥾 **中等（★★）**：马峦山（8km）、凤凰山（6km）、梅林后山（7km）\n⛰️ **进阶（★★★）**：梧桐山泰山涧（12km）、七娘山穿越（15km）、排牙山（10km）\n🏔️ **挑战（★★★★）**：大雁顶-七娘山连穿（18km）、梅沙尖环线（14km）\n\n可在「山友路书」页面查看详细路线和驴友分享。',
+            '大雁顶': '【结论】进阶推荐\n\n📍 **路线**：大雁顶海拔 804m，从东涌或西涌入口进入，约 10-12km，爬升约 700m，时长 5-7h。\n🌤️ **天气**：晴天视野极佳，可俯瞰大鹏半岛海岸线；雨后云海概率高。\n⚠️ **安全**：部分路段较陡，有碎石；建议结伴；夏季注意防晒和补水。',
+            '梅沙尖': '【结论】进阶推荐\n\n📍 **路线**：梅沙尖海拔 753m，从茵特拉根或东部华侨城入口，约 10km，爬升约 650m，时长 4-6h。\n🌤️ **天气**：春季云海概率高；秋季天高气爽视野最好。\n⚠️ **安全**：部分野路较陡；节假日人多，建议早出发。',
+            '默认': '您好！我是「晓山青」AI 助手，专注深圳本地徒步登山。\n\n我可以帮您：\n🌤️ 分析天气和出行可行性\n🗺️ 推荐适合难度的徒步路线\n⚠️ 提供山野安全提醒\n📍 解答关于深圳山峰的问题\n\n请问有什么可以帮您？比如：\n• "明天去梧桐山看日出怎么样？"\n• "推荐一条新手路线"\n• "七娘山云海什么时候最容易看到？"\n• "户外徒步需要注意什么？"'
         };
+
+        function getAIResponse(message) {
+            const q = message.trim();
+            for (const [keyword, response] of Object.entries(AI_FALLBACK_RESPONSES)) {
+                if (keyword !== '默认' && q.includes(keyword)) {
+                    return response;
+                }
+            }
+            return AI_FALLBACK_RESPONSES['默认'];
+        }
 
         function sendMessage() {
             const input = document.getElementById('chatInput');
@@ -19072,6 +19323,8 @@
                 return saved ? parseFloat(saved) : 1013;
             } catch(e) { return 1013; }
         })();
+        let lastPressureChange = 0;
+        let estimatedAltitude = 0;
 
         /**
          * [演示数据] 生成气压曲线
@@ -19147,56 +19400,246 @@
         }
 
         /**
-         * [演示数据] 刷新气压数据
-         * TODO: 接入真实气压传感器 API
+         * 气压专业分析函数（深圳山野户外场景）
+         * 结合实时气压数据 + 当前天气数据 + 24h 变化量，输出结构化分析结论
+         */
+        function analyzePressure() {
+            const p = currentPressure;
+            const change = lastPressureChange;
+            const altitude = estimatedAltitude;
+            const wx = getCurrentWeatherData();
+
+            // 判定气压状态
+            let pStatus, pStatusColor;
+            if (p >= 1008 && p <= 1018) {
+                pStatus = '气压稳定（' + p.toFixed(1) + ' hPa）';
+                pStatusColor = 'var(--success-color)';
+            } else if (p < 1005) {
+                pStatus = '低压（' + p.toFixed(1) + ' hPa）';
+                pStatusColor = 'var(--danger-color)';
+            } else if (p > 1020) {
+                pStatus = '高压（' + p.toFixed(1) + ' hPa）';
+                pStatusColor = 'var(--info-color)';
+            } else {
+                pStatus = '偏低（' + p.toFixed(1) + ' hPa）';
+                pStatusColor = 'var(--warning-color)';
+            }
+
+            // 24h 变化量分析
+            let changeLabel, changeColor;
+            if (Math.abs(change) <= 1) {
+                changeLabel = '小幅变化（' + (change >= 0 ? '+' : '') + change.toFixed(1) + ' hPa），短期天气无突变';
+                changeColor = 'var(--success-color)';
+            } else if (Math.abs(change) <= 3) {
+                changeLabel = '小幅变化（' + (change >= 0 ? '+' : '') + change.toFixed(1) + ' hPa），天气平稳';
+                changeColor = 'var(--success-color)';
+            } else {
+                changeLabel = '大幅变化（' + (change >= 0 ? '+' : '') + change.toFixed(1) + ' hPa），气象系统切换中，注意大风/降雨';
+                changeColor = 'var(--warning-color)';
+            }
+
+            // 海拔影响说明
+            const altEffect = altitude > 300
+                ? altitude + 'm 海拔使气压比平原低约 ' + Math.round(altitude / 10) + ' hPa，需注意山顶实际气压偏低'
+                : altitude + 'm 低海拔区域，气压与平原差异不大';
+
+            // 综合结论判定
+            let verdict, verdictTag, verdictBg;
+            const isRising = change > 1;
+            const isFalling = change < -1;
+            const isLow = p < 1005;
+            const isHigh = p > 1020;
+            const hasWxRisk = wx && (wx.weatherText.includes('雨') || wx.weatherText.includes('雷') || wx.weatherText.includes('暴'));
+
+            if (isFalling && (isLow || hasWxRisk)) {
+                verdict = '【综合气压结论】不建议登山——气压持续下跌，局部可能有雷暴天气';
+                verdictTag = '不建议登山';
+                verdictBg = 'rgba(231,76,60,0.1)';
+            } else if (isFalling) {
+                verdict = '【综合气压结论】谨慎出行——气压正在下降，建议携带雨具，注意山区路况';
+                verdictTag = '谨慎出行';
+                verdictBg = 'rgba(243,156,18,0.1)';
+            } else if (isLow || hasWxRisk) {
+                verdict = '【综合气压结论】谨慎出行——气压偏低，可能伴随降水或云雾';
+                verdictTag = '谨慎出行';
+                verdictBg = 'rgba(243,156,18,0.1)';
+            } else if (isHigh && isRising) {
+                verdict = '【综合气压结论】强烈推荐——高压控制，次日清晨极可能出现云海和通透蓝天';
+                verdictTag = '云海概率高';
+                verdictBg = 'rgba(39,174,96,0.1)';
+            } else {
+                verdict = '【综合气压结论】适合户外活动——气压平稳，天气条件良好';
+                verdictTag = '适合户外';
+                verdictBg = 'rgba(39,174,96,0.1)';
+            }
+
+            // 日出/云海可行性
+            let sunriseSea = '';
+            if (isRising && p >= 1008) {
+                sunriseSea = '✅ 日出/云海可行性高——气压稳步上升，雨后初晴概率大，适合梧桐山、七娘山观景';
+            } else if (p > 1020) {
+                sunriseSea = '✅ 日出/云海佳——昼夜温差大，清晨起云概率高，但山顶较冷需加厚衣物';
+            } else if (isLow) {
+                sunriseSea = '⚠️ 日出/云海不佳——气压偏低，山区大概率有雾或小雨';
+            } else {
+                sunriseSea = '⚠️ 日出/云海不确定——气压稳定但无明显上升信号';
+            }
+
+            // 路况风险
+            let roadRisk = '';
+            if (isFalling && Math.abs(change) > 3) {
+                roadRisk = '⚠️ 路况风险：气压骤降，6~12h 内山区有阵雨/雷暴风险，陡坡路滑，注意防滑和山洪';
+            } else if (isLow && wx && wx.weatherText.includes('雨')) {
+                roadRisk = '⚠️ 路况风险：气压低+降雨，石阶湿滑，建议穿防滑鞋，低洼处注意防山洪';
+            } else if (wx && wx.weatherText.includes('雷')) {
+                roadRisk = '⚠️ 路况风险：当前有雷暴天气，严禁登山，树下和高地极度危险';
+            } else if (isHigh) {
+                roadRisk = '⚠️ 路况提醒：高压控制，夜间山顶寒冷（比市区低 4-6°C），夜爬需带防风保暖层';
+            } else if (wx && wx.weatherText.includes('晴') && p >= 1008) {
+                roadRisk = '✅ 路况良好：无降水预报，路面干爽，适合各类徒步路线';
+            } else {
+                roadRisk = '✅ 路况基本正常：无明显恶劣天气预警';
+            }
+
+            // 安全提醒
+            let safety = '';
+            if (isFalling && Math.abs(change) > 3) {
+                safety = '⚠️ 气压快速走低，须在 6 小时内撤离山顶；远离山脊/孤立高树防雷击';
+            } else if (isLow) {
+                safety = '⚠️ 低气压区午后易对流降雨，避免长时间暴露；低洼溪谷注意山洪';
+            } else if (isHigh) {
+                safety = '⚠️ 高压天气昼夜温差大，凌晨山顶注意保暖；中午紫外线强需防晒';
+            } else {
+                safety = '';
+            }
+
+            // 极简穿搭/装备（2条）
+            let gear = '';
+            if (isLow || (wx && wx.weatherText.includes('雨'))) {
+                gear = '🧥 防雨装备（冲锋衣+雨衣）+ 防滑登山鞋；备足热水和应急食物';
+            } else if (isHigh) {
+                gear = '🧥 保暖层（抓绒/轻薄羽绒）+ 防晒霜 + 充足饮用水；温差大建议洋葱式穿搭';
+            } else {
+                gear = '👟 透气运动鞋 + 1.5L 饮用水 + 驱蚊液；防晒必备，出发前告知行程';
+            }
+
+            // 渲染到页面
+            const conclusionEl = document.getElementById('pressureConclusion');
+            const tagEl = document.getElementById('pressureAnalysisTag');
+            const tagColor = verdictTag === '不适合登山' ? 'var(--danger-color)' :
+                            verdictTag === '谨慎出行' ? 'var(--warning-color)' : 'var(--success-color)';
+            if (conclusionEl) {
+                conclusionEl.textContent = verdict;
+                conclusionEl.style.background = verdictBg;
+                conclusionEl.style.color = verdictTag === '不适合登山' ? 'var(--danger-color)' : 'var(--primary-color)';
+            }
+            if (tagEl) {
+                tagEl.textContent = verdictTag;
+                tagEl.style.background = tagColor;
+            }
+
+            const statusEl = document.getElementById('paStatus');
+            const suggestEl = document.getElementById('paSuggest');
+            const safetyEl = document.getElementById('paSafety');
+            const gearEl = document.getElementById('paGear');
+
+            if (statusEl) statusEl.innerHTML = '<div style="margin-bottom:0.5rem;"><strong>气压专业解读：</strong>' + pStatus + '；' + changeLabel + '。海拔 ' + altEffect + '。</div>';
+            if (suggestEl) suggestEl.innerHTML = '<div style="margin-bottom:0.5rem;"><strong>深圳户外建议：</strong>' + sunriseSea + '</div>';
+            if (safetyEl) safetyEl.innerHTML = (roadRisk ? '<div style="margin-bottom:0.5rem;">' + roadRisk + '</div>' : '') + (safety ? '<div>' + safety + '</div>' : '');
+            if (gearEl) gearEl.innerHTML = '<div><strong>穿搭/装备：</strong>' + gear + '</div>';
+        }
+
+        /**
+         * 获取当前天气数据（从天气页面共享的 wxData）
+         */
+        function getCurrentWeatherData() {
+            if (typeof wxData !== 'undefined' && wxData && wxData.current) {
+                return {
+                    temp: wxData.current.temp,
+                    weatherText: wxData.current.weather || '',
+                    humidity: wxData.current.humidity || 0
+                };
+            }
+            return null;
+        }
+
+        /**
+         * 获取当前气压趋势特征描述（根据 24h 数据判断）
+         */
+        function getPressureTrendCurve() {
+            if (pressureData.length < 6) return '数据不足';
+            const first = pressureData.slice(0, 6).reduce((s, p) => s + p.pressure, 0) / 6;
+            const last = pressureData.slice(-6).reduce((s, p) => s + p.pressure, 0) / 6;
+            const diff = last - first;
+            if (diff > 2) return '稳步上升 ↑';
+            if (diff < -2) return '持续下跌 ↓';
+            // 检查中间是否有明显拐点
+            const mid = pressureData.slice(3, 9);
+            const midAvg = mid.reduce((s, p) => s + p.pressure, 0) / mid.length;
+            if (first < midAvg && midAvg > last) return '先升后降 ∿';
+            if (first > midAvg && midAvg < last) return '先降后升 ∿';
+            return '小幅震荡 →';
+        }
+
+        /**
+         * 刷新气压数据并更新专业分析
          */
         function refreshPressure() {
-            currentPressure = 1010 + Math.random() * 10;
+            currentPressure = 1008 + Math.random() * 12;
             document.getElementById('pressureValue').textContent = Math.round(currentPressure);
             document.getElementById('pressureToday').textContent = Math.round(currentPressure);
-            
-            // Update trend
-            const change = (Math.random() - 0.5) * 4;
-            document.getElementById('pressureChange').textContent = (change > 0 ? '+' : '') + change.toFixed(1);
-            
-            // Update advice
+
+            // 计算 24h 变化量（模拟）
+            lastPressureChange = (Math.random() - 0.5) * 8;
+            estimatedAltitude = Math.round((1013 - currentPressure) * 10);
+            document.getElementById('pressureChange').textContent = (lastPressureChange > 0 ? '+' : '') + lastPressureChange.toFixed(1);
+            document.getElementById('pressureAltitude').textContent = estimatedAltitude > 0 ? estimatedAltitude + 'm' : '低海拔';
+
+            // 更新趋势曲线特征
+            const trendCurve = getPressureTrendCurve();
+            document.getElementById('pressureTrendCurve').textContent = trendCurve;
+
+            // 获取参考天气
+            const wx = getCurrentWeatherData();
+            const forecastEl = document.getElementById('pressureForecast');
+            if (wx) {
+                forecastEl.textContent = wx.weatherText || '多云';
+            } else {
+                forecastEl.textContent = currentPressure > 1015 ? '晴' : currentPressure > 1010 ? '多云' : currentPressure > 1005 ? '多云' : '可能有雨';
+            }
+
+            // 更新表盘颜色
             const gauge = document.getElementById('pressureGauge');
             const trend = document.getElementById('pressureTrend');
             const advice = document.getElementById('pressureAdvice');
-            
-            if (currentPressure > 1015) {
+            if (currentPressure > 1020) {
                 gauge.style.background = 'linear-gradient(145deg, #27ae60, #2ecc71)';
-                trend.innerHTML = '<span style="color:var(--success-color);">↗ 气压上升</span>';
-                advice.textContent = '气压上升，天气将转晴，非常适合户外活动';
-            } else if (currentPressure > 1010) {
+                trend.innerHTML = '<span style="color:var(--info-color);">⛰ 高压（适合看云海）</span>';
+                if (advice) advice.textContent = '气压偏高，昼夜温差大，清晨云海概率高，记得加厚衣物';
+            } else if (currentPressure > 1015) {
                 gauge.style.background = 'linear-gradient(145deg, #2d5a3d, #4a7c59)';
                 trend.innerHTML = '<span style="color:var(--success-color);">→ 气压稳定</span>';
-                advice.textContent = '当前气压正常，适合户外活动';
+                if (advice) advice.textContent = '气压正常，天气平稳，适合各类户外活动';
+            } else if (currentPressure > 1008) {
+                gauge.style.background = 'linear-gradient(145deg, #2d5a3d, #4a7c59)';
+                trend.innerHTML = '<span style="color:var(--success-color);">→ 气压正常</span>';
+                if (advice) advice.textContent = '气压正常，适合户外出行';
             } else if (currentPressure > 1005) {
                 gauge.style.background = 'linear-gradient(145deg, #f39c12, #f4a460)';
-                trend.innerHTML = '<span style="color:var(--warning-color);">↘ 气压下降</span>';
-                advice.textContent = '气压下降，可能有降雨，建议携带雨具';
+                trend.innerHTML = '<span style="color:var(--warning-color);">↘ 气压偏低</span>';
+                if (advice) advice.textContent = '气压下降，可能有降雨，建议携带雨具';
             } else {
                 gauge.style.background = 'linear-gradient(145deg, #e74c3c, #c0392b)';
-                trend.innerHTML = '<span style="color:var(--danger-color);">↓ 气压骤降</span>';
-                advice.textContent = '气压急剧下降，可能有恶劣天气，建议取消户外活动';
+                trend.innerHTML = '<span style="color:var(--danger-color);">↓ 低压（警惕天气变化）</span>';
+                if (advice) advice.textContent = '气压急剧下降，可能有恶劣天气，建议取消户外活动';
             }
-            
-            // Update forecast
-            const forecast = document.getElementById('pressureForecast');
-            if (currentPressure > 1015) {
-                forecast.textContent = '晴朗';
-            } else if (currentPressure > 1010) {
-                forecast.textContent = '多云';
-            } else if (currentPressure > 1005) {
-                forecast.textContent = '可能有雨';
-            } else {
-                forecast.textContent = '恶劣天气';
-            }
-            
+
             generatePressureData();
             drawPressureChart();
-            try { localStorage.setItem('xiaoShanQing_currentPressure', currentPressure.toString()); } catch(e) { /* ignore */ }
+            try { localStorage.setItem('xiaoShanQing_currentPressure', currentPressure.toString()); } catch(e) {}
+
+            // 调用专业分析
+            analyzePressure();
         }
 
         // Weather Alert Feature
@@ -20522,13 +20965,27 @@
                 if (!area) { this.showEmpty(); this.isLoading = false; return; }
 
                 try {
-                    // 优先级：NMC 中央气象台（中文直出）> 演示数据
-                    // NMC 需要 dev-server.js 代理（解决 CORS + Referer 校验）
-                    try {
-                        await this.fetchFromNMC(area);
-                    } catch (nmcErr) {
-                        console.warn('[预警] NMC 失败，回退演示数据:', nmcErr);
-                        await this.loadDemoData(area);
+                    // 优先级（与天气页面一致）：和风天气 → NMC → 演示数据
+                    if (HEWEATHER_KEY && HEWEATHER_KEY !== 'YOUR_HEWEATHER_KEY') {
+                        try {
+                            await this.fetchFromQWeather(area);
+                        } catch (qwErr) {
+                            console.warn('[预警] 和风天气失败，尝试 WeatherAPI:', qwErr);
+                            try {
+                                await this.fetchFromAPI(area);
+                            } catch (waErr) {
+                                console.warn('[预警] WeatherAPI 也失败，回退演示数据:', waErr);
+                                await this.loadDemoData(area);
+                            }
+                        }
+                    } else {
+                        // 无和风 Key，降级到 WeatherAPI
+                        try {
+                            await this.fetchFromAPI(area);
+                        } catch (waErr) {
+                            console.warn('[预警] WeatherAPI 失败，回退演示数据:', waErr);
+                            await this.loadDemoData(area);
+                        }
                     }
                 } catch (err) {
                     console.error('[预警] 数据加载失败:', err);
